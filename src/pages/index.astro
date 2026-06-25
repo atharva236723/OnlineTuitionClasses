@@ -93,7 +93,11 @@ const pricing = [
       <h2 class="section-title">Find a Teacher</h2>
       <p class="section-sub">Fill in the details below and we'll reach out within 24 hours.</p>
 
-      <form class="contact-form" onsubmit="handleSubmit(event)">
+      <form class="contact-form" id="find-form" action="https://formspree.io/f/mpqgpdjn" method="POST">
+        <input type="hidden" name="_replyto" value="abhinamika@gmail.com" />
+        <input type="hidden" name="Class" id="hidden-class" value="" />
+        <input type="hidden" name="Subjects" id="hidden-subjects" value="" />
+
         <div class="form-row">
           <label>
             Your name
@@ -104,33 +108,6 @@ const pricing = [
             <input type="tel" name="phone" placeholder="+91 98765 43210" required />
           </label>
         </div>
-
-        <div class="form-row">
-          <label>
-            Class
-            <select name="class" required>
-              <option value="" disabled selected>Select class</option>
-              {Array.from({length: 12}, (_, i) => i + 1).map(n => (
-                <option value={String(n)}>Class {n}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Subject
-            <input type="text" name="subject" placeholder="e.g. Mathematics, Science" required />
-          </label>
-        </div>
-
-        <label>
-          Budget (per hour)
-          <select name="budget" required>
-            <option value="" disabled selected>Select range</option>
-            <option>₹300 – ₹600</option>
-            <option>₹500 – ₹900</option>
-            <option>₹700 – ₹1,200</option>
-            <option>₹900 – ₹1,800</option>
-          </select>
-        </label>
 
         <button type="submit" class="btn-primary btn-full">Request a Match</button>
       </form>
@@ -146,11 +123,35 @@ const pricing = [
 </Layout>
 
 <script is:inline>
-  function handleSubmit(e) {
+  document.getElementById('find-form').addEventListener('submit', async function (e) {
     e.preventDefault();
-    document.querySelector('.contact-form').classList.add('hidden');
-    document.getElementById('form-success').classList.remove('hidden');
-  }
+
+    // Populate hidden fields from calculator state
+    document.getElementById('hidden-class').value = 'Class ' + currentClass;
+    document.getElementById('hidden-subjects').value = calcSelected.length ? calcSelected.join(', ') : 'None selected';
+
+    var form = this;
+    var data = new FormData(form);
+
+    try {
+      var res = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' }
+      });
+      if (res.ok) {
+        form.classList.add('hidden');
+        document.getElementById('form-success').classList.remove('hidden');
+      } else {
+        alert('Something went wrong. Please try again.');
+      }
+    } catch (_) {
+      alert('Network error. Please check your connection and try again.');
+    }
+  });
+
+  var currentClass = 6;
+  var calcSelected = [];
 
   (function () {
     /* Maths only up to class 10 */
@@ -160,9 +161,6 @@ const pricing = [
       Chemistry: { color: '#059669', icon: '⚗', note: 'All classes' },
       Biology:   { color: '#dc2626', icon: '🧬', note: 'Class 1–10' },
     };
-
-    let currentClass = 6;
-    let selected     = [];
 
     const slider      = document.getElementById('class-slider');
     const fill        = document.getElementById('slider-fill');
@@ -188,13 +186,13 @@ const pricing = [
     function renderSubjects() {
       const avail = availableSubjects();
       /* drop any selected subject that's no longer available */
-      selected = selected.filter(s => avail.includes(s));
+      calcSelected = calcSelected.filter(s => avail.includes(s));
       subjectGrid.innerHTML = '';
 
       avail.forEach(sub => {
         const meta       = SUBJECT_META[sub];
-        const isSelected = selected.includes(sub);
-        const isDisabled = selected.length >= 2 && !isSelected;
+        const isSelected = calcSelected.includes(sub);
+        const isDisabled = calcSelected.length >= 2 && !isSelected;
 
         const btn = document.createElement('button');
         btn.type = 'button';
@@ -217,11 +215,11 @@ const pricing = [
           </span>`;
 
         btn.addEventListener('click', () => {
-          if (selected.includes(sub)) {
-            selected = selected.filter(s => s !== sub);
+          if (calcSelected.includes(sub)) {
+            calcSelected = calcSelected.filter(s => s !== sub);
           } else {
-            if (selected.length >= 2) return;
-            selected.push(sub);
+            if (calcSelected.length >= 2) return;
+            calcSelected.push(sub);
           }
           renderSubjects();
         });

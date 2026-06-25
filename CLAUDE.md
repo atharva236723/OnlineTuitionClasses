@@ -16,7 +16,7 @@ The preview server is configured in `.claude/launch.json` (name: `tuition-dev`, 
 
 ## Project
 
-**Online Tuition Classes** — a frontend-only marketing site for an online tutoring service matching students (Class 1–12) with verified teachers. No backend, database, or payment integration yet; form submissions are handled client-side with a success-state toggle.
+**Online Tuition Classes** — a frontend-only marketing site for an online tutoring service matching students (Class 1–12) with verified teachers. No backend or database. The "Find a Teacher" form submits to **Formspree** (`https://formspree.io/f/mpqgpdjn`) and emails `abhinamika@gmail.com`; the contact page form is still client-side with a success-state toggle.
 
 This is a **multi-page application (MPA)**. Pages and their URLs:
 
@@ -53,7 +53,8 @@ The interactive pricing section in `src/pages/index.astro` is driven entirely by
 
 - **Class slider** (1–12): drag handle updates a fill bar and badge in real time. No CSS transition on the fill — updates synchronously via `requestAnimationFrame` to avoid lag.
 - **Subjects**: Maths, Physics, Chemistry, Biology. Max 2 selectable. **Maths and Biology are hidden for class 11–12** (only available up to class 10). Subject cards are rendered by JS into `#subject-grid`; their styles use `:global()` for this reason.
-- No price is displayed — the calculator currently only captures class + subject selection for the "Find a Teacher" form flow.
+- No price is displayed — the calculator captures class + subject selection for the "Find a Teacher" form flow.
+- **Shared state**: `currentClass` (number) and `calcSelected` (array of subject name strings) are declared as `var` in the outer `<script is:inline>` scope so the form submit handler can read them. The IIFE that drives the calculator writes to these outer vars. Do not move them inside the IIFE.
 
 ## Design System
 
