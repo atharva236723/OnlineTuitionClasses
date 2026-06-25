@@ -1,0 +1,243 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Contact Us — Online Tuition Classes">
+  <Nav activePage="contact" />
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">Contact us</p>
+      <h1 class="page-title">We'd love to hear from you.</h1>
+      <p class="page-sub">Have a question about finding a teacher, pricing, or anything else? Drop us a message and we'll get back to you within 24 hours.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-layout">
+
+      <div class="contact-info">
+        <div class="info-block">
+          <span class="info-label">Email</span>
+          <a href="mailto:hello@onlinetuitionclasses.in" class="info-value">hello@onlinetuitionclasses.in</a>
+        </div>
+        <div class="info-block">
+          <span class="info-label">WhatsApp</span>
+          <span class="info-value">+91 98765 43210</span>
+        </div>
+        <div class="info-block">
+          <span class="info-label">Hours</span>
+          <span class="info-value">Mon – Sat, 9 am – 8 pm IST</span>
+        </div>
+        <div class="info-block">
+          <span class="info-label">Response time</span>
+          <span class="info-value">Within 24 hours</span>
+        </div>
+      </div>
+
+      <div class="form-wrap">
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <label>
+              Your name
+              <input type="text" name="name" placeholder="e.g. Priya Sharma" required />
+            </label>
+            <label>
+              Email address
+              <input type="email" name="email" placeholder="you@example.com" required />
+            </label>
+          </div>
+          <label>
+            Subject
+            <input type="text" name="subject" placeholder="e.g. Question about pricing" required />
+          </label>
+          <label>
+            Message
+            <textarea name="message" rows="5" placeholder="Write your message here…" required></textarea>
+          </label>
+          <button type="submit" class="btn-primary">Send message</button>
+        </form>
+
+        <div id="form-success" class="form-success hidden">
+          Thanks for reaching out! We'll get back to you within 24 hours.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<script is:inline>
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.querySelector('.contact-form').classList.add('hidden');
+    document.getElementById('form-success').classList.remove('hidden');
+  }
+</script>
+
+<style>
+  :root {
+    --ink: #171717;
+    --ink-2: #4d4d4d;
+    --canvas: #ffffff;
+    --canvas-soft: #fafafa;
+    --border: #e5e5e5;
+    --radius-sm: 6px;
+    --radius-pill: 100px;
+  }
+
+  .container {
+    max-width: 960px;
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  .page-hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 96px 0 80px;
+  }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #737373;
+    margin-bottom: 20px;
+  }
+
+  .page-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    max-width: 560px;
+  }
+
+  .page-sub {
+    font-size: 1.1rem;
+    color: #a3a3a3;
+    max-width: 520px;
+    line-height: 1.7;
+  }
+
+  .section {
+    padding: 80px 0;
+    background: var(--canvas);
+  }
+
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  @media (max-width: 700px) {
+    .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .info-label {
+    font-size: 0.75rem;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #737373;
+  }
+
+  .info-value {
+    font-size: 0.95rem;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  a.info-value { color: #2563eb; }
+  a.info-value:hover { text-decoration: underline; }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 500px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  .contact-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: var(--canvas);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+    resize: vertical;
+  }
+
+  .contact-form input:focus,
+  .contact-form textarea:focus { border-color: var(--ink); }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 14px 32px;
+    border-radius: var(--radius-pill);
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    align-self: flex-start;
+  }
+
+  .btn-primary:hover { opacity: 0.85; }
+
+  .form-success {
+    padding: 32px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+    color: #166534;
+    font-weight: 500;
+  }
+
+  .hidden { display: none; }
+</style>

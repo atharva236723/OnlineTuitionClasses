@@ -1,0 +1,169 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="About Us — Online Tuition Classes">
+  <Nav activePage="about" />
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">About us</p>
+      <h1 class="page-title">Helping every student find the right teacher.</h1>
+      <p class="page-sub">We started Online Tuition Classes to solve a simple problem — finding a reliable, qualified tutor shouldn't be hard or expensive.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container prose-grid">
+      <div class="prose-block">
+        <h2>Our mission.</h2>
+        <p>Quality education should be accessible to every student regardless of where they live. We connect students from Class 1 to Class 12 with verified, experienced teachers across all subjects — delivered entirely online so geography is never a barrier.</p>
+      </div>
+      <div class="prose-block">
+        <h2>How we verify teachers.</h2>
+        <p>Every teacher on our platform goes through a structured onboarding: identity verification, academic credential check, a live demo session, and parent feedback after the first month. Only teachers who clear all four steps are listed.</p>
+      </div>
+      <div class="prose-block">
+        <h2>Why online tuition.</h2>
+        <p>Online sessions give students access to the best teachers in the country — not just those who happen to live nearby. Flexible scheduling, recorded sessions on request, and no commute mean more time learning and less time travelling.</p>
+      </div>
+      <div class="prose-block">
+        <h2>Our promise.</h2>
+        <p>We match you within 24 hours, offer a free demo class before any commitment, and there are zero registration fees. If the first match isn't right, we'll find you another teacher at no extra cost.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-band">
+    <div class="container stats-grid">
+      <div class="stat">
+        <span class="stat-num">500+</span>
+        <span class="stat-label">Verified teachers</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">12,000+</span>
+        <span class="stat-label">Students matched</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">24 hrs</span>
+        <span class="stat-label">Average match time</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">4.8 / 5</span>
+        <span class="stat-label">Average teacher rating</span>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  :root {
+    --ink: #171717;
+    --ink-2: #4d4d4d;
+    --canvas: #ffffff;
+    --canvas-soft: #fafafa;
+    --border: #e5e5e5;
+  }
+
+  .container {
+    max-width: 960px;
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  .page-hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 96px 0 80px;
+  }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #737373;
+    margin-bottom: 20px;
+  }
+
+  .page-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    max-width: 640px;
+  }
+
+  .page-sub {
+    font-size: 1.1rem;
+    color: #a3a3a3;
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  .section {
+    padding: 80px 0;
+    background: var(--canvas);
+  }
+
+  .prose-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px 64px;
+  }
+
+  @media (max-width: 640px) {
+    .prose-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  .prose-block h2 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+
+  .prose-block p {
+    font-size: 0.95rem;
+    color: var(--ink-2);
+    line-height: 1.75;
+  }
+
+  .stats-band {
+    background: var(--canvas-soft);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 64px 0;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 32px;
+    text-align: center;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .stat-num {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--ink-2);
+  }
+</style>
