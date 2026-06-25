@@ -57,7 +57,7 @@ const pricing = [
   <section class="section section-alt" id="pricing">
     <div class="container">
       <h2 class="section-title">Pricing</h2>
-      <p class="section-sub">Personalise by class, experience &amp; subject.</p>
+      <p class="section-sub">Select your class and subject to get started.</p>
 
       <div class="calc-card">
 
@@ -77,39 +77,10 @@ const pricing = [
           </div>
         </div>
 
-        <!-- Teacher experience -->
-        <div class="calc-block">
-          <div class="calc-label">Teacher experience</div>
-          <div class="exp-pills">
-            <button class="exp-pill active" data-exp="fresher" type="button">
-              <span class="exp-name">Fresher</span>
-              <span class="exp-sub">0–2 yrs</span>
-            </button>
-            <button class="exp-pill" data-exp="experienced" type="button">
-              <span class="exp-name">Experienced</span>
-              <span class="exp-sub">3–7 yrs</span>
-            </button>
-            <button class="exp-pill" data-exp="expert" type="button">
-              <span class="exp-name">Expert</span>
-              <span class="exp-sub">8+ yrs</span>
-            </button>
-          </div>
-        </div>
-
         <!-- Subjects -->
         <div class="calc-block">
           <div class="calc-label">Subjects <span class="calc-hint">(choose up to 2)</span></div>
           <div class="subject-grid" id="subject-grid"></div>
-        </div>
-
-        <!-- Result -->
-        <div class="price-result">
-          <div class="price-result-inner">
-            <span class="price-result-label">Estimated rate</span>
-            <span class="price-result-amount" id="price-display">₹—</span>
-            <span class="price-result-unit">/ hr</span>
-          </div>
-          <p class="price-result-note">Select a subject to see pricing · Final rate agreed before first paid session.</p>
         </div>
 
       </div>
@@ -182,89 +153,68 @@ const pricing = [
   }
 
   (function () {
-    /* ── subjects (fixed list, always shown) ── */
-    const ALL_SUBJECTS = ['Maths','Physics','Chemistry','Biology','Hindi','SST','English'];
-    const PCMB = new Set(['Maths','Physics','Chemistry','Biology']);
-
+    /* Maths only up to class 10 */
     const SUBJECT_META = {
-      'Maths':     { color: '#2563eb', label: 'PCMB' },
-      'Physics':   { color: '#7c3aed', label: 'PCMB' },
-      'Chemistry': { color: '#059669', label: 'PCMB' },
-      'Biology':   { color: '#dc2626', label: 'PCMB' },
-      'Hindi':     { color: '#d97706', label: null },
-      'SST':       { color: '#0891b2', label: null },
-      'English':   { color: '#db2777', label: null },
+      Maths:     { color: '#2563eb', icon: '∑', note: 'Class 1–10' },
+      Physics:   { color: '#7c3aed', icon: '⚛', note: 'All classes' },
+      Chemistry: { color: '#059669', icon: '⚗', note: 'All classes' },
+      Biology:   { color: '#dc2626', icon: '🧬', note: 'Class 1–10' },
     };
 
-    /* base price per class range [min, max] */
-    const BASE = {
-      '1-5':  [300,  600],
-      '6-8':  [500,  900],
-      '9-10': [700,  1200],
-      '11-12':[900,  1800],
-    };
-
-    const EXP_FACTOR = { fresher: 0, experienced: 0.5, expert: 1 };
-    const tierOf = c => c<=5?'1-5': c<=8?'6-8': c<=10?'9-10':'11-12';
-
-    /* ── state ── */
     let currentClass = 6;
-    let currentExp   = 'fresher';
     let selected     = [];
 
-    /* ── elements ── */
     const slider      = document.getElementById('class-slider');
     const fill        = document.getElementById('slider-fill');
     const badge       = document.getElementById('class-badge');
     const subjectGrid = document.getElementById('subject-grid');
-    const priceEl     = document.getElementById('price-display');
     const ticks       = document.querySelectorAll('.slider-ticks span');
 
-    function fmt(n) {
-      return '₹' + Math.round(n).toLocaleString('en-IN');
-    }
-
     function updateFill(val) {
-      const pct = (val - 1) / 11 * 100;
-      fill.style.width = pct + '%';
+      fill.style.width = ((val - 1) / 11 * 100) + '%';
     }
 
     function updateTicks(val) {
       ticks.forEach((t, i) => t.classList.toggle('tick-active', i + 1 === val));
     }
 
+    function availableSubjects() {
+      /* Maths and Biology only up to class 10 */
+      return Object.keys(SUBJECT_META).filter(
+        s => (s !== 'Maths' && s !== 'Biology') || currentClass <= 10
+      );
+    }
+
     function renderSubjects() {
+      const avail = availableSubjects();
+      /* drop any selected subject that's no longer available */
+      selected = selected.filter(s => avail.includes(s));
       subjectGrid.innerHTML = '';
-      ALL_SUBJECTS.forEach(sub => {
-        const meta = SUBJECT_META[sub];
+
+      avail.forEach(sub => {
+        const meta       = SUBJECT_META[sub];
         const isSelected = selected.includes(sub);
         const isDisabled = selected.length >= 2 && !isSelected;
 
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.dataset.subject = sub;
-        btn.className = 'subject-chip' +
+        btn.className = 'subject-card' +
           (isSelected ? ' selected' : '') +
-          (isDisabled ? ' disabled' : '') +
-          (PCMB.has(sub) ? ' pcmb' : '');
-        btn.style.setProperty('--chip-color', meta.color);
+          (isDisabled ? ' disabled'  : '');
+        btn.style.setProperty('--sc', meta.color);
 
-        const dot = document.createElement('span');
-        dot.className = 'chip-dot';
-
-        const name = document.createElement('span');
-        name.className = 'chip-name';
-        name.textContent = sub;
-
-        btn.appendChild(dot);
-        btn.appendChild(name);
-
-        if (meta.label) {
-          const tag = document.createElement('span');
-          tag.className = 'chip-tag';
-          tag.textContent = meta.label;
-          btn.appendChild(tag);
-        }
+        btn.innerHTML = `
+          <span class="sc-icon">${meta.icon}</span>
+          <span class="sc-body">
+            <span class="sc-name">${sub}</span>
+            <span class="sc-note">${meta.note}</span>
+          </span>
+          <span class="sc-check" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <polyline points="2,7 5.5,10.5 12,3.5" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>`;
 
         btn.addEventListener('click', () => {
           if (selected.includes(sub)) {
@@ -274,48 +224,13 @@ const pricing = [
             selected.push(sub);
           }
           renderSubjects();
-          updatePrice();
         });
 
         subjectGrid.appendChild(btn);
       });
     }
 
-    function updatePrice() {
-      const noteEl = document.querySelector('.price-result-note');
-      if (selected.length === 0) {
-        priceEl.textContent = '₹—';
-        noteEl.textContent = 'Select a subject to see pricing · Final rate agreed before first paid session.';
-        return;
-      }
-
-      const [min, max] = BASE[tierOf(currentClass)];
-      const factor = EXP_FACTOR[currentExp];
-      const base   = min + (max - min) * factor;
-
-      /* PCMB premium: each PCMB subject adds 20% on top */
-      const pcmbCount = selected.filter(s => PCMB.has(s)).length;
-      const pcmbMult  = 1 + pcmbCount * 0.20;
-      /* multi-subject bonus: 2 subjects = +10% */
-      const multiMult = selected.length === 2 ? 1.10 : 1;
-
-      const total = base * pcmbMult * multiMult;
-
-      priceEl.classList.remove('pop');
-      void priceEl.offsetWidth;
-      priceEl.classList.add('pop');
-      setTimeout(() => priceEl.classList.remove('pop'), 300);
-
-      priceEl.textContent = fmt(total);
-
-      const extras = [];
-      if (pcmbCount > 0) extras.push(`PCMB premium +${pcmbCount * 20}%`);
-      if (selected.length === 2) extras.push('multi-subject +10%');
-      const extraStr = extras.length ? ' · ' + extras.join(', ') : '';
-      noteEl.textContent = selected.join(' + ') + extraStr + ' · Final rate agreed before first paid session.';
-    }
-
-    /* ── slider — instant, no transition lag ── */
+    /* slider */
     slider.addEventListener('input', () => {
       currentClass = Number(slider.value);
       badge.textContent = currentClass;
@@ -325,20 +240,9 @@ const pricing = [
         updateTicks(currentClass);
         setTimeout(() => badge.style.transform = '', 120);
       });
-      updatePrice();
+      renderSubjects(); /* may hide/show Maths */
     });
 
-    /* ── experience ── */
-    document.querySelectorAll('.exp-pill').forEach(pill => {
-      pill.addEventListener('click', () => {
-        document.querySelectorAll('.exp-pill').forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        currentExp = pill.dataset.exp;
-        updatePrice();
-      });
-    });
-
-    /* ── init ── */
     updateFill(currentClass);
     updateTicks(currentClass);
     renderSubjects();
@@ -686,86 +590,115 @@ const pricing = [
 
   .exp-pill.active .exp-sub { color: rgba(255,255,255,.65); }
 
-  /* subjects */
+  /* subjects — all :global because elements are created in JS */
   .subject-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
-  .subject-chip {
+  @media (max-width: 480px) {
+    .subject-grid { grid-template-columns: 1fr; }
+  }
+
+  :global(.subject-card) {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 18px 10px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 100px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--ink-2);
-    background: var(--canvas);
+    gap: 14px;
+    padding: 16px 18px;
+    border: 1.5px solid #e5e5e5;
+    border-radius: 14px;
+    background: #fff;
     cursor: pointer;
     font-family: inherit;
-    transition: border-color 0.15s, color 0.15s, background 0.15s,
-                transform 0.15s cubic-bezier(.34,1.56,.64,1), box-shadow 0.15s;
+    text-align: left;
+    transition: border-color 0.18s, background 0.18s, box-shadow 0.18s,
+                transform 0.18s cubic-bezier(.34,1.56,.64,1);
     user-select: none;
-    position: relative;
   }
 
-  .chip-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--chip-color, #aaa);
-    flex-shrink: 0;
-    transition: transform 0.15s;
-  }
-
-  .chip-name {
-    line-height: 1;
-  }
-
-  .chip-tag {
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    background: rgba(0,0,0,.06);
-    color: var(--chip-color);
-    padding: 2px 6px;
-    border-radius: 100px;
-    line-height: 1.4;
-  }
-
-  .subject-chip:hover:not(.disabled) {
-    border-color: var(--chip-color, var(--ink));
-    color: var(--ink);
+  :global(.subject-card:hover:not(.disabled)) {
+    border-color: var(--sc);
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,.12);
   }
 
-  .subject-chip.selected {
-    background: var(--chip-color, var(--ink));
-    color: #fff;
-    border-color: var(--chip-color, var(--ink));
+  :global(.subject-card.selected) {
+    border-color: var(--sc);
+    background: var(--sc);
+    box-shadow: 0 6px 20px rgba(0,0,0,.18);
     transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(0,0,0,.2);
   }
 
-  .subject-chip.selected .chip-dot {
-    background: rgba(255,255,255,.6);
-    transform: scale(1.2);
-  }
-
-  .subject-chip.selected .chip-tag {
-    background: rgba(255,255,255,.18);
-    color: #fff;
-  }
-
-  .subject-chip.disabled {
-    opacity: 0.3;
+  :global(.subject-card.disabled) {
+    opacity: 0.32;
     cursor: not-allowed;
     transform: none;
+    pointer-events: none;
+  }
+
+  :global(.sc-icon) {
+    font-size: 1.4rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(0,0,0,.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.18s;
+  }
+
+  :global(.subject-card.selected .sc-icon) {
+    background: rgba(255,255,255,.18);
+  }
+
+  :global(.sc-body) {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+  }
+
+  :global(.sc-name) {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #171717;
+    transition: color 0.18s;
+  }
+
+  :global(.subject-card.selected .sc-name) { color: #fff; }
+
+  :global(.sc-note) {
+    font-size: 0.72rem;
+    color: #4d4d4d;
+    transition: color 0.18s;
+  }
+
+  :global(.subject-card.selected .sc-note) { color: rgba(255,255,255,.7); }
+
+  :global(.sc-check) {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid #e5e5e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    flex-shrink: 0;
+    transition: border-color 0.18s, background 0.18s, color 0.18s;
+  }
+
+  :global(.subject-card:hover:not(.disabled) .sc-check) {
+    border-color: var(--sc);
+  }
+
+  :global(.subject-card.selected .sc-check) {
+    background: rgba(255,255,255,.25);
+    border-color: transparent;
+    color: #fff;
   }
 
   /* result */
