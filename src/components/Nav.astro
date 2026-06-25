@@ -1,0 +1,86 @@
+---
+interface Props {
+  activePage?: string;
+}
+const { activePage } = Astro.props;
+---
+
+<nav class="nav">
+  <a href="/" class="nav-brand">Online Tuition Classes</a>
+  <div class="nav-links">
+    <a href="/about" class:list={["nav-link", { active: activePage === "about" }]}>About</a>
+    <a href="/contact" class:list={["nav-link", { active: activePage === "contact" }]}>Contact</a>
+    <a href="/privacy-policy" class:list={["nav-link", "nav-link-secondary", { active: activePage === "privacy-policy" }]}>Privacy</a>
+    <a href="/terms" class:list={["nav-link", "nav-link-secondary", { active: activePage === "terms" }]}>Terms</a>
+    <a href="/profile" class="btn-nav btn-profile">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+    </a>
+  </div>
+</nav>
+
+<style>
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .nav-brand {
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    color: #171717;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .nav-link {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #4d4d4d;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: #171717;
+    background: #f5f5f5;
+  }
+
+  @media (max-width: 600px) {
+    .nav-link-secondary { display: none; }
+  }
+
+  .btn-nav {
+    background: #171717;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s;
+  }
+
+  .btn-nav:hover { opacity: 0.85; }
+</style>
