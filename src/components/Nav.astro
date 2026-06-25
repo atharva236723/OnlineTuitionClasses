@@ -7,31 +7,112 @@ const { activePage } = Astro.props;
 
 <nav class="nav">
   <a href="/" class="nav-brand">Online Tuition Classes</a>
-  <div class="nav-links">
+
+  <div class="nav-links" id="nav-links">
     <a href="/about" class:list={["nav-link", { active: activePage === "about" }]}>About</a>
     <a href="/contact" class:list={["nav-link", { active: activePage === "contact" }]}>Contact</a>
     <a href="/privacy-policy" class:list={["nav-link", "nav-link-secondary", { active: activePage === "privacy-policy" }]}>Privacy</a>
     <a href="/terms" class:list={["nav-link", "nav-link-secondary", { active: activePage === "terms" }]}>Terms</a>
-    <a href="/profile" class="btn-nav btn-profile">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <a href="/profile" class="btn-nav btn-profile" id="nav-profile-btn" aria-label="Profile">
+      <svg id="nav-profile-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="8" r="4"/>
         <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
       </svg>
+      <span id="nav-profile-initial" class="nav-initial" style="display:none"></span>
+      <img id="nav-profile-picture" class="nav-picture" style="display:none" alt="Profile" />
     </a>
   </div>
+
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- Mobile drawer -->
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="/" class="mobile-link">Home</a>
+  <a href="/about" class:list={["mobile-link", { "mobile-link-active": activePage === "about" }]}>About</a>
+  <a href="/contact" class:list={["mobile-link", { "mobile-link-active": activePage === "contact" }]}>Contact</a>
+  <a href="/privacy-policy" class:list={["mobile-link", { "mobile-link-active": activePage === "privacy-policy" }]}>Privacy</a>
+  <a href="/terms" class:list={["mobile-link", { "mobile-link-active": activePage === "terms" }]}>Terms</a>
+  <a href="/profile" class="mobile-link mobile-profile-link">Profile</a>
+</div>
+
+<script is:inline>
+  (function () {
+    function updateNav() {
+      try {
+        var u = JSON.parse(localStorage.getItem('otc_user'));
+        var icon    = document.getElementById('nav-profile-icon');
+        var initial = document.getElementById('nav-profile-initial');
+        var picture = document.getElementById('nav-profile-picture');
+        if (!icon) return;
+        if (u && u.name) {
+          icon.style.display = 'none';
+          if (u.picture) {
+            picture.src           = u.picture;
+            picture.style.display = 'block';
+            initial.style.display = 'none';
+          } else {
+            picture.style.display = 'none';
+            initial.style.display = 'block';
+            initial.textContent   = u.name.trim().charAt(0).toUpperCase();
+          }
+        } else {
+          icon.style.display    = '';
+          initial.style.display = 'none';
+          picture.style.display = 'none';
+        }
+      } catch (_) {}
+    }
+    updateNav();
+    window.addEventListener('otc-auth-change', updateNav);
+    document.addEventListener('astro:after-swap', updateNav);
+
+    /* Hamburger toggle */
+    function initHamburger() {
+      var btn  = document.getElementById('nav-hamburger');
+      var menu = document.getElementById('mobile-menu');
+      if (!btn || !menu) return;
+
+      btn.addEventListener('click', function () {
+        var open = menu.classList.toggle('open');
+        btn.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', String(open));
+        menu.setAttribute('aria-hidden', String(!open));
+        document.body.style.overflow = open ? 'hidden' : '';
+      });
+
+      /* close on link click */
+      menu.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function() {
+          menu.classList.remove('open');
+          btn.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+          menu.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        });
+      });
+    }
+    initHamburger();
+    document.addEventListener('astro:after-swap', initHamburger);
+  })();
+</script>
 
 <style>
   .nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 24px;
+    padding: 14px 24px;
     border-bottom: 1px solid #e5e5e5;
-    background: #ffffff;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 100;
+    transition: box-shadow 0.2s;
   }
 
   .nav-brand {
@@ -39,7 +120,10 @@ const { activePage } = Astro.props;
     font-size: 1.05rem;
     letter-spacing: -0.02em;
     color: #171717;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
   }
+  .nav-brand:hover { opacity: 0.75; }
 
   .nav-links {
     display: flex;
@@ -62,10 +146,6 @@ const { activePage } = Astro.props;
     background: #f5f5f5;
   }
 
-  @media (max-width: 600px) {
-    .nav-link-secondary { display: none; }
-  }
-
   .btn-nav {
     background: #171717;
     color: #fff;
@@ -79,8 +159,116 @@ const { activePage } = Astro.props;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.15s;
+    transition: opacity 0.15s, transform 0.15s;
+    flex-shrink: 0;
   }
 
-  .btn-nav:hover { opacity: 0.85; }
+  .btn-nav:hover { opacity: 0.85; transform: scale(1.05); }
+
+  .nav-initial {
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .nav-picture {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  /* ── Hamburger ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .nav-hamburger:hover { background: #f5f5f5; }
+  .nav-hamburger span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: #171717;
+    border-radius: 2px;
+    transform-origin: center;
+    transition: transform 0.25s cubic-bezier(.4,0,.2,1), opacity 0.2s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── Mobile drawer ── */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 57px;   /* just below the nav */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 99;
+    flex-direction: column;
+    padding: 24px 24px 48px;
+    gap: 4px;
+    overflow-y: auto;
+    transform: translateY(-12px);
+    opacity: 0;
+    transition: transform 0.28s cubic-bezier(.4,0,.2,1), opacity 0.28s cubic-bezier(.4,0,.2,1);
+    pointer-events: none;
+  }
+  .mobile-menu.open {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .mobile-link {
+    display: block;
+    padding: 14px 16px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #4d4d4d;
+    border-radius: 10px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .mobile-link:hover,
+  .mobile-link.mobile-link-active {
+    background: #f5f5f5;
+    color: #171717;
+  }
+  .mobile-profile-link {
+    margin-top: 12px;
+    background: #171717;
+    color: #fff !important;
+    text-align: center;
+    border-radius: 100px;
+  }
+  .mobile-profile-link:hover { opacity: 0.85; background: #171717 !important; }
+
+  /* ── Responsive breakpoints ── */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .mobile-menu { display: flex; }
+  }
+
+  @media (min-width: 641px) {
+    .nav-link-secondary { display: none; }
+  }
+
+  @media (min-width: 769px) {
+    .nav-link-secondary { display: inline-block; }
+  }
 </style>

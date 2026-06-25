@@ -26,12 +26,12 @@ const pricing = [
   <!-- ── HERO ────────────────────────────────────────────── -->
   <section class="hero">
     <div class="container hero-inner">
-      <div class="hero-text">
+      <div class="hero-text reveal">
         <h1 class="hero-headline">Online Tuition for Class 1–12<br />Verified Teachers.</h1>
         <p class="hero-sub">Choose your subject, your budget, and get matched with a teacher in 24 hours.</p>
         <a href="#find" class="btn-primary">Find a Teacher</a>
       </div>
-      <div class="hero-visual">
+      <div class="hero-visual reveal" style="transition-delay:0.12s">
         <HeroAnimation />
       </div>
     </div>
@@ -40,8 +40,8 @@ const pricing = [
   <!-- ── HOW IT WORKS ─────────────────────────────────────── -->
   <section class="section" id="how">
     <div class="container">
-      <h2 class="section-title">How it works</h2>
-      <div class="steps-grid">
+      <h2 class="section-title reveal">How it works</h2>
+      <div class="steps-grid reveal-stagger reveal">
         {steps.map(s => (
           <div class="step-card">
             <div class="step-num">{s.num}</div>
@@ -56,10 +56,10 @@ const pricing = [
   <!-- ── PRICING ──────────────────────────────────────────── -->
   <section class="section section-alt" id="pricing">
     <div class="container">
-      <h2 class="section-title">Pricing</h2>
-      <p class="section-sub">Select your class and subject to get started.</p>
+      <h2 class="section-title reveal">Pricing</h2>
+      <p class="section-sub reveal">Select your class and subject to get started.</p>
 
-      <div class="calc-card">
+      <div class="calc-card reveal">
 
         <!-- Class slider -->
         <div class="calc-block">
@@ -90,13 +90,15 @@ const pricing = [
   <!-- ── FIND A TEACHER FORM ──────────────────────────────── -->
   <section class="section" id="find">
     <div class="container form-container">
-      <h2 class="section-title">Find a Teacher</h2>
-      <p class="section-sub">Fill in the details below and we'll reach out within 24 hours.</p>
+      <h2 class="section-title reveal">Find a Teacher</h2>
+      <p class="section-sub reveal">Fill in the details below and we'll reach out within 24 hours.</p>
 
-      <form class="contact-form" id="find-form" action="https://formspree.io/f/mpqgpdjn" method="POST">
+      <form class="contact-form reveal" id="find-form" action="https://formspree.io/f/mpqgpdjn" method="POST">
         <input type="hidden" name="_replyto" value="abhinamika@gmail.com" />
         <input type="hidden" name="Class" id="hidden-class" value="" />
         <input type="hidden" name="Subjects" id="hidden-subjects" value="" />
+        <input type="hidden" name="UserName" id="hidden-username" value="" />
+        <input type="hidden" name="UserEmail" id="hidden-useremail" value="" />
 
         <div class="form-row">
           <label>
@@ -109,36 +111,114 @@ const pricing = [
           </label>
         </div>
 
+        <div id="calc-error" class="calc-error hidden" role="alert">
+          Please select your class and at least one subject above before requesting a match.
+        </div>
         <button type="submit" class="btn-primary btn-full">Request a Match</button>
       </form>
 
-      <div id="form-success" class="form-success hidden">
-        Thanks! We'll get back to you within 24 hours.
+      <div id="form-success" class="form-success hidden" aria-live="polite">
+        <div class="fs-icon">
+          <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle class="fs-circle" cx="26" cy="26" r="24" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <path class="fs-check" d="M14 26.5l8.5 8.5 15-16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="fs-title">Request sent!</h3>
+        <p class="fs-body">We'll match you with a verified teacher and reach out within <strong>24 hours</strong>.</p>
+        <p class="fs-sub">Check your WhatsApp and email for updates.</p>
       </div>
     </div>
   </section>
+
+  <!-- ── AUTH MODAL ─────────────────────────────────────── -->
+  <div id="auth-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+      <p class="modal-eyebrow">One more step</p>
+      <h2 class="modal-title" id="modal-title">Sign in to continue</h2>
+      <p class="modal-sub">Create a free account or log in to request a teacher match.</p>
+
+      <!-- Google Sign-In -->
+      <div id="google-btn-modal" class="google-btn-wrap"></div>
+      <div class="auth-divider"><span>or</span></div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="mtab-login" type="button">Log in</button>
+        <button class="auth-tab" id="mtab-signup" type="button">Sign up</button>
+      </div>
+
+      <!-- Modal login form -->
+      <form id="modal-login-form" class="auth-form" novalidate>
+        <label>
+          Email address
+          <input type="email" id="mlogin-email" placeholder="you@example.com" required />
+        </label>
+        <p class="auth-error hidden" id="mlogin-error">No account found with that email.</p>
+        <button type="submit" class="btn-primary btn-full-dark">Log in &amp; submit</button>
+        <p class="auth-switch">
+          No account?
+          <button type="button" class="link-btn" id="mgo-signup">Sign up instead</button>
+        </p>
+      </form>
+
+      <!-- Modal signup form -->
+      <form id="modal-signup-form" class="auth-form hidden" novalidate>
+        <div class="mform-row">
+          <label>
+            Full name
+            <input type="text" id="msignup-name" placeholder="Priya Sharma" required />
+          </label>
+          <label>
+            Email
+            <input type="email" id="msignup-email" placeholder="you@example.com" required />
+          </label>
+        </div>
+        <label>
+          Phone / WhatsApp <span class="opt">(optional)</span>
+          <input type="tel" id="msignup-phone" placeholder="+91 98765 43210" />
+        </label>
+        <p class="auth-error hidden" id="msignup-error"></p>
+        <button type="submit" class="btn-primary btn-full-dark">Create account &amp; submit</button>
+        <p class="auth-switch">
+          Already have an account?
+          <button type="button" class="link-btn" id="mgo-login">Log in</button>
+        </p>
+      </form>
+    </div>
+  </div>
 
   <Footer />
 
 </Layout>
 
+<script src="https://accounts.google.com/gsi/client" async></script>
 <script is:inline>
-  document.getElementById('find-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
+  var GOOGLE_CLIENT_ID = '945888240197-9in6fs6u0gmtuib5b3de70ek7ceam4j4.apps.googleusercontent.com';
+  var USER_KEY = 'otc_user';
 
-    // Populate hidden fields from calculator state
-    document.getElementById('hidden-class').value = 'Class ' + currentClass;
+  function getUser() {
+    try { return JSON.parse(localStorage.getItem(USER_KEY)); } catch (_) { return null; }
+  }
+  function saveUser(u) {
+    localStorage.setItem(USER_KEY, JSON.stringify(u));
+    window.dispatchEvent(new Event('otc-auth-change'));
+  }
+
+  async function submitFindForm() {
+    var u = getUser();
+    document.getElementById('hidden-class').value    = 'Class ' + currentClass;
     document.getElementById('hidden-subjects').value = calcSelected.length ? calcSelected.join(', ') : 'None selected';
+    if (u) {
+      document.getElementById('hidden-username').value  = u.name  || '';
+      document.getElementById('hidden-useremail').value = u.email || '';
+    }
 
-    var form = this;
+    var form = document.getElementById('find-form');
     var data = new FormData(form);
 
     try {
-      var res = await fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: { Accept: 'application/json' }
-      });
+      var res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
       if (res.ok) {
         form.classList.add('hidden');
         document.getElementById('form-success').classList.remove('hidden');
@@ -148,6 +228,117 @@ const pricing = [
     } catch (_) {
       alert('Network error. Please check your connection and try again.');
     }
+  }
+
+  /* ── Auth modal logic ── */
+  var pendingSubmit = false;
+
+  function openModal() {
+    var modal = document.getElementById('auth-modal');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    var modal = document.getElementById('auth-modal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+    pendingSubmit = false;
+  }
+
+  function switchModalTab(show) {
+    var lf = document.getElementById('modal-login-form');
+    var sf = document.getElementById('modal-signup-form');
+    var tl = document.getElementById('mtab-login');
+    var ts = document.getElementById('mtab-signup');
+    if (show === 'login') {
+      lf.classList.remove('hidden'); sf.classList.add('hidden');
+      tl.classList.add('active');    ts.classList.remove('active');
+    } else {
+      sf.classList.remove('hidden'); lf.classList.add('hidden');
+      ts.classList.add('active');    tl.classList.remove('active');
+    }
+  }
+
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  document.getElementById('auth-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+
+  document.getElementById('mtab-login').addEventListener('click',  function() { switchModalTab('login'); });
+  document.getElementById('mtab-signup').addEventListener('click', function() { switchModalTab('signup'); });
+  document.getElementById('mgo-signup').addEventListener('click',  function() { switchModalTab('signup'); });
+  document.getElementById('mgo-login').addEventListener('click',   function() { switchModalTab('login'); });
+
+  document.getElementById('modal-login-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var email = document.getElementById('mlogin-email').value.trim().toLowerCase();
+    var err   = document.getElementById('mlogin-error');
+    var u     = getUser();
+    if (u && u.email.toLowerCase() === email) {
+      err.classList.add('hidden');
+      closeModal();
+      await submitFindForm();
+    } else {
+      err.classList.remove('hidden');
+    }
+  });
+
+  document.getElementById('modal-signup-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var name  = document.getElementById('msignup-name').value.trim();
+    var email = document.getElementById('msignup-email').value.trim();
+    var phone = document.getElementById('msignup-phone').value.trim();
+    var err   = document.getElementById('msignup-error');
+
+    if (!name)  { err.textContent = 'Please enter your name.';  err.classList.remove('hidden'); return; }
+    if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email.'; err.classList.remove('hidden'); return; }
+
+    err.classList.add('hidden');
+    saveUser({ name: name, email: email, phone: phone });
+    closeModal();
+    await submitFindForm();
+  });
+
+  /* ── Find-form submit ── */
+  document.getElementById('find-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var errEl = document.getElementById('calc-error');
+    if (calcSelected.length === 0) {
+      errEl.classList.remove('hidden');
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    errEl.classList.add('hidden');
+    var u = getUser();
+    if (!u) {
+      openModal();
+      return;
+    }
+    await submitFindForm();
+  });
+
+  /* Google Sign-In */
+  function parseGoogleJwt(credential) {
+    var payload = credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(atob(payload));
+  }
+
+  async function onGoogleSignIn(response) {
+    var data = parseGoogleJwt(response.credential);
+    saveUser({ name: data.name, email: data.email, phone: '', picture: data.picture || '' });
+    closeModal();
+    if (pendingSubmit) await submitFindForm();
+  }
+
+  window.addEventListener('load', function () {
+    if (typeof google === 'undefined' || !GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID') return;
+    google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: onGoogleSignIn });
+    google.accounts.id.renderButton(
+      document.getElementById('google-btn-modal'),
+      { theme: 'outline', size: 'large', width: 360, text: 'continue_with' }
+    );
   });
 
   var currentClass = 6;
@@ -221,6 +412,10 @@ const pricing = [
             if (calcSelected.length >= 2) return;
             calcSelected.push(sub);
           }
+          if (calcSelected.length > 0) {
+            var errEl = document.getElementById('calc-error');
+            if (errEl) errEl.classList.add('hidden');
+          }
           renderSubjects();
         });
 
@@ -271,7 +466,7 @@ const pricing = [
   .hero {
     background: var(--ink);
     color: #fff;
-    padding: 80px 0 64px;
+    padding: clamp(48px, 8vw, 96px) 0 clamp(40px, 6vw, 72px);
     overflow: hidden;
   }
 
@@ -293,7 +488,7 @@ const pricing = [
   }
 
   .hero-headline {
-    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-size: clamp(1.75rem, 4vw, 2.8rem);
     font-weight: 600;
     letter-spacing: -0.04em;
     line-height: 1.15;
@@ -301,7 +496,7 @@ const pricing = [
   }
 
   .hero-sub {
-    font-size: 1.05rem;
+    font-size: clamp(0.95rem, 2vw, 1.05rem);
     color: #a3a3a3;
     max-width: 420px;
     margin-bottom: 36px;
@@ -314,7 +509,7 @@ const pricing = [
       gap: 32px;
     }
     .hero-text { text-align: center; }
-    .hero-sub  { max-width: 100%; }
+    .hero-sub  { max-width: 100%; margin-inline: auto; }
     .hero-visual { order: -1; }
   }
 
@@ -329,10 +524,11 @@ const pricing = [
     border-radius: var(--radius-pill);
     border: none;
     cursor: pointer;
-    transition: opacity 0.15s;
+    transition: opacity 0.15s, transform 0.15s cubic-bezier(.34,1.56,.64,1);
   }
 
-  .btn-primary:hover { opacity: 0.88; }
+  .btn-primary:hover  { opacity: 0.88; transform: translateY(-2px); }
+  .btn-primary:active { transform: scale(0.97); }
 
   .btn-full {
     display: block;
@@ -345,7 +541,7 @@ const pricing = [
 
   /* ── Sections ──────────────────────────────────────── */
   .section {
-    padding: 80px 0;
+    padding: clamp(48px, 8vw, 80px) 0;
     background: var(--canvas);
   }
 
@@ -381,6 +577,11 @@ const pricing = [
     border-radius: 12px;
     padding: 28px 24px;
     box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.04);
+    transition: transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s;
+  }
+  .step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 2px 4px rgba(0,0,0,.06), 0 12px 28px rgba(0,0,0,.1);
   }
 
   .step-num {
@@ -797,17 +998,289 @@ const pricing = [
     border-color: var(--ink);
   }
 
-  .form-success {
-    text-align: center;
-    padding: 32px;
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    border-radius: 12px;
-    color: #166534;
+  /* ── Calc validation error ── */
+  .calc-error {
+    background: #fff8f0;
+    border: 1px solid #fbbf24;
+    border-radius: 8px;
+    color: #92400e;
+    font-size: 0.875rem;
     font-weight: 500;
-    margin-top: 40px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  @keyframes shake {
+    10%, 90% { transform: translateX(-2px); }
+    20%, 80% { transform: translateX(3px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
   }
 
-  .hidden { display: none; }
+  /* ── Form success state ── */
+  .form-success {
+    text-align: center;
+    padding: 48px 32px;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04), 0 8px 32px rgba(0,0,0,.06);
+    margin-top: 40px;
+    animation: fsIn 0.5s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  @keyframes fsIn {
+    from { opacity: 0; transform: translateY(16px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+  }
+
+  .fs-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    color: #16a34a;
+  }
+  .fs-icon svg { width: 100%; height: 100%; }
+
+  .fs-circle {
+    stroke-dasharray: 157;
+    stroke-dashoffset: 157;
+    animation: drawCircle 0.5s 0.1s cubic-bezier(.4,0,.2,1) forwards;
+  }
+  @keyframes drawCircle {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .fs-check {
+    stroke-dasharray: 36;
+    stroke-dashoffset: 36;
+    animation: drawCheck 0.35s 0.55s cubic-bezier(.4,0,.2,1) forwards;
+  }
+  @keyframes drawCheck {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .fs-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+  .fs-body {
+    color: var(--ink-2);
+    font-size: 0.95rem;
+    margin: 0 0 6px;
+  }
+  .fs-sub {
+    color: var(--ink-2);
+    font-size: 0.82rem;
+    margin: 0;
+    opacity: 0.7;
+  }
+
+  .hidden { display: none !important; }
+
+  /* ── Auth modal ─────────────────────────────────────── */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  .modal-card {
+    background: var(--canvas);
+    border-radius: 16px;
+    padding: 24px 24px 20px;
+    max-width: 380px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,.18);
+    animation: modal-in 0.16s ease-out;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  @keyframes modal-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--canvas-soft);
+    color: var(--ink-2);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+
+  .modal-close:hover { background: var(--border); }
+
+  .modal-eyebrow { display: none; }
+
+  .modal-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+    padding-right: 32px;
+  }
+
+  .modal-sub {
+    font-size: 0.82rem;
+    color: var(--ink-2);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .auth-tabs {
+    display: flex;
+    gap: 3px;
+    background: var(--canvas-soft);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px;
+    margin-bottom: 16px;
+  }
+
+  .auth-tab {
+    flex: 1;
+    padding: 7px 12px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.83rem;
+    font-weight: 500;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s, box-shadow 0.12s;
+  }
+
+  .auth-tab.active {
+    background: var(--canvas);
+    color: var(--ink);
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  }
+
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .auth-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+
+  .auth-form input {
+    padding: 8px 11px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-family: inherit;
+    background: var(--canvas);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .auth-form input:focus { border-color: var(--ink); }
+
+  .auth-error {
+    font-size: 0.78rem;
+    color: #dc2626;
+    margin-top: -2px;
+  }
+
+  .auth-switch {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--ink-2);
+  }
+
+  .link-btn {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: var(--ink);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+  }
+
+  .opt { font-weight: 400; color: #999; }
+
+  .btn-full-dark {
+    display: block;
+    width: 100%;
+    background: var(--ink);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: var(--radius-pill);
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-align: center;
+    transition: opacity 0.15s;
+  }
+
+  .btn-full-dark:hover { opacity: 0.85; }
+
+  .mform-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  @media (max-width: 440px) { .mform-row { grid-template-columns: 1fr; } }
+
+  /* Google Sign-In */
+  :global(.google-btn-wrap) {
+    display: flex;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  :global(.auth-divider) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #999;
+    font-size: 0.8rem;
+    margin: 4px 0;
+  }
+
+  :global(.auth-divider::before),
+  :global(.auth-divider::after) {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
 
 </style>

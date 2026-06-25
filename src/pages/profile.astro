@@ -1,0 +1,619 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout>
+  <Nav activePage="profile" />
+
+  <section class="hero-band">
+    <div class="container">
+      <p class="eyebrow">Account</p>
+      <h1 class="hero-h1">Your profile</h1>
+      <p class="hero-sub">Manage your account details and preferences.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+
+      <!-- Logged-out: auth panel -->
+      <div id="auth-panel" class="auth-panel hidden">
+        <div class="auth-card">
+
+          <!-- Google Sign-In -->
+          <div id="google-btn-profile" class="google-btn-wrap"></div>
+          <div class="auth-divider"><span>or</span></div>
+
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="tab-login" type="button">Log in</button>
+            <button class="auth-tab" id="tab-signup" type="button">Sign up</button>
+          </div>
+
+          <!-- Login form -->
+          <form id="login-form" class="auth-form" novalidate>
+            <p class="auth-desc">Enter the email you signed up with.</p>
+            <label>
+              Email address
+              <input type="email" id="login-email" placeholder="you@example.com" required />
+            </label>
+            <p class="auth-error hidden" id="login-error">No account found with that email.</p>
+            <button type="submit" class="btn-primary btn-full-dark">Log in</button>
+            <p class="auth-switch">
+              Don't have an account?
+              <button type="button" class="link-btn" id="go-signup">Sign up</button>
+            </p>
+          </form>
+
+          <!-- Signup form -->
+          <form id="signup-form" class="auth-form hidden" novalidate>
+            <p class="auth-desc">Create a free account to request teacher matches.</p>
+            <label>
+              Full name
+              <input type="text" id="signup-name" placeholder="Priya Sharma" required />
+            </label>
+            <label>
+              Email address
+              <input type="email" id="signup-email" placeholder="you@example.com" required />
+            </label>
+            <label>
+              Phone / WhatsApp <span class="opt">(optional)</span>
+              <input type="tel" id="signup-phone" placeholder="+91 98765 43210" />
+            </label>
+            <p class="auth-error hidden" id="signup-error"></p>
+            <button type="submit" class="btn-primary btn-full-dark">Create account</button>
+            <p class="auth-switch">
+              Already have an account?
+              <button type="button" class="link-btn" id="go-login">Log in</button>
+            </p>
+          </form>
+        </div>
+      </div>
+
+      <!-- Logged-in: profile panel -->
+      <div id="profile-panel" class="profile-panel hidden">
+        <div class="profile-card">
+          <div class="profile-avatar" id="profile-avatar"></div>
+          <div class="profile-info">
+            <h2 class="profile-name" id="profile-name"></h2>
+            <p class="profile-email" id="profile-email"></p>
+            <p class="profile-phone hidden" id="profile-phone"></p>
+          </div>
+        </div>
+
+        <div class="edit-card">
+          <h3 class="edit-title">Edit profile</h3>
+          <form id="edit-form" novalidate>
+            <div class="form-row">
+              <label>
+                Full name
+                <input type="text" id="edit-name" required />
+              </label>
+              <label>
+                Email address
+                <input type="email" id="edit-email" required />
+              </label>
+            </div>
+            <label>
+              Phone / WhatsApp <span class="opt">(optional)</span>
+              <input type="tel" id="edit-phone" />
+            </label>
+            <div class="edit-actions">
+              <button type="submit" class="btn-primary btn-full-dark btn-save">Save changes</button>
+              <button type="button" class="btn-ghost" id="logout-btn">Log out</button>
+            </div>
+            <p class="save-success hidden" id="save-success">Changes saved.</p>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<script src="https://accounts.google.com/gsi/client" async></script>
+<script is:inline>
+  var GOOGLE_CLIENT_ID = '945888240197-9in6fs6u0gmtuib5b3de70ek7ceam4j4.apps.googleusercontent.com';
+  var USER_KEY = 'otc_user';
+
+  function getUser() {
+    try { return JSON.parse(localStorage.getItem(USER_KEY)); } catch (_) { return null; }
+  }
+
+  function saveUser(u) {
+    localStorage.setItem(USER_KEY, JSON.stringify(u));
+    window.dispatchEvent(new Event('otc-auth-change'));
+  }
+
+  function removeUser() {
+    localStorage.removeItem(USER_KEY);
+    window.dispatchEvent(new Event('otc-auth-change'));
+  }
+
+  function initial(name) {
+    return (name || '?').trim().charAt(0).toUpperCase();
+  }
+
+  function renderLoggedIn(u) {
+    document.getElementById('auth-panel').classList.add('hidden');
+    var panel = document.getElementById('profile-panel');
+    panel.classList.remove('hidden');
+
+    var avatar = document.getElementById('profile-avatar');
+    if (u.picture) {
+      avatar.innerHTML = '<img src="' + u.picture + '" alt="' + u.name + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
+    } else {
+      avatar.textContent = initial(u.name);
+    }
+    document.getElementById('profile-name').textContent   = u.name;
+    document.getElementById('profile-email').textContent  = u.email;
+
+    var ph = document.getElementById('profile-phone');
+    if (u.phone) {
+      ph.textContent = u.phone;
+      ph.classList.remove('hidden');
+    } else {
+      ph.classList.add('hidden');
+    }
+
+    document.getElementById('edit-name').value  = u.name  || '';
+    document.getElementById('edit-email').value = u.email || '';
+    document.getElementById('edit-phone').value = u.phone || '';
+  }
+
+  function renderLoggedOut() {
+    document.getElementById('profile-panel').classList.add('hidden');
+    document.getElementById('auth-panel').classList.remove('hidden');
+  }
+
+  function switchTab(show) {
+    var loginForm  = document.getElementById('login-form');
+    var signupForm = document.getElementById('signup-form');
+    var tabLogin   = document.getElementById('tab-login');
+    var tabSignup  = document.getElementById('tab-signup');
+
+    if (show === 'login') {
+      loginForm.classList.remove('hidden');
+      signupForm.classList.add('hidden');
+      tabLogin.classList.add('active');
+      tabSignup.classList.remove('active');
+    } else {
+      signupForm.classList.remove('hidden');
+      loginForm.classList.add('hidden');
+      tabSignup.classList.add('active');
+      tabLogin.classList.remove('active');
+    }
+  }
+
+  /* Tab buttons */
+  document.getElementById('tab-login').addEventListener('click', function() { switchTab('login'); });
+  document.getElementById('tab-signup').addEventListener('click', function() { switchTab('signup'); });
+  document.getElementById('go-signup').addEventListener('click', function() { switchTab('signup'); });
+  document.getElementById('go-login').addEventListener('click', function() { switchTab('login'); });
+
+  /* Login */
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var email = document.getElementById('login-email').value.trim().toLowerCase();
+    var err   = document.getElementById('login-error');
+    var u     = getUser();
+    if (u && u.email.toLowerCase() === email) {
+      err.classList.add('hidden');
+      renderLoggedIn(u);
+    } else {
+      err.classList.remove('hidden');
+    }
+  });
+
+  /* Signup */
+  document.getElementById('signup-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var name  = document.getElementById('signup-name').value.trim();
+    var email = document.getElementById('signup-email').value.trim();
+    var phone = document.getElementById('signup-phone').value.trim();
+    var err   = document.getElementById('signup-error');
+
+    if (!name) { err.textContent = 'Please enter your name.'; err.classList.remove('hidden'); return; }
+    if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email.'; err.classList.remove('hidden'); return; }
+
+    err.classList.add('hidden');
+    var u = { name: name, email: email, phone: phone };
+    saveUser(u);
+    renderLoggedIn(u);
+  });
+
+  /* Edit */
+  document.getElementById('edit-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var name  = document.getElementById('edit-name').value.trim();
+    var email = document.getElementById('edit-email').value.trim();
+    var phone = document.getElementById('edit-phone').value.trim();
+    var u = { name: name, email: email, phone: phone };
+    saveUser(u);
+    renderLoggedIn(u);
+    var ok = document.getElementById('save-success');
+    ok.classList.remove('hidden');
+    setTimeout(function() { ok.classList.add('hidden'); }, 2500);
+  });
+
+  /* Logout */
+  document.getElementById('logout-btn').addEventListener('click', function() {
+    removeUser();
+    renderLoggedOut();
+  });
+
+  /* Init */
+  var user = getUser();
+  if (user) {
+    renderLoggedIn(user);
+  } else {
+    renderLoggedOut();
+  }
+
+  /* Check URL param to auto-switch tab */
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('tab') === 'signup') switchTab('signup');
+
+  /* Google Sign-In */
+  function parseGoogleJwt(credential) {
+    var payload = credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(atob(payload));
+  }
+
+  function onGoogleSignIn(response) {
+    var data = parseGoogleJwt(response.credential);
+    var u = { name: data.name, email: data.email, phone: '', picture: data.picture || '' };
+    saveUser(u);
+    renderLoggedIn(u);
+  }
+
+  window.addEventListener('load', function () {
+    if (typeof google === 'undefined' || !GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID') return;
+    google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: onGoogleSignIn });
+    google.accounts.id.renderButton(
+      document.getElementById('google-btn-profile'),
+      { theme: 'outline', size: 'large', width: 368, text: 'continue_with' }
+    );
+  });
+</script>
+
+<style>
+  :root {
+    --ink: #171717;
+    --ink-2: #4d4d4d;
+    --canvas: #ffffff;
+    --canvas-soft: #fafafa;
+    --border: #e5e5e5;
+    --radius-sm: 6px;
+    --radius-pill: 100px;
+  }
+
+  .container {
+    max-width: 720px;
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  /* Hero band */
+  .hero-band {
+    background: var(--ink);
+    color: #fff;
+    padding: 64px 0 56px;
+  }
+
+  .eyebrow {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #a3a3a3;
+    margin-bottom: 12px;
+  }
+
+  .hero-h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    margin-bottom: 12px;
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    color: #a3a3a3;
+  }
+
+  /* Section */
+  .section {
+    padding: 64px 0 96px;
+    background: var(--canvas-soft);
+    min-height: 400px;
+  }
+
+  /* Auth card */
+  .auth-panel { max-width: 440px; margin-inline: auto; }
+
+  .auth-card {
+    background: var(--canvas);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+  }
+
+  @media (max-width: 480px) { .auth-card { padding: 28px 20px; } }
+
+  .auth-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--canvas-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 28px;
+  }
+
+  .auth-tab {
+    flex: 1;
+    padding: 9px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  }
+
+  .auth-tab.active {
+    background: var(--canvas);
+    color: var(--ink);
+    box-shadow: 0 1px 4px rgba(0,0,0,.1);
+  }
+
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .auth-desc {
+    font-size: 0.88rem;
+    color: var(--ink-2);
+    margin-bottom: 4px;
+  }
+
+  .auth-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+
+  .auth-form input {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: var(--canvas);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .auth-form input:focus { border-color: var(--ink); }
+
+  .auth-error {
+    font-size: 0.82rem;
+    color: #dc2626;
+    margin-top: -4px;
+  }
+
+  .auth-switch {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--ink-2);
+  }
+
+  .link-btn {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: var(--ink);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+  }
+
+  .opt {
+    font-weight: 400;
+    color: #999;
+  }
+
+  /* Profile card */
+  .profile-card {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: var(--canvas);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 36px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 480px) {
+    .profile-card { flex-direction: column; text-align: center; padding: 24px 20px; }
+  }
+
+  .profile-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: -0.02em;
+  }
+
+  .profile-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .profile-email, .profile-phone {
+    font-size: 0.9rem;
+    color: var(--ink-2);
+  }
+
+  /* Edit card */
+  .edit-card {
+    background: var(--canvas);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 36px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+  }
+
+  @media (max-width: 480px) { .edit-card { padding: 24px 20px; } }
+
+  .edit-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+
+  #edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  #edit-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+
+  #edit-form input {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: var(--canvas);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  #edit-form input:focus { border-color: var(--ink); }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+
+  .edit-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .btn-save { flex: 1; }
+
+  .save-success {
+    font-size: 0.85rem;
+    color: #166534;
+    text-align: center;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    display: inline-block;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 12px 28px;
+    border-radius: var(--radius-pill);
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    font-family: inherit;
+    transition: opacity 0.15s;
+  }
+
+  .btn-primary:hover { opacity: 0.85; }
+
+  .btn-full-dark {
+    display: block;
+    width: 100%;
+  }
+
+  .btn-ghost {
+    padding: 12px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--ink-2);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-ghost:hover { border-color: #aaa; color: var(--ink); }
+
+  .hidden { display: none !important; }
+
+  /* Google Sign-In */
+  .google-btn-wrap {
+    display: flex;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #999;
+    font-size: 0.8rem;
+    margin: 4px 0;
+  }
+
+  .auth-divider::before,
+  .auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+</style>
