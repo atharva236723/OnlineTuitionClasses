@@ -1,11 +1,882 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import HeroAnimation from '../components/HeroAnimation.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const steps = [
+  { num: "1", title: "Select class & subject", desc: "Tell us which class you're in and which subject you need help with." },
+  { num: "2", title: "Choose your budget", desc: "Pick a pricing tier that works for you — no hidden fees." },
+  { num: "3", title: "Get matched in 24 hours", desc: "We'll connect you with a verified teacher suited to your needs." },
+  { num: "4", title: "Start with a free demo", desc: "Attend a free demo class before committing to anything." },
+];
+
+const pricing = [
+  { range: "Class 1–5",   price: "₹300 – ₹600 / hr" },
+  { range: "Class 6–8",   price: "₹500 – ₹900 / hr" },
+  { range: "Class 9–10",  price: "₹700 – ₹1,200 / hr" },
+  { range: "Class 11–12", price: "₹900 – ₹1,800 / hr" },
+];
 ---
 
 <Layout>
-	<Welcome />
+
+  <Nav />
+
+  <!-- ── HERO ────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <h1 class="hero-headline">Online Tuition for Class 1–12<br />Verified Teachers.</h1>
+        <p class="hero-sub">Choose your subject, your budget, and get matched with a teacher in 24 hours.</p>
+        <a href="#find" class="btn-primary">Find a Teacher</a>
+      </div>
+      <div class="hero-visual">
+        <HeroAnimation />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ─────────────────────────────────────── -->
+  <section class="section" id="how">
+    <div class="container">
+      <h2 class="section-title">How it works</h2>
+      <div class="steps-grid">
+        {steps.map(s => (
+          <div class="step-card">
+            <div class="step-num">{s.num}</div>
+            <h3 class="step-title">{s.title}</h3>
+            <p class="step-desc">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRICING ──────────────────────────────────────────── -->
+  <section class="section section-alt" id="pricing">
+    <div class="container">
+      <h2 class="section-title">Pricing</h2>
+      <p class="section-sub">Personalise by class, experience &amp; subject.</p>
+
+      <div class="calc-card">
+
+        <!-- Class slider -->
+        <div class="calc-block">
+          <div class="calc-label">Class <span id="class-badge" class="class-badge">6</span></div>
+          <div class="slider-wrap">
+            <div class="slider-track">
+              <div class="slider-fill" id="slider-fill"></div>
+            </div>
+            <input type="range" min="1" max="12" value="6" id="class-slider" class="class-slider" />
+            <div class="slider-ticks">
+              {Array.from({length: 12}, (_, i) => i + 1).map(n => (
+                <span>{n}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Teacher experience -->
+        <div class="calc-block">
+          <div class="calc-label">Teacher experience</div>
+          <div class="exp-pills">
+            <button class="exp-pill active" data-exp="fresher" type="button">
+              <span class="exp-name">Fresher</span>
+              <span class="exp-sub">0–2 yrs</span>
+            </button>
+            <button class="exp-pill" data-exp="experienced" type="button">
+              <span class="exp-name">Experienced</span>
+              <span class="exp-sub">3–7 yrs</span>
+            </button>
+            <button class="exp-pill" data-exp="expert" type="button">
+              <span class="exp-name">Expert</span>
+              <span class="exp-sub">8+ yrs</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Subjects -->
+        <div class="calc-block">
+          <div class="calc-label">Subjects <span class="calc-hint">(choose up to 2)</span></div>
+          <div class="subject-grid" id="subject-grid"></div>
+        </div>
+
+        <!-- Result -->
+        <div class="price-result">
+          <div class="price-result-inner">
+            <span class="price-result-label">Estimated rate</span>
+            <span class="price-result-amount" id="price-display">₹—</span>
+            <span class="price-result-unit">/ hr</span>
+          </div>
+          <p class="price-result-note">Select a subject to see pricing · Final rate agreed before first paid session.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FIND A TEACHER FORM ──────────────────────────────── -->
+  <section class="section" id="find">
+    <div class="container form-container">
+      <h2 class="section-title">Find a Teacher</h2>
+      <p class="section-sub">Fill in the details below and we'll reach out within 24 hours.</p>
+
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <label>
+            Your name
+            <input type="text" name="name" placeholder="e.g. Priya Sharma" required />
+          </label>
+          <label>
+            Phone / WhatsApp
+            <input type="tel" name="phone" placeholder="+91 98765 43210" required />
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>
+            Class
+            <select name="class" required>
+              <option value="" disabled selected>Select class</option>
+              {Array.from({length: 12}, (_, i) => i + 1).map(n => (
+                <option value={String(n)}>Class {n}</option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Subject
+            <input type="text" name="subject" placeholder="e.g. Mathematics, Science" required />
+          </label>
+        </div>
+
+        <label>
+          Budget (per hour)
+          <select name="budget" required>
+            <option value="" disabled selected>Select range</option>
+            <option>₹300 – ₹600</option>
+            <option>₹500 – ₹900</option>
+            <option>₹700 – ₹1,200</option>
+            <option>₹900 – ₹1,800</option>
+          </select>
+        </label>
+
+        <button type="submit" class="btn-primary btn-full">Request a Match</button>
+      </form>
+
+      <div id="form-success" class="form-success hidden">
+        Thanks! We'll get back to you within 24 hours.
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+
 </Layout>
+
+<script is:inline>
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.querySelector('.contact-form').classList.add('hidden');
+    document.getElementById('form-success').classList.remove('hidden');
+  }
+
+  (function () {
+    /* ── subjects (fixed list, always shown) ── */
+    const ALL_SUBJECTS = ['Maths','Physics','Chemistry','Biology','Hindi','SST','English'];
+    const PCMB = new Set(['Maths','Physics','Chemistry','Biology']);
+
+    const SUBJECT_META = {
+      'Maths':     { color: '#2563eb', label: 'PCMB' },
+      'Physics':   { color: '#7c3aed', label: 'PCMB' },
+      'Chemistry': { color: '#059669', label: 'PCMB' },
+      'Biology':   { color: '#dc2626', label: 'PCMB' },
+      'Hindi':     { color: '#d97706', label: null },
+      'SST':       { color: '#0891b2', label: null },
+      'English':   { color: '#db2777', label: null },
+    };
+
+    /* base price per class range [min, max] */
+    const BASE = {
+      '1-5':  [300,  600],
+      '6-8':  [500,  900],
+      '9-10': [700,  1200],
+      '11-12':[900,  1800],
+    };
+
+    const EXP_FACTOR = { fresher: 0, experienced: 0.5, expert: 1 };
+    const tierOf = c => c<=5?'1-5': c<=8?'6-8': c<=10?'9-10':'11-12';
+
+    /* ── state ── */
+    let currentClass = 6;
+    let currentExp   = 'fresher';
+    let selected     = [];
+
+    /* ── elements ── */
+    const slider      = document.getElementById('class-slider');
+    const fill        = document.getElementById('slider-fill');
+    const badge       = document.getElementById('class-badge');
+    const subjectGrid = document.getElementById('subject-grid');
+    const priceEl     = document.getElementById('price-display');
+    const ticks       = document.querySelectorAll('.slider-ticks span');
+
+    function fmt(n) {
+      return '₹' + Math.round(n).toLocaleString('en-IN');
+    }
+
+    function updateFill(val) {
+      const pct = (val - 1) / 11 * 100;
+      fill.style.width = pct + '%';
+    }
+
+    function updateTicks(val) {
+      ticks.forEach((t, i) => t.classList.toggle('tick-active', i + 1 === val));
+    }
+
+    function renderSubjects() {
+      subjectGrid.innerHTML = '';
+      ALL_SUBJECTS.forEach(sub => {
+        const meta = SUBJECT_META[sub];
+        const isSelected = selected.includes(sub);
+        const isDisabled = selected.length >= 2 && !isSelected;
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.dataset.subject = sub;
+        btn.className = 'subject-chip' +
+          (isSelected ? ' selected' : '') +
+          (isDisabled ? ' disabled' : '') +
+          (PCMB.has(sub) ? ' pcmb' : '');
+        btn.style.setProperty('--chip-color', meta.color);
+
+        const dot = document.createElement('span');
+        dot.className = 'chip-dot';
+
+        const name = document.createElement('span');
+        name.className = 'chip-name';
+        name.textContent = sub;
+
+        btn.appendChild(dot);
+        btn.appendChild(name);
+
+        if (meta.label) {
+          const tag = document.createElement('span');
+          tag.className = 'chip-tag';
+          tag.textContent = meta.label;
+          btn.appendChild(tag);
+        }
+
+        btn.addEventListener('click', () => {
+          if (selected.includes(sub)) {
+            selected = selected.filter(s => s !== sub);
+          } else {
+            if (selected.length >= 2) return;
+            selected.push(sub);
+          }
+          renderSubjects();
+          updatePrice();
+        });
+
+        subjectGrid.appendChild(btn);
+      });
+    }
+
+    function updatePrice() {
+      const noteEl = document.querySelector('.price-result-note');
+      if (selected.length === 0) {
+        priceEl.textContent = '₹—';
+        noteEl.textContent = 'Select a subject to see pricing · Final rate agreed before first paid session.';
+        return;
+      }
+
+      const [min, max] = BASE[tierOf(currentClass)];
+      const factor = EXP_FACTOR[currentExp];
+      const base   = min + (max - min) * factor;
+
+      /* PCMB premium: each PCMB subject adds 20% on top */
+      const pcmbCount = selected.filter(s => PCMB.has(s)).length;
+      const pcmbMult  = 1 + pcmbCount * 0.20;
+      /* multi-subject bonus: 2 subjects = +10% */
+      const multiMult = selected.length === 2 ? 1.10 : 1;
+
+      const total = base * pcmbMult * multiMult;
+
+      priceEl.classList.remove('pop');
+      void priceEl.offsetWidth;
+      priceEl.classList.add('pop');
+      setTimeout(() => priceEl.classList.remove('pop'), 300);
+
+      priceEl.textContent = fmt(total);
+
+      const extras = [];
+      if (pcmbCount > 0) extras.push(`PCMB premium +${pcmbCount * 20}%`);
+      if (selected.length === 2) extras.push('multi-subject +10%');
+      const extraStr = extras.length ? ' · ' + extras.join(', ') : '';
+      noteEl.textContent = selected.join(' + ') + extraStr + ' · Final rate agreed before first paid session.';
+    }
+
+    /* ── slider — instant, no transition lag ── */
+    slider.addEventListener('input', () => {
+      currentClass = Number(slider.value);
+      badge.textContent = currentClass;
+      badge.style.transform = 'scale(1.25)';
+      requestAnimationFrame(() => {
+        updateFill(currentClass);
+        updateTicks(currentClass);
+        setTimeout(() => badge.style.transform = '', 120);
+      });
+      updatePrice();
+    });
+
+    /* ── experience ── */
+    document.querySelectorAll('.exp-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.exp-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        currentExp = pill.dataset.exp;
+        updatePrice();
+      });
+    });
+
+    /* ── init ── */
+    updateFill(currentClass);
+    updateTicks(currentClass);
+    renderSubjects();
+  })();
+</script>
+
+<style>
+  /* ── Tokens ────────────────────────────────────────── */
+  :root {
+    --ink: #171717;
+    --ink-2: #4d4d4d;
+    --canvas: #ffffff;
+    --canvas-soft: #fafafa;
+    --border: #e5e5e5;
+    --accent: #2563eb;
+    --radius-pill: 100px;
+    --radius-sm: 6px;
+  }
+
+  /* ── Layout ────────────────────────────────────────── */
+  .container {
+    max-width: 960px;
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  /* ── Hero ──────────────────────────────────────────── */
+  .hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 80px 0 64px;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .hero-text {
+    text-align: left;
+  }
+
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-headline {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: #a3a3a3;
+    max-width: 420px;
+    margin-bottom: 36px;
+    line-height: 1.7;
+  }
+
+  @media (max-width: 680px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .hero-text { text-align: center; }
+    .hero-sub  { max-width: 100%; }
+    .hero-visual { order: -1; }
+  }
+
+  /* ── Buttons ───────────────────────────────────────── */
+  .btn-primary {
+    display: inline-block;
+    background: #fff;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 14px 32px;
+    border-radius: var(--radius-pill);
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .btn-primary:hover { opacity: 0.88; }
+
+  .btn-full {
+    display: block;
+    width: 100%;
+    background: var(--ink);
+    color: #fff;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  /* ── Sections ──────────────────────────────────────── */
+  .section {
+    padding: 80px 0;
+    background: var(--canvas);
+  }
+
+  .section-alt {
+    background: var(--canvas-soft);
+  }
+
+  .section-title {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .section-sub {
+    text-align: center;
+    color: var(--ink-2);
+    margin-bottom: 48px;
+  }
+
+  /* ── Steps ─────────────────────────────────────────── */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .step-card {
+    background: var(--canvas-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.04);
+  }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+  }
+
+  .step-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .step-desc {
+    font-size: 0.9rem;
+    color: var(--ink-2);
+  }
+
+  /* ── Pricing calculator ────────────────────────────── */
+  .calc-card {
+    background: var(--canvas);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    max-width: 720px;
+    margin-inline: auto;
+  }
+
+  @media (max-width: 600px) { .calc-card { padding: 24px 20px; } }
+
+  .calc-block { display: flex; flex-direction: column; gap: 16px; }
+
+  .calc-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink-2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .class-badge {
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0;
+    transition: transform 0.1s;
+  }
+
+  .calc-hint {
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink-2);
+    font-size: 0.78rem;
+  }
+
+  /* slider */
+  .slider-wrap { display: flex; flex-direction: column; gap: 8px; position: relative; }
+
+  .slider-track {
+    position: relative;
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    margin: 12px 0 4px;
+  }
+
+  .slider-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: var(--ink);
+    border-radius: 4px;
+    /* no transition — must track thumb instantly */
+    will-change: width;
+    width: 45%;
+  }
+
+  .class-slider {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: grab;
+    outline: none;
+    margin: 0;
+    touch-action: none;
+  }
+
+  .class-slider:active { cursor: grabbing; }
+
+  .class-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 3px solid #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,.3);
+    transition: transform 0.12s cubic-bezier(.34,1.56,.64,1), box-shadow 0.12s;
+  }
+
+  .class-slider:active::-webkit-slider-thumb {
+    transform: scale(1.3);
+    box-shadow: 0 4px 20px rgba(0,0,0,.35);
+  }
+
+  .class-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 3px solid #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,.3);
+    cursor: grab;
+  }
+
+  .slider-ticks {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 6px;
+  }
+
+  .slider-ticks span {
+    font-size: 0.72rem;
+    color: var(--ink-2);
+    width: 20px;
+    text-align: center;
+    transition: color 0.15s, font-weight 0.15s;
+  }
+
+  .slider-ticks span.tick-active {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* experience pills */
+  .exp-pills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .exp-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 12px 18px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--canvas);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s, background 0.15s, transform 0.15s;
+  }
+
+  .exp-pill:hover { border-color: #aaa; transform: translateY(-1px); }
+
+  .exp-pill.active {
+    border-color: var(--ink);
+    background: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  }
+
+  .exp-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .exp-pill.active .exp-name { color: #fff; }
+
+  .exp-sub {
+    font-size: 0.72rem;
+    color: var(--ink-2);
+  }
+
+  .exp-pill.active .exp-sub { color: rgba(255,255,255,.65); }
+
+  /* subjects */
+  .subject-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .subject-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-2);
+    background: var(--canvas);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s, color 0.15s, background 0.15s,
+                transform 0.15s cubic-bezier(.34,1.56,.64,1), box-shadow 0.15s;
+    user-select: none;
+    position: relative;
+  }
+
+  .chip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--chip-color, #aaa);
+    flex-shrink: 0;
+    transition: transform 0.15s;
+  }
+
+  .chip-name {
+    line-height: 1;
+  }
+
+  .chip-tag {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: rgba(0,0,0,.06);
+    color: var(--chip-color);
+    padding: 2px 6px;
+    border-radius: 100px;
+    line-height: 1.4;
+  }
+
+  .subject-chip:hover:not(.disabled) {
+    border-color: var(--chip-color, var(--ink));
+    color: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+  }
+
+  .subject-chip.selected {
+    background: var(--chip-color, var(--ink));
+    color: #fff;
+    border-color: var(--chip-color, var(--ink));
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,.2);
+  }
+
+  .subject-chip.selected .chip-dot {
+    background: rgba(255,255,255,.6);
+    transform: scale(1.2);
+  }
+
+  .subject-chip.selected .chip-tag {
+    background: rgba(255,255,255,.18);
+    color: #fff;
+  }
+
+  .subject-chip.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* result */
+  .price-result {
+    background: var(--canvas-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 32px;
+    text-align: center;
+  }
+
+  .price-result-inner {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .price-result-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink-2);
+  }
+
+  .price-result-amount {
+    font-size: 2.4rem;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  .price-result-amount.pop {
+    transform: scale(1.08);
+  }
+
+  .price-result-unit {
+    font-size: 1rem;
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+
+  .price-result-note {
+    font-size: 0.78rem;
+    color: var(--ink-2);
+    margin-top: 10px;
+  }
+
+  /* ── Form ──────────────────────────────────────────── */
+  .form-container {
+    max-width: 640px;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 560px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  .contact-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+
+  .contact-form input,
+  .contact-form select {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: var(--canvas);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .contact-form input:focus,
+  .contact-form select:focus {
+    border-color: var(--ink);
+  }
+
+  .form-success {
+    text-align: center;
+    padding: 32px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+    color: #166534;
+    font-weight: 500;
+    margin-top: 40px;
+  }
+
+  .hidden { display: none; }
+
+</style>
