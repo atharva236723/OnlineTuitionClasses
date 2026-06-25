@@ -1,0 +1,242 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Privacy Policy — Online Tuition Classes">
+  <Nav activePage="privacy-policy" />
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">Legal</p>
+      <h1 class="page-title">Privacy policy.</h1>
+      <p class="page-sub">Last updated: 25 June 2026</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container doc-layout">
+      <aside class="doc-toc">
+        <span class="toc-label">On this page</span>
+        <nav>
+          <a href="#information">Information we collect</a>
+          <a href="#use">How we use it</a>
+          <a href="#sharing">Sharing your data</a>
+          <a href="#storage">Data storage</a>
+          <a href="#rights">Your rights</a>
+          <a href="#cookies">Cookies</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </aside>
+
+      <div class="doc-body">
+        <section id="information">
+          <h2>1. Information we collect.</h2>
+          <p>When you use Online Tuition Classes, we collect information you provide directly:</p>
+          <ul>
+            <li><strong>Contact details</strong> — name, phone number, and email address submitted through the Find a Teacher form or the Contact page.</li>
+            <li><strong>Academic information</strong> — class, subject, and budget preferences you enter when requesting a teacher match.</li>
+            <li><strong>Usage data</strong> — pages visited, time spent, and browser/device type collected automatically via server logs.</li>
+          </ul>
+          <p>We do not collect payment information directly. Any fees are settled separately between students and teachers.</p>
+        </section>
+
+        <section id="use">
+          <h2>2. How we use your information.</h2>
+          <p>We use the information we collect to:</p>
+          <ul>
+            <li>Match you with a suitable verified teacher within 24 hours.</li>
+            <li>Respond to your enquiries and support requests.</li>
+            <li>Send you updates about your match, including teacher contact details.</li>
+            <li>Improve the website and our matching process.</li>
+            <li>Comply with legal obligations.</li>
+          </ul>
+          <p>We will not use your information for automated profiling or third-party marketing without your explicit consent.</p>
+        </section>
+
+        <section id="sharing">
+          <h2>3. Sharing your data.</h2>
+          <p>We share your information only in limited circumstances:</p>
+          <ul>
+            <li><strong>With matched teachers</strong> — when a match is made, we share your name, phone number, and academic details with the assigned teacher so they can contact you.</li>
+            <li><strong>Service providers</strong> — we may use third-party tools (e.g. email delivery, analytics) that process data on our behalf under strict data processing agreements.</li>
+            <li><strong>Legal requirements</strong> — if required by law, court order, or government authority.</li>
+          </ul>
+          <p>We do not sell your personal data to any third party.</p>
+        </section>
+
+        <section id="storage">
+          <h2>4. Data storage and retention.</h2>
+          <p>Your data is stored on servers located in India. We retain personal data for as long as necessary to provide our services or as required by law — typically no longer than 2 years from your last interaction with us.</p>
+          <p>After this period, your data is securely deleted or anonymised.</p>
+        </section>
+
+        <section id="rights">
+          <h2>5. Your rights.</h2>
+          <p>You have the right to:</p>
+          <ul>
+            <li>Access the personal data we hold about you.</li>
+            <li>Request correction of inaccurate data.</li>
+            <li>Request deletion of your data (subject to legal retention requirements).</li>
+            <li>Withdraw consent at any time where processing is based on consent.</li>
+          </ul>
+          <p>To exercise any of these rights, email us at <a href="mailto:privacy@onlinetuitionclasses.in">privacy@onlinetuitionclasses.in</a>. We will respond within 30 days.</p>
+        </section>
+
+        <section id="cookies">
+          <h2>6. Cookies.</h2>
+          <p>We use essential cookies to make the website function correctly. We do not use advertising or tracking cookies. You can disable cookies in your browser settings, though this may affect certain features of the site.</p>
+        </section>
+
+        <section id="contact">
+          <h2>7. Contact.</h2>
+          <p>If you have any questions about this privacy policy or how we handle your data, please contact us:</p>
+          <ul>
+            <li>Email: <a href="mailto:privacy@onlinetuitionclasses.in">privacy@onlinetuitionclasses.in</a></li>
+            <li>Visit our <a href="/contact">Contact page</a></li>
+          </ul>
+          <p>We reserve the right to update this policy. Material changes will be communicated via the website.</p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  :root {
+    --ink: #171717;
+    --ink-2: #4d4d4d;
+    --canvas: #ffffff;
+    --border: #e5e5e5;
+  }
+
+  .container {
+    max-width: 960px;
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  .page-hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 80px 0 64px;
+  }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #737373;
+    margin-bottom: 20px;
+  }
+
+  .page-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+
+  .page-sub {
+    font-size: 0.875rem;
+    color: #737373;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, monospace;
+  }
+
+  .section {
+    padding: 64px 0 80px;
+    background: var(--canvas);
+  }
+
+  .doc-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  @media (max-width: 700px) {
+    .doc-layout { grid-template-columns: 1fr; }
+    .doc-toc { display: none; }
+  }
+
+  .doc-toc {
+    position: sticky;
+    top: 88px;
+  }
+
+  .toc-label {
+    display: block;
+    font-size: 0.75rem;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #737373;
+    margin-bottom: 12px;
+  }
+
+  .doc-toc nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .doc-toc nav a {
+    font-size: 0.875rem;
+    color: #4d4d4d;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .doc-toc nav a:hover {
+    color: var(--ink);
+    background: #f5f5f5;
+  }
+
+  .doc-body {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .doc-body section h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
+  .doc-body p {
+    font-size: 0.95rem;
+    color: var(--ink-2);
+    line-height: 1.75;
+    margin-bottom: 12px;
+  }
+
+  .doc-body ul {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .doc-body li {
+    font-size: 0.95rem;
+    color: var(--ink-2);
+    line-height: 1.7;
+  }
+
+  .doc-body a {
+    color: #2563eb;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

@@ -1,0 +1,239 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Terms & Conditions — Online Tuition Classes">
+  <Nav activePage="terms" />
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">Legal</p>
+      <h1 class="page-title">Terms &amp; conditions.</h1>
+      <p class="page-sub">Last updated: 25 June 2026</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container doc-layout">
+      <aside class="doc-toc">
+        <span class="toc-label">On this page</span>
+        <nav>
+          <a href="#acceptance">Acceptance</a>
+          <a href="#service">Our service</a>
+          <a href="#eligibility">Eligibility</a>
+          <a href="#teachers">Teachers</a>
+          <a href="#fees">Fees & payments</a>
+          <a href="#conduct">Conduct</a>
+          <a href="#liability">Liability</a>
+          <a href="#changes">Changes</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </aside>
+
+      <div class="doc-body">
+        <section id="acceptance">
+          <h2>1. Acceptance of terms.</h2>
+          <p>By accessing or using Online Tuition Classes ("we", "our", "the platform"), you agree to be bound by these Terms &amp; Conditions. If you do not agree, please do not use our services.</p>
+          <p>These terms apply to all visitors, students, parents, and teachers who interact with the platform.</p>
+        </section>
+
+        <section id="service">
+          <h2>2. Our service.</h2>
+          <p>Online Tuition Classes is a matching platform that connects students (Class 1–12) with verified private tutors for online sessions. We facilitate the introduction between student and teacher — we are not a party to the tutoring arrangement itself.</p>
+          <p>We do not guarantee learning outcomes, exam results, or that any particular teacher will be available at a given time.</p>
+        </section>
+
+        <section id="eligibility">
+          <h2>3. Eligibility.</h2>
+          <p>Students under 18 must have parental or guardian consent before using this platform. By submitting a request, you confirm that either you are 18 or older, or that a parent/guardian has consented on your behalf.</p>
+          <p>We reserve the right to refuse service to anyone at our discretion.</p>
+        </section>
+
+        <section id="teachers">
+          <h2>4. Teachers.</h2>
+          <p>All teachers listed on the platform have undergone our verification process, which includes identity verification and credential checks. However, we cannot guarantee the accuracy of all information provided by teachers and encourage you to ask questions before committing to a paid session.</p>
+          <p>Teachers are independent professionals, not employees of Online Tuition Classes.</p>
+        </section>
+
+        <section id="fees">
+          <h2>5. Fees and payments.</h2>
+          <p>Our matching service is free — we do not charge students a registration or connection fee. Tutoring fees are agreed directly between the student (or parent) and the teacher before sessions begin.</p>
+          <p>Online Tuition Classes is not responsible for any payment disputes between students and teachers. We recommend agreeing all terms in writing before the first paid session.</p>
+        </section>
+
+        <section id="conduct">
+          <h2>6. Acceptable use.</h2>
+          <p>You agree not to:</p>
+          <ul>
+            <li>Provide false or misleading information when registering or submitting a request.</li>
+            <li>Use the platform for any unlawful purpose.</li>
+            <li>Harass, abuse, or threaten any teacher or member of our team.</li>
+            <li>Attempt to circumvent our matching service by soliciting teachers outside the platform during an active match.</li>
+          </ul>
+          <p>Violations may result in immediate suspension of your access.</p>
+        </section>
+
+        <section id="liability">
+          <h2>7. Limitation of liability.</h2>
+          <p>To the fullest extent permitted by law, Online Tuition Classes shall not be liable for any indirect, incidental, or consequential damages arising from your use of the platform or from the tutoring sessions arranged through it.</p>
+          <p>Our total liability for any direct claim shall not exceed ₹1,000 or the amount you paid to us in the preceding 3 months, whichever is greater.</p>
+        </section>
+
+        <section id="changes">
+          <h2>8. Changes to these terms.</h2>
+          <p>We may update these terms from time to time. We will notify users of material changes by posting a notice on the website. Continued use of the platform after changes are posted constitutes your acceptance of the updated terms.</p>
+        </section>
+
+        <section id="contact">
+          <h2>9. Contact.</h2>
+          <p>If you have any questions about these terms, please contact us:</p>
+          <ul>
+            <li>Email: <a href="mailto:legal@onlinetuitionclasses.in">legal@onlinetuitionclasses.in</a></li>
+            <li>Visit our <a href="/contact">Contact page</a></li>
+          </ul>
+          <p>These terms are governed by the laws of India.</p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  :root {
+    --ink: #171717;
+    --ink-2: #4d4d4d;
+    --canvas: #ffffff;
+    --border: #e5e5e5;
+  }
+
+  .container {
+    max-width: 960px;
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  .page-hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 80px 0 64px;
+  }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #737373;
+    margin-bottom: 20px;
+  }
+
+  .page-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+
+  .page-sub {
+    font-size: 0.875rem;
+    color: #737373;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, monospace;
+  }
+
+  .section {
+    padding: 64px 0 80px;
+    background: var(--canvas);
+  }
+
+  .doc-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  @media (max-width: 700px) {
+    .doc-layout { grid-template-columns: 1fr; }
+    .doc-toc { display: none; }
+  }
+
+  .doc-toc {
+    position: sticky;
+    top: 88px;
+  }
+
+  .toc-label {
+    display: block;
+    font-size: 0.75rem;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #737373;
+    margin-bottom: 12px;
+  }
+
+  .doc-toc nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .doc-toc nav a {
+    font-size: 0.875rem;
+    color: #4d4d4d;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .doc-toc nav a:hover {
+    color: var(--ink);
+    background: #f5f5f5;
+  }
+
+  .doc-body {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .doc-body section h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
+  .doc-body p {
+    font-size: 0.95rem;
+    color: var(--ink-2);
+    line-height: 1.75;
+    margin-bottom: 12px;
+  }
+
+  .doc-body ul {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .doc-body li {
+    font-size: 0.95rem;
+    color: var(--ink-2);
+    line-height: 1.7;
+  }
+
+  .doc-body a {
+    color: #2563eb;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>
