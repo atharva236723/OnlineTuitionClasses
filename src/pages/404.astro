@@ -1,0 +1,117 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="404 — Page Not Found | Online Tuition Classes">
+  <Nav />
+
+  <section class="error-hero">
+    <div class="container">
+      <p class="code reveal">404</p>
+      <h1 class="title reveal">Page not found.</h1>
+      <p class="sub reveal">The page you're looking for doesn't exist or has been moved.</p>
+      <div class="actions reveal">
+        <a href="/" class="btn-primary">Go home</a>
+        <a href="/contact" class="btn-secondary">Contact support</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  :root {
+    --ink:        #171717;
+    --ink-muted:  #4d4d4d;
+    --canvas:     #ffffff;
+    --canvas-soft:#fafafa;
+    --border:     #e5e5e5;
+    --radius-pill:100px;
+    --radius-sm:  6px;
+  }
+
+  .error-hero {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    align-items: center;
+    background: var(--ink);
+    text-align: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 96px 24px;
+  }
+
+  .code {
+    font-size: clamp(96px, 20vw, 180px);
+    font-weight: 600;
+    letter-spacing: -0.06em;
+    color: rgba(255,255,255,0.08);
+    line-height: 1;
+    margin: 0 0 8px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .title {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    color: #ffffff;
+    margin: 0 0 16px;
+    line-height: 1.1;
+  }
+
+  .sub {
+    font-size: 17px;
+    color: rgba(255,255,255,0.5);
+    margin: 0 0 40px;
+    line-height: 1.6;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 28px;
+    background: #ffffff;
+    color: var(--ink);
+    border-radius: var(--radius-pill);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    transition: opacity 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 28px;
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius-pill);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .btn-secondary:hover {
+    border-color: rgba(255,255,255,0.5);
+    color: #ffffff;
+  }
+</style>
