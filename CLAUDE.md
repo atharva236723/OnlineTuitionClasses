@@ -35,6 +35,7 @@ This is a **hybrid MPA/SPA**: Astro generates a separate HTML file per route (MP
 | `src/pages/profile.astro` | `/profile` | User profile — sign up / log in / edit details |
 | `src/pages/privacy-policy.astro` | `/privacy-policy` | Privacy policy (7 sections, sticky TOC) |
 | `src/pages/terms.astro` | `/terms` | Terms & conditions (8 sections, sticky TOC); section 5 includes non-refundable fee and compulsory attendance policy |
+| `src/pages/404.astro` | `/*` (unmatched) | 404 error page — dark full-viewport layout, auto-served by the host on missing routes |
 
 ## Architecture
 
@@ -78,7 +79,7 @@ The three helper functions (`getUser`, `saveUser`, `removeUser`) are **duplicate
 The pricing section and both submission forms in `src/pages/index.astro` are driven entirely by `<script is:inline>` — no framework. Key logic:
 
 - **Class slider** (1–12): drag handle updates a fill bar and badge in real time. No CSS transition on the fill — updates synchronously via `requestAnimationFrame` to avoid lag.
-- **Subjects**: Maths, Physics, Chemistry, Biology. Max 2 selectable. **Maths and Biology are hidden for class 11–12** (only available up to class 10). Subject cards are rendered by JS into `#subject-grid`; their styles use `:global()` for this reason.
+- **Subjects**: Maths, Physics, Chemistry, Biology. Max 2 selectable. **Maths and Biology are hidden for class 11–12** (only available up to class 10). **Physics is shown but unclickable (disabled) for class 11–12** — displayed with note "Coming soon for 11–12"; if already selected it is deselected automatically when the slider moves to 11 or 12. Subject cards are rendered by JS into `#subject-grid`; their styles use `:global()` for this reason.
 - No price is displayed — the calculator captures class + subject selection for both the "Find a Teacher" and "Batch Registration" form flows.
 - **Shared state**: `currentClass` (number) and `calcSelected` (array of subject name strings) are declared as `var` in the outer `<script is:inline>` scope so all form submit handlers can read them. The IIFE that drives the calculator writes to these outer vars. Do not move them inside the IIFE.
 - **Find a Teacher form** (`#find-form`): validates phone (10 digits), then `calcSelected.length > 0`, then checks `otc_user` in localStorage — opens the auth modal if not signed in, otherwise submits directly. Success replaces the form with `#form-success`.
