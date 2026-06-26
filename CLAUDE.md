@@ -14,6 +14,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The preview server is configured in `.claude/launch.json` (name: `tuition-dev`, port: 4321). Use `mcp__Claude_Preview__preview_start` with that name to launch it in-session.
 
+When running the dev server as an agent (not interactively), use background mode: `npx astro dev &` — then stop it with `kill %1` when done.
+
+## Git branches
+
+The local working branch is `master`. The GitHub default branch is `main`. Always push with:
+
+```sh
+git push origin master:main
+```
+
+or push to both if needed: `git push origin master` then `git push origin master:main`.
+
 ## Project
 
 **Online Tuition Classes** — a frontend-only marketing site for an online tutoring service matching students (Class 1–12) with verified teachers. No backend or database. All user-facing forms submit to **Formspree** (`https://formspree.io/f/mpqgpdjn`) and email `abhinamika@gmail.com`. Each form includes a hidden `Type` field so submissions are distinguishable in the inbox:
