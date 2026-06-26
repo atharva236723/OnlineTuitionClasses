@@ -1,0 +1,303 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const sections = [
+  {
+    href: "/interview-prep/compare",
+    icon: "⚡",
+    title: "Mediocre vs Pro",
+    desc: "Flip cards that show exactly what separates candidates who succeed from those who don't — across 8 key interview dimensions.",
+    tag: "8 comparisons",
+    color: "#ef4444",
+    bg: "rgba(239,68,68,0.06)",
+    border: "rgba(239,68,68,0.18)",
+  },
+  {
+    href: "/interview-prep/frameworks",
+    icon: "🧱",
+    title: "Answer Frameworks",
+    desc: "Master STAR, CAR, and SOAR — the three structural formulas that make every answer clear, confident, and memorable.",
+    tag: "3 frameworks",
+    color: "#7c3aed",
+    bg: "rgba(124,58,237,0.06)",
+    border: "rgba(124,58,237,0.18)",
+  },
+  {
+    href: "/interview-prep/questions",
+    icon: "💬",
+    title: "Common Questions",
+    desc: "15 of the most asked interview questions — each with a mediocre answer and a pro answer side by side. Plus a 30+ question practice bank.",
+    tag: "15 Q&As · 30+ practice",
+    color: "#3b82f6",
+    bg: "rgba(59,130,246,0.06)",
+    border: "rgba(59,130,246,0.18)",
+  },
+  {
+    href: "/interview-prep/plan",
+    icon: "📅",
+    title: "14-Day Prep Plan",
+    desc: "A day-by-day countdown from two weeks out to interview day — plus an interactive checklist to track every prep task.",
+    tag: "Timeline + Checklist",
+    color: "#10b981",
+    bg: "rgba(16,185,129,0.06)",
+    border: "rgba(16,185,129,0.18)",
+  },
+  {
+    href: "/interview-prep/videos",
+    icon: "▶",
+    title: "Video Hub",
+    desc: "Hand-picked TED talks and coaching videos on confidence, communication, mindset, and interview technique. Watch. Learn. Apply.",
+    tag: "8 curated videos",
+    color: "#f59e0b",
+    bg: "rgba(245,158,11,0.06)",
+    border: "rgba(245,158,11,0.18)",
+  },
+];
+
+---
+
+<Layout title="Interview Prep Hub — Ace Any Interview | Online Tuition Classes">
+
+  <Nav activePage="interview-prep" />
+
+  <!-- ── HERO ──────────────────────────────────────────────── -->
+  <section class="ip-hero">
+    <div class="ip-hero-glow glow-1"></div>
+    <div class="ip-hero-glow glow-2"></div>
+    <div class="ip-container">
+      <p class="ip-eyebrow">Interview Prep Hub</p>
+      <h1 class="ip-hero-title">
+        Stop preparing like<br />
+        <span class="ip-gradient-text">everyone else.</span>
+      </h1>
+      <p class="ip-hero-sub">
+        The difference between mediocre and exceptional isn't talent —<br class="ip-br" />
+        it's how you prepare. Five focused modules. Everything you need.
+      </p>
+      <div class="ip-hero-actions">
+        <a href="#modules" class="ip-btn-primary">Explore the modules</a>
+        <a href="/interview-prep/plan" class="ip-btn-ghost">Jump to the 14-day plan</a>
+      </div>
+      <div class="ip-stats reveal">
+        <div class="ip-stat">
+          <span class="ip-stat-num" data-target="87">0</span><span class="ip-stat-unit">%</span>
+          <p class="ip-stat-label">of students underprepare on body language</p>
+        </div>
+        <div class="ip-stat-divider"></div>
+        <div class="ip-stat">
+          <span class="ip-stat-num" data-target="3">0</span><span class="ip-stat-unit">x</span>
+          <p class="ip-stat-label">more likely to succeed with structured prep</p>
+        </div>
+        <div class="ip-stat-divider"></div>
+        <div class="ip-stat">
+          <span class="ip-stat-num" data-target="14">0</span><span class="ip-stat-unit"> days</span>
+          <p class="ip-stat-label">is all you need if you start the right way</p>
+        </div>
+      </div>
+    </div>
+    <div class="ip-hero-scroll">
+      <span>Scroll to explore</span>
+      <div class="ip-scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ── MODULE CARDS ──────────────────────────────────────── -->
+  <section class="ip-section" id="modules">
+    <div class="ip-container">
+      <p class="ip-section-eye reveal">Five focused modules</p>
+      <h2 class="ip-section-title reveal">Everything you need,<br />nothing you don't</h2>
+      <p class="ip-section-sub reveal">Each module covers one dimension of interview readiness. Start anywhere — or follow them in order for maximum impact.</p>
+
+      <div class="ip-modules-grid">
+        {sections.map((s, i) => (
+          <a href={s.href} class="ip-module-card reveal" style={`transition-delay:${(i % 3) * 0.08}s; --mc:${s.color}; --mbg:${s.bg}; --mborder:${s.border}`}>
+            <div class="ip-mc-top">
+              <span class="ip-mc-icon">{s.icon}</span>
+              <span class="ip-mc-tag">{s.tag}</span>
+            </div>
+            <h3 class="ip-mc-title">{s.title}</h3>
+            <p class="ip-mc-desc">{s.desc}</p>
+            <span class="ip-mc-cta">
+              Open module
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA BAND ───────────────────────────────────────────── -->
+  <section class="ip-cta-band">
+    <div class="ip-container">
+      <div class="ip-cta-inner reveal">
+        <h2 class="ip-cta-title">Ready to prepare with a verified teacher?</h2>
+        <p class="ip-cta-sub">Our teachers don't just teach subjects — they teach you how to think, present, and perform under pressure.</p>
+        <a href="/#find" class="ip-btn-primary">Find a Teacher for Interview Prep</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+
+</Layout>
+
+<script is:inline>
+  function animateCounters() {
+    document.querySelectorAll('.ip-stat-num[data-target]').forEach(function(el) {
+      var target = parseInt(el.getAttribute('data-target'), 10);
+      var start = 0, duration = 1400, startTime = null;
+      function step(ts) {
+        if (!startTime) startTime = ts;
+        var progress = Math.min((ts - startTime) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target);
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = target;
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  var counterDone = false;
+  var statsObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && !counterDone) { counterDone = true; animateCounters(); }
+    });
+  }, { threshold: 0.5 });
+  var statsEl = document.querySelector('.ip-stats');
+  if (statsEl) statsObs.observe(statsEl);
+</script>
+
+<style>
+  :root {
+    --ip-dark: #0a0a0a;
+    --ip-card: #ffffff;
+    --ip-border: #e5e5e5;
+    --ip-ink: #171717;
+    --ip-muted: #6b7280;
+    --ip-purple: #7c3aed;
+    --ip-blue: #3b82f6;
+    --ip-green: #10b981;
+    --ip-gradient: linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #06b6d4 100%);
+  }
+
+  .ip-container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .ip-section { padding: 96px 0; }
+
+  /* Hero */
+  .ip-hero {
+    position: relative;
+    background: var(--ip-dark);
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 24px 80px;
+    overflow: hidden;
+    text-align: center;
+  }
+  .ip-hero-glow { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+  .glow-1 { width: 600px; height: 600px; background: radial-gradient(circle, #7c3aed33 0%, transparent 70%); top: -100px; left: -100px; animation: floatA 8s ease-in-out infinite; }
+  .glow-2 { width: 500px; height: 500px; background: radial-gradient(circle, #3b82f633 0%, transparent 70%); bottom: -80px; right: -80px; animation: floatB 10s ease-in-out infinite; }
+  @keyframes floatA { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,30px)} }
+  @keyframes floatB { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,-40px)} }
+
+  .ip-eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #7c3aed; margin-bottom: 20px; position: relative; }
+  .ip-hero-title { font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 600; letter-spacing: -0.04em; line-height: 1.1; color: #ffffff; margin-bottom: 24px; position: relative; }
+  .ip-gradient-text { background: var(--ip-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .ip-hero-sub { font-size: 1.1rem; color: #9ca3af; max-width: 600px; margin: 0 auto 40px; line-height: 1.7; position: relative; }
+  .ip-br { display: block; }
+  @media (max-width: 640px) { .ip-br { display: none; } }
+
+  .ip-hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; margin-bottom: 64px; }
+
+  .ip-btn-primary { background: #ffffff; color: #0a0a0a; font-size: 0.95rem; font-weight: 600; padding: 14px 28px; border-radius: 100px; transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s; display: inline-block; }
+  .ip-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,255,255,0.2); opacity: 0.92; }
+
+  .ip-btn-ghost { background: transparent; color: #ffffff; font-size: 0.95rem; font-weight: 500; padding: 14px 28px; border-radius: 100px; border: 1.5px solid rgba(255,255,255,0.2); transition: border-color 0.2s, background 0.2s; display: inline-block; }
+  .ip-btn-ghost:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06); }
+
+  /* Stats */
+  .ip-stats { display: flex; gap: 0; position: relative; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 32px 48px; backdrop-filter: blur(12px); max-width: 780px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+  .ip-stat { flex: 1; min-width: 160px; text-align: center; padding: 0 24px; }
+  .ip-stat-num { font-size: 3rem; font-weight: 600; letter-spacing: -0.04em; color: #ffffff; line-height: 1; }
+  .ip-stat-unit { font-size: 1.5rem; font-weight: 500; color: var(--ip-purple); }
+  .ip-stat-label { font-size: 0.8rem; color: #6b7280; margin-top: 8px; line-height: 1.4; }
+  .ip-stat-divider { width: 1px; background: rgba(255,255,255,0.1); align-self: stretch; margin: 4px 0; }
+
+  .ip-hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; color: #4b5563; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; animation: fadeInUp 1.5s ease 1s both; }
+  .ip-scroll-arrow { width: 20px; height: 20px; border-right: 2px solid #4b5563; border-bottom: 2px solid #4b5563; transform: rotate(45deg); animation: bounce 1.5s ease infinite; }
+  @keyframes bounce { 0%,100%{transform:rotate(45deg) translateY(0)} 50%{transform:rotate(45deg) translateY(4px)} }
+  @keyframes fadeInUp { from{opacity:0;transform:translateX(-50%) translateY(12px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+
+  /* Section labels */
+  .ip-section-eye { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ip-purple); margin-bottom: 12px; display: block; }
+  .ip-section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; color: var(--ip-ink); margin-bottom: 16px; }
+  .ip-section-sub { font-size: 1rem; color: var(--ip-muted); max-width: 580px; line-height: 1.7; margin-bottom: 56px; }
+
+  /* Module cards */
+  .ip-modules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .ip-modules-grid .ip-module-card:nth-child(4) { grid-column: 1 / 2; }
+  .ip-modules-grid .ip-module-card:nth-child(5) { grid-column: 2 / 3; }
+
+  .ip-module-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--mbg, rgba(124,58,237,0.06));
+    border: 1px solid var(--mborder, rgba(124,58,237,0.18));
+    border-radius: 20px;
+    padding: 28px;
+    text-decoration: none;
+    transition: transform 0.22s, box-shadow 0.22s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .ip-module-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    opacity: 0;
+    background: var(--mbg);
+    transition: opacity 0.2s;
+  }
+  .ip-module-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.08);
+  }
+  .ip-module-card:hover::before { opacity: 1; }
+
+  .ip-mc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .ip-mc-icon { font-size: 1.6rem; line-height: 1; }
+  .ip-mc-tag { font-size: 0.72rem; font-weight: 600; color: var(--mc, #7c3aed); background: white; border: 1px solid var(--mborder); border-radius: 100px; padding: 3px 10px; }
+  .ip-mc-title { font-size: 1.15rem; font-weight: 600; color: var(--ip-ink); line-height: 1.3; }
+  .ip-mc-desc { font-size: 0.875rem; color: var(--ip-muted); line-height: 1.6; flex: 1; }
+  .ip-mc-cta { font-size: 0.82rem; font-weight: 600; color: var(--mc, #7c3aed); display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+
+  /* CTA */
+  .ip-cta-band { background: var(--ip-ink); padding: 96px 24px; text-align: center; }
+  .ip-cta-inner { max-width: 600px; margin: 0 auto; }
+  .ip-cta-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 600; letter-spacing: -0.03em; color: #ffffff; margin-bottom: 16px; line-height: 1.3; }
+  .ip-cta-sub { font-size: 1rem; color: #6b7280; line-height: 1.7; margin-bottom: 36px; }
+
+  @media (max-width: 900px) {
+    .ip-modules-grid { grid-template-columns: repeat(2, 1fr); }
+    .ip-modules-grid .ip-module-card:nth-child(4),
+    .ip-modules-grid .ip-module-card:nth-child(5) { grid-column: auto; }
+  }
+  @media (max-width: 600px) {
+    .ip-modules-grid { grid-template-columns: 1fr; }
+    .ip-stats { padding: 24px 20px; }
+    .ip-stat { min-width: 130px; }
+    .ip-stat-divider { display: none; }
+    .ip-hero { padding: 100px 20px 60px; }
+  }
+</style>

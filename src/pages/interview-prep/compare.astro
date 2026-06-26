@@ -1,0 +1,198 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const comparisons = [
+  { icon: "🎯", topic: "Preparation", mediocre: "Reads notes the night before and hopes for the best", pro: "Builds a structured prep schedule 2 weeks out — topic by topic, day by day" },
+  { icon: "🗣️", topic: "Self Introduction", mediocre: "\"Umm, hi, I'm Rahul, I study in class 11...\"", pro: "Crisp 30-second intro: name → school → strength → why they're excited to be here" },
+  { icon: "🧠", topic: "Handling Tough Questions", mediocre: "Freezes, says \"I don't know\" and goes silent", pro: "Says \"That's a great question — let me think\" and reasons out loud, step by step" },
+  { icon: "👁️", topic: "Body Language", mediocre: "Slouches, avoids eye contact, fidgets nervously with hands", pro: "Sits upright, holds natural eye contact, uses open hand gestures to emphasise" },
+  { icon: "💬", topic: "Answering Style", mediocre: "Gives yes/no answers or rambles without structure", pro: "Uses the STAR method: Situation → Task → Action → Result. Concise and clear." },
+  { icon: "📚", topic: "Subject Knowledge", mediocre: "Mugs up definitions and recites them word-for-word", pro: "Understands concepts deeply, connects theory to real-world examples" },
+  { icon: "❓", topic: "Asking Questions", mediocre: "\"No, I don't have any questions\" (missed opportunity!)", pro: "Asks 1–2 thoughtful questions that show genuine curiosity and preparation" },
+  { icon: "😤", topic: "Handling Nerves", mediocre: "Tries to suppress anxiety — which makes it 10× worse", pro: "Reframes nervousness as excitement. Takes a breath, slows down, focuses on one answer at a time" },
+];
+
+const mistakes = [
+  { icon: "🤐", title: "Going silent when stuck", fix: "Think aloud. 'Let me reason through this...' is a complete answer." },
+  { icon: "📜", title: "Reciting memorised scripts", fix: "Practice concepts, not word-for-word answers. Stiffness kills credibility." },
+  { icon: "👀", title: "Avoiding eye contact", fix: "Look at the interviewer when speaking. Look slightly away when thinking." },
+  { icon: "⌚", title: "Rambling for too long", fix: "Aim for 60–90 seconds per answer. Stop. Let them ask for more." },
+  { icon: "😞", title: "Badmouthing teachers or schools", fix: "Never. Reframe every negative as a learning experience." },
+  { icon: "🤷", title: "Saying 'I don't have questions'", fix: "Prepare 2 questions in advance. Not having them signals zero curiosity." },
+  { icon: "📱", title: "Being unprepared for the basics", fix: "Know your own CV, marks, and projects cold. Don't blank on your own story." },
+  { icon: "🙅", title: "Claiming impossible perfection", fix: "'I have no weaknesses' destroys trust instantly. Honest + growth = respect." },
+];
+---
+
+<Layout title="Mediocre vs Pro — Interview Prep | Online Tuition Classes">
+  <Nav activePage="interview-prep" />
+
+  <!-- ── SUB-PAGE HERO ── -->
+  <section class="ip-sub-hero">
+    <div class="ip-container">
+      <a href="/interview-prep" class="ip-breadcrumb">← Interview Prep Hub</a>
+      <p class="ip-eyebrow">Module 1 of 5</p>
+      <h1 class="ip-sub-title">Mediocre vs <span class="ip-gradient-text">Pro</span></h1>
+      <p class="ip-sub-desc">Hover each card to flip between two mindsets across 8 key interview dimensions. The gap isn't knowledge — it's approach.</p>
+    </div>
+  </section>
+
+  <!-- ── MODULE NAV ── -->
+  <div class="ip-module-nav-wrap">
+    <div class="ip-container">
+      <nav class="ip-module-nav">
+        <a href="/interview-prep/compare" class="ip-mn-link active">⚡ Mindset</a>
+        <a href="/interview-prep/frameworks" class="ip-mn-link">🧱 Frameworks</a>
+        <a href="/interview-prep/questions" class="ip-mn-link">💬 Questions</a>
+        <a href="/interview-prep/plan" class="ip-mn-link">📅 Plan</a>
+        <a href="/interview-prep/videos" class="ip-mn-link">▶ Videos</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ── FLIP CARDS ── -->
+  <section class="ip-section" id="compare">
+    <div class="ip-container">
+      <div class="ip-compare-legend reveal">
+        <span class="legend-mediocre">⚠ Mediocre approach</span>
+        <span class="legend-pro">✦ Pro approach</span>
+      </div>
+      <div class="ip-compare-grid">
+        {comparisons.map((c, i) => (
+          <div class="ip-flip-card reveal" style={`transition-delay:${(i % 4) * 0.08}s`}>
+            <div class="ip-flip-inner">
+              <div class="ip-flip-face ip-flip-front">
+                <div class="ip-face-badge mediocre-badge">⚠ Mediocre</div>
+                <div class="ip-face-icon">{c.icon}</div>
+                <p class="ip-face-topic">{c.topic}</p>
+                <p class="ip-face-text">"{c.mediocre}"</p>
+                <span class="ip-flip-hint">Hover to see the pro way →</span>
+              </div>
+              <div class="ip-flip-face ip-flip-back">
+                <div class="ip-face-badge pro-badge">✦ Pro</div>
+                <div class="ip-face-icon">{c.icon}</div>
+                <p class="ip-face-topic">{c.topic}</p>
+                <p class="ip-face-text">"{c.pro}"</p>
+                <span class="ip-flip-hint">← Hover off to compare</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── COMMON MISTAKES ── -->
+  <section class="ip-section ip-section-alt" id="mistakes">
+    <div class="ip-container">
+      <p class="ip-section-eye reveal">What to avoid</p>
+      <h2 class="ip-section-title reveal">8 mistakes that cost students<br />the interview — and how to fix them</h2>
+      <p class="ip-section-sub reveal">Most candidates make at least three of these. Knowing them is half the fix.</p>
+      <div class="ip-mistakes-grid">
+        {mistakes.map((m, i) => (
+          <div class="ip-mistake-card reveal" style={`transition-delay:${(i % 4) * 0.07}s`}>
+            <span class="ip-mistake-icon">{m.icon}</span>
+            <h3 class="ip-mistake-title">{m.title}</h3>
+            <p class="ip-mistake-fix"><strong>Fix:</strong> {m.fix}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PAGE NAV ── -->
+  <div class="ip-page-nav">
+    <div class="ip-container">
+      <a href="/interview-prep" class="ip-pnav-back">← Back to hub</a>
+      <a href="/interview-prep/frameworks" class="ip-pnav-next">Next: Answer Frameworks →</a>
+    </div>
+  </div>
+
+  <Footer />
+</Layout>
+
+<style>
+  :root {
+    --ip-dark: #0a0a0a; --ip-ink: #171717; --ip-muted: #6b7280;
+    --ip-purple: #7c3aed; --ip-blue: #3b82f6; --ip-green: #10b981;
+    --ip-border: #e5e5e5;
+    --ip-gradient: linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #06b6d4 100%);
+  }
+  .ip-container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .ip-section { padding: 80px 0; }
+  .ip-section-alt { background: #f8f8f8; }
+  .ip-gradient-text { background: var(--ip-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  /* Sub-page hero */
+  .ip-sub-hero { background: var(--ip-dark); padding: 80px 24px 56px; text-align: center; }
+  .ip-breadcrumb { font-size: 0.8rem; color: #6b7280; display: inline-block; margin-bottom: 20px; transition: color 0.2s; }
+  .ip-breadcrumb:hover { color: #9ca3af; }
+  .ip-eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ip-purple); margin-bottom: 12px; }
+  .ip-sub-title { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; letter-spacing: -0.04em; color: #fff; line-height: 1.1; margin-bottom: 16px; }
+  .ip-sub-desc { font-size: 1rem; color: #9ca3af; max-width: 560px; margin: 0 auto; line-height: 1.7; }
+
+  /* Module nav */
+  .ip-module-nav-wrap { background: #fff; border-bottom: 1px solid var(--ip-border); position: sticky; top: 64px; z-index: 40; }
+  .ip-module-nav { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+  .ip-module-nav::-webkit-scrollbar { display: none; }
+  .ip-mn-link { font-size: 0.82rem; font-weight: 500; color: var(--ip-muted); padding: 14px 20px; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  .ip-mn-link:hover { color: var(--ip-ink); }
+  .ip-mn-link.active { color: var(--ip-purple); border-bottom-color: var(--ip-purple); font-weight: 600; }
+
+  /* Compare legend */
+  .ip-compare-legend { display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
+  .legend-mediocre, .legend-pro { font-size: 0.82rem; font-weight: 500; padding: 6px 14px; border-radius: 100px; }
+  .legend-mediocre { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .legend-pro { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+
+  /* Flip cards */
+  .ip-compare-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+  .ip-flip-card { height: 280px; perspective: 1200px; cursor: pointer; }
+  .ip-flip-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+  .ip-flip-card:hover .ip-flip-inner { transform: rotateY(180deg); }
+  .ip-flip-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+  .ip-flip-front { background: #fff; border: 1px solid #fecaca; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .ip-flip-back { background: #f0fdf4; border: 1px solid #bbf7d0; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transform: rotateY(180deg); }
+  .ip-face-badge { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; padding: 4px 10px; border-radius: 100px; width: fit-content; text-transform: uppercase; }
+  .mediocre-badge { background: #fef2f2; color: #dc2626; }
+  .pro-badge { background: #dcfce7; color: #16a34a; }
+  .ip-face-icon { font-size: 1.8rem; line-height: 1; }
+  .ip-face-topic { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9ca3af; }
+  .ip-face-text { font-size: 0.9rem; line-height: 1.55; color: var(--ip-ink); flex: 1; }
+  .ip-flip-back .ip-face-text { color: #166534; }
+  .ip-flip-hint { font-size: 0.72rem; color: #d1d5db; margin-top: auto; align-self: flex-end; }
+  .ip-flip-back .ip-flip-hint { color: #86efac; }
+
+  /* Section labels */
+  .ip-section-eye { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ip-purple); margin-bottom: 12px; display: block; }
+  .ip-section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; color: var(--ip-ink); margin-bottom: 16px; }
+  .ip-section-sub { font-size: 1rem; color: var(--ip-muted); max-width: 580px; line-height: 1.7; margin-bottom: 48px; }
+
+  /* Mistakes */
+  .ip-mistakes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+  .ip-mistake-card { background: #fff; border: 1px solid var(--ip-border); border-radius: 16px; padding: 24px; transition: box-shadow 0.2s, transform 0.2s; border-top: 3px solid #fecaca; }
+  .ip-mistake-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
+  .ip-mistake-icon { font-size: 1.6rem; display: block; margin-bottom: 10px; }
+  .ip-mistake-title { font-size: 0.92rem; font-weight: 600; color: var(--ip-ink); margin-bottom: 8px; }
+  .ip-mistake-fix { font-size: 0.82rem; color: #4b5563; line-height: 1.55; }
+  .ip-mistake-fix strong { color: #16a34a; }
+
+  /* Page nav */
+  .ip-page-nav { background: #f8f8f8; border-top: 1px solid var(--ip-border); padding: 24px; }
+  .ip-page-nav .ip-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .ip-pnav-back { font-size: 0.875rem; color: var(--ip-muted); font-weight: 500; transition: color 0.2s; }
+  .ip-pnav-back:hover { color: var(--ip-ink); }
+  .ip-pnav-next { font-size: 0.875rem; font-weight: 600; color: var(--ip-purple); transition: color 0.2s; }
+  .ip-pnav-next:hover { color: #6d28d9; }
+
+  @media (max-width: 640px) {
+    .ip-compare-grid { grid-template-columns: 1fr 1fr; }
+    .ip-flip-card { height: 300px; }
+  }
+  @media (max-width: 440px) {
+    .ip-compare-grid { grid-template-columns: 1fr; }
+    .ip-flip-card { height: auto; min-height: 220px; }
+  }
+</style>

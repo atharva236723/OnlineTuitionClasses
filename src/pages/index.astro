@@ -53,6 +53,106 @@ const pricing = [
     </div>
   </section>
 
+  <!-- ── SMART MATCH QUIZ ────────────────────────────────── -->
+  <section class="section section-dark" id="quiz">
+    <div class="container">
+      <p class="eyebrow-light reveal">Only on OTC</p>
+      <h2 class="section-title-light reveal">Find your perfect teacher in 60 seconds</h2>
+      <p class="section-sub-light reveal">Answer 3 quick questions — we'll tell you exactly what kind of teacher to look for.</p>
+
+      <div class="quiz-card reveal" id="quiz-card">
+
+        <!-- Step 1 -->
+        <div class="quiz-step active" id="qstep-1">
+          <p class="quiz-q">What's the main goal?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" data-step="1" data-val="Improve grades">
+              <span class="qo-icon">📈</span>
+              <span class="qo-label">Improve grades</span>
+            </button>
+            <button class="quiz-opt" data-step="1" data-val="Exam preparation">
+              <span class="qo-icon">🎯</span>
+              <span class="qo-label">Exam prep (Board / JEE)</span>
+            </button>
+            <button class="quiz-opt" data-step="1" data-val="Build strong foundation">
+              <span class="qo-icon">🏗️</span>
+              <span class="qo-label">Build strong foundation</span>
+            </button>
+            <button class="quiz-opt" data-step="1" data-val="Catch up on missed topics">
+              <span class="qo-icon">⏩</span>
+              <span class="qo-label">Catch up on missed topics</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="quiz-step" id="qstep-2">
+          <p class="quiz-q">How does the student learn best?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" data-step="2" data-val="Visual explanations">
+              <span class="qo-icon">👁️</span>
+              <span class="qo-label">Visual explanations & diagrams</span>
+            </button>
+            <button class="quiz-opt" data-step="2" data-val="Lots of practice problems">
+              <span class="qo-icon">✏️</span>
+              <span class="qo-label">Lots of practice problems</span>
+            </button>
+            <button class="quiz-opt" data-step="2" data-val="Concept-first, then examples">
+              <span class="qo-icon">💡</span>
+              <span class="qo-label">Concept-first, then examples</span>
+            </button>
+            <button class="quiz-opt" data-step="2" data-val="Q&A style interaction">
+              <span class="qo-icon">💬</span>
+              <span class="qo-label">Q&A style — ask freely</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="quiz-step" id="qstep-3">
+          <p class="quiz-q">When should sessions happen?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" data-step="3" data-val="Weekday mornings">
+              <span class="qo-icon">🌅</span>
+              <span class="qo-label">Weekday mornings</span>
+            </button>
+            <button class="quiz-opt" data-step="3" data-val="Weekday evenings">
+              <span class="qo-icon">🌆</span>
+              <span class="qo-label">Weekday evenings</span>
+            </button>
+            <button class="quiz-opt" data-step="3" data-val="Weekends">
+              <span class="qo-icon">📅</span>
+              <span class="qo-label">Weekends only</span>
+            </button>
+            <button class="quiz-opt" data-step="3" data-val="Flexible / any time">
+              <span class="qo-icon">🔀</span>
+              <span class="qo-label">Flexible — any time</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Result -->
+        <div class="quiz-step" id="qstep-result">
+          <div class="quiz-result">
+            <div class="qr-badge" id="qr-badge">✓</div>
+            <h3 class="qr-title" id="qr-title">Your ideal teacher profile</h3>
+            <p class="qr-body" id="qr-body"></p>
+            <button class="btn-quiz-cta" id="quiz-cta">Find this teacher →</button>
+            <button class="quiz-restart" id="quiz-restart">Retake quiz</button>
+          </div>
+        </div>
+
+        <!-- Progress dots -->
+        <div class="quiz-dots" id="quiz-dots">
+          <span class="qdot active" data-dot="1"></span>
+          <span class="qdot" data-dot="2"></span>
+          <span class="qdot" data-dot="3"></span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ── PRICING ──────────────────────────────────────────── -->
   <section class="section section-alt" id="pricing">
     <div class="container">
@@ -133,6 +233,8 @@ const pricing = [
       </div>
     </div>
   </section>
+
+
 
   <!-- ── BATCH REGISTRATION ────────────────────────────── -->
   <section class="section section-alt" id="batch">
@@ -256,6 +358,52 @@ const pricing = [
     </div>
   </section>
 
+  <!-- ── FAQ ──────────────────────────────────────────────── -->
+  <section class="section" id="faq">
+    <div class="container faq-container">
+      <h2 class="section-title reveal">Common questions</h2>
+      <p class="section-sub reveal">Everything parents and students ask before getting started.</p>
+      <div class="faq-list reveal">
+
+        <details class="faq-item">
+          <summary class="faq-q">How quickly will I be matched with a teacher?</summary>
+          <p class="faq-a">We match you within 24 hours of receiving your request. In most cases it's faster — you'll get a WhatsApp message as soon as we find the right teacher for you.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">Is the demo class really free?</summary>
+          <p class="faq-a">Yes, completely free and with no obligation. You attend one full demo session with your matched teacher before deciding. If you're not happy with the match, we'll find you another teacher at no cost.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">How are teachers verified?</summary>
+          <p class="faq-a">Every teacher goes through a three-step process: document verification (degree certificate, ID), a demo session reviewed by our team, and regular student feedback checks. Teachers with declining ratings are reviewed and removed.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">What subjects and classes do you cover?</summary>
+          <p class="faq-a">We cover Maths (Class 1–10), Physics, Chemistry, and Biology for Class 6–12. Physics for Class 11–12 is coming soon. More subjects are added regularly — contact us if you need something not listed.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">What is a batch and how does it save money?</summary>
+          <p class="faq-a">A batch is 2–5 students who share the same teacher and schedule. Because the teacher's time is shared, the per-student cost drops significantly — typically 30–50% less than a 1-on-1 session.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">Do sessions happen on a fixed schedule or can I reschedule?</summary>
+          <p class="faq-a">Your teacher sets a recurring weekly schedule that suits both sides. Rescheduling is possible with at least 12 hours' notice — just message the teacher directly on WhatsApp.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">Is there a registration fee or platform fee?</summary>
+          <p class="faq-a">No registration fee, no platform fee, no hidden charges. You pay only for the sessions you attend, directly to your teacher as agreed.</p>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ── AUTH MODAL ─────────────────────────────────────── -->
   <div id="auth-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-card">
@@ -316,6 +464,91 @@ const pricing = [
   <Footer />
 
 </Layout>
+
+<script is:inline>
+/* ── Smart Match Quiz ── */
+(function () {
+  var answers = {};
+  var currentStep = 1;
+
+  var PROFILES = {
+    default: {
+      title: 'Your ideal teacher profile',
+      body: 'Based on your answers, we\'ll match you with a verified teacher who fits your goals, learning style, and schedule. Fill in the form below and we\'ll reach out within 24 hours.'
+    }
+  };
+
+  function buildProfile(a) {
+    var goal  = a[1] || '';
+    var style = a[2] || '';
+    var time  = a[3] || '';
+    var body = 'Look for a teacher who focuses on “' + goal + '”, uses “' + style + '” techniques, and is available during “' + time + '”. We’ll find you the best match—just fill in the form below.';
+    return { title: 'Your perfect teacher match is ready', body: body };
+  }
+
+  function goToStep(step) {
+    document.querySelectorAll('.quiz-step').forEach(function(s) { s.classList.remove('active'); });
+    var el = document.getElementById('qstep-' + step);
+    if (el) el.classList.add('active');
+
+    document.querySelectorAll('.qdot').forEach(function(d) {
+      d.classList.toggle('active', parseInt(d.dataset.dot) === step);
+    });
+
+    var dots = document.getElementById('quiz-dots');
+    if (step === 'result') { if (dots) dots.style.display = 'none'; }
+    else                   { if (dots) dots.style.display = ''; }
+
+    currentStep = step;
+  }
+
+  function showResult() {
+    var p = buildProfile(answers);
+    document.getElementById('qr-title').textContent = p.title;
+    document.getElementById('qr-body').textContent  = p.body;
+    goToStep('result');
+  }
+
+  function initQuiz() {
+    answers = {};
+    goToStep(1);
+
+    document.querySelectorAll('.quiz-opt').forEach(function(btn) {
+      btn.addEventListener('click', function () {
+        var step = parseInt(this.dataset.step);
+        var val  = this.dataset.val;
+        answers[step] = val;
+
+        this.closest('.quiz-options').querySelectorAll('.quiz-opt').forEach(function(b) { b.classList.remove('selected'); });
+        this.classList.add('selected');
+
+        setTimeout(function() {
+          if (step < 3) goToStep(step + 1);
+          else showResult();
+        }, 250);
+      });
+    });
+
+    var cta = document.getElementById('quiz-cta');
+    if (cta) cta.addEventListener('click', function() {
+      var findSection = document.getElementById('find');
+      if (findSection) {
+        if (window.lenis) window.lenis.scrollTo(findSection, { offset: -72 });
+        else findSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    var restart = document.getElementById('quiz-restart');
+    if (restart) restart.addEventListener('click', function() {
+      answers = {};
+      goToStep(1);
+    });
+  }
+
+  initQuiz();
+  document.addEventListener('astro:after-swap', initQuiz);
+})();
+</script>
 
 <script src="https://accounts.google.com/gsi/client" async></script>
 <script is:inline>
@@ -1488,6 +1721,287 @@ const pricing = [
   }
 
   :global(.batch-form-inner input:focus) { border-color: #171717; }
+
+  /* ── Stats bar ────────────────────────────────────────── */
+  .stats-bar {
+    background: var(--ink);
+    padding: 28px 0;
+  }
+
+  .stats-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 40px;
+    gap: 4px;
+  }
+
+  .stat-num {
+    font-size: 1.55rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.03em;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,.5);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255,255,255,.12);
+  }
+
+  @media (max-width: 600px) {
+    .stat-divider { display: none; }
+    .stat-item { padding: 8px 24px; }
+    .stats-inner { gap: 4px; }
+  }
+
+  /* ── Smart Match Quiz ──────────────────────────────────── */
+  .section-dark {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .eyebrow-light {
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,.45);
+    margin-bottom: 12px;
+  }
+
+  .section-title-light {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .section-sub-light {
+    text-align: center;
+    color: rgba(255,255,255,.5);
+    margin-bottom: 48px;
+    font-size: 0.95rem;
+  }
+
+  .quiz-card {
+    max-width: 640px;
+    margin-inline: auto;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 20px;
+    padding: 36px;
+    position: relative;
+  }
+
+  .quiz-step { display: none; }
+  .quiz-step.active { display: block; }
+
+  .quiz-q {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .quiz-opt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 12px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.15s cubic-bezier(.34,1.56,.64,1);
+    color: #fff;
+  }
+
+  .quiz-opt:hover {
+    background: rgba(255,255,255,.12);
+    border-color: rgba(255,255,255,.3);
+    transform: translateY(-2px);
+  }
+
+  .quiz-opt.selected {
+    background: rgba(255,255,255,.15);
+    border-color: rgba(255,255,255,.5);
+  }
+
+  .qo-icon { font-size: 1.5rem; }
+
+  .qo-label {
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.35;
+  }
+
+  .quiz-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 28px;
+  }
+
+  .qdot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.2);
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .qdot.active {
+    background: #fff;
+    transform: scale(1.25);
+  }
+
+  .quiz-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .qr-badge {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--ink);
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+
+  .qr-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .qr-body {
+    font-size: 0.92rem;
+    color: rgba(255,255,255,.7);
+    max-width: 440px;
+    line-height: 1.6;
+  }
+
+  .btn-quiz-cta {
+    background: #fff;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 13px 32px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.15s cubic-bezier(.34,1.56,.64,1);
+    margin-top: 4px;
+  }
+
+  .btn-quiz-cta:hover { opacity: 0.88; transform: translateY(-2px); }
+
+  .quiz-restart {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,.45);
+    font-size: 0.82rem;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .quiz-restart:hover { color: rgba(255,255,255,.7); }
+
+  @media (max-width: 520px) {
+    .quiz-card { padding: 24px 16px; }
+    .quiz-options { grid-template-columns: 1fr; }
+  }
+
+  /* ── FAQ ───────────────────────────────────────────────── */
+  .faq-container { max-width: 720px; }
+
+  .faq-list {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .faq-item:last-child { border-bottom: none; }
+
+  .faq-q {
+    list-style: none;
+    padding: 18px 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    transition: background 0.15s;
+  }
+
+  .faq-q::-webkit-details-marker { display: none; }
+
+  .faq-q::after {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--ink-2);
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+
+  .faq-item[open] .faq-q::after { transform: rotate(45deg); }
+
+  .faq-item[open] .faq-q { background: #fafafa; }
+
+  .faq-a {
+    padding: 0 20px 18px;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    line-height: 1.65;
+  }
 
   .hidden { display: none !important; }
 

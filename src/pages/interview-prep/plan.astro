@@ -1,0 +1,285 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const timeline = [
+  { day: "14 days out", title: "Research & Map", desc: "Research the institution thoroughly. Map which topics and subject areas are likely to be tested. Create a master topic checklist so nothing falls through.", color: "#7c3aed" },
+  { day: "11 days out", title: "Write Your Stories", desc: "Write down 5–6 personal stories covering failure, teamwork, leadership, and achievement. These are your raw material for any behavioral question.", color: "#8b5cf6" },
+  { day: "7 days out", title: "Practice Answers", desc: "Draft answers to the top 15 common questions using STAR, CAR, and SOAR. Record yourself on video. Watch it back — painfully but usefully.", color: "#3b82f6" },
+  { day: "5 days out", title: "Body Language & Voice", desc: "Practice your posture, eye contact, and pacing. Read answers aloud — not in your head. The goal is fluency, not perfection.", color: "#0ea5e9" },
+  { day: "3 days out", title: "Mock Interviews", desc: "Do 2 full mock interviews with a teacher or trusted friend. Ask for brutal, honest feedback on both content and delivery.", color: "#06b6d4" },
+  { day: "1 day before", title: "Rest & Visualise", desc: "Light revision only — no cramming. Sleep 8 hours. Visualise walking in confident and walking out proud. Lay out your outfit and documents tonight.", color: "#10b981" },
+  { day: "Day of", title: "Execute", desc: "Arrive 15 minutes early. Breathe slowly and deeply. Smile genuinely when you walk in. You've done the work — trust it.", color: "#f59e0b" },
+];
+
+const checklist = [
+  { id: "c1", text: "Research the institution / exam pattern thoroughly", category: "research" },
+  { id: "c2", text: "Map all likely topics and create a subject checklist", category: "research" },
+  { id: "c3", text: "Write and rehearse a 30-second self-introduction", category: "content" },
+  { id: "c4", text: "Write 5–6 personal stories (failure, teamwork, achievement)", category: "content" },
+  { id: "c5", text: "Prepare answers to the top 15 common questions", category: "content" },
+  { id: "c6", text: "Record one full mock interview session on video", category: "practice" },
+  { id: "c7", text: "Watch the recording back — note body language and pacing", category: "practice" },
+  { id: "c8", text: "Do a second mock interview and get feedback from a teacher", category: "practice" },
+  { id: "c9", text: "Revise core concepts and real-world examples", category: "content" },
+  { id: "c10", text: "Prepare 2–3 thoughtful questions to ask the interviewer", category: "content" },
+  { id: "c11", text: "Plan outfit, documents, and arrival time the day before", category: "logistics" },
+  { id: "c12", text: "Get 8 hours sleep the night before", category: "logistics" },
+];
+
+const categories = [
+  { id: "research", label: "Research", color: "#7c3aed" },
+  { id: "content", label: "Content", color: "#3b82f6" },
+  { id: "practice", label: "Practice", color: "#10b981" },
+  { id: "logistics", label: "Logistics", color: "#f59e0b" },
+];
+---
+
+<Layout title="14-Day Prep Plan — Interview Prep | Online Tuition Classes">
+  <Nav activePage="interview-prep" />
+
+  <section class="ip-sub-hero">
+    <div class="ip-container">
+      <a href="/interview-prep" class="ip-breadcrumb">← Interview Prep Hub</a>
+      <p class="ip-eyebrow">Module 4 of 5</p>
+      <h1 class="ip-sub-title">14-Day <span class="ip-gradient-text">Prep Plan</span></h1>
+      <p class="ip-sub-desc">A day-by-day countdown from two weeks out to interview day — plus an interactive checklist to track every task.</p>
+    </div>
+  </section>
+
+  <div class="ip-module-nav-wrap">
+    <div class="ip-container">
+      <nav class="ip-module-nav">
+        <a href="/interview-prep/compare" class="ip-mn-link">⚡ Mindset</a>
+        <a href="/interview-prep/frameworks" class="ip-mn-link">🧱 Frameworks</a>
+        <a href="/interview-prep/questions" class="ip-mn-link">💬 Questions</a>
+        <a href="/interview-prep/plan" class="ip-mn-link active">📅 Plan</a>
+        <a href="/interview-prep/videos" class="ip-mn-link">▶ Videos</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ── TIMELINE ── -->
+  <section class="ip-section ip-section-dark" id="timeline">
+    <div class="ip-container">
+      <p class="ip-section-eye-light reveal">The prep roadmap</p>
+      <h2 class="ip-section-title-light reveal">Your countdown plan,<br />day by day</h2>
+      <p class="ip-section-sub-light reveal">Follow this schedule and walk into the room knowing you've done more than 95% of candidates.</p>
+      <div class="ip-timeline">
+        {timeline.map((t, i) => (
+          <div class="ip-tl-item reveal" style={`transition-delay:${i * 0.08}s`}>
+            <div class="ip-tl-line-wrap">
+              <div class="ip-tl-dot" style={`background:${t.color}; box-shadow: 0 0 0 4px ${t.color}33`}></div>
+              {i < timeline.length - 1 && <div class="ip-tl-line"></div>}
+            </div>
+            <div class="ip-tl-content">
+              <span class="ip-tl-day" style={`color:${t.color}`}>{t.day}</span>
+              <h3 class="ip-tl-title">{t.title}</h3>
+              <p class="ip-tl-desc">{t.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CHECKLIST ── -->
+  <section class="ip-section ip-section-alt" id="checklist">
+    <div class="ip-container">
+      <p class="ip-section-eye reveal">Your personal tracker</p>
+      <h2 class="ip-section-title reveal">The ultimate interview<br />prep checklist</h2>
+      <p class="ip-section-sub reveal">Check off each item as you complete it. Your progress is saved automatically in your browser.</p>
+
+      <div class="ip-checklist-wrap reveal">
+        <!-- Category legend -->
+        <div class="ip-cat-legend">
+          {categories.map((cat) => (
+            <span class="ip-cat-pill" style={`--ccolor:${cat.color}`}>{cat.label}</span>
+          ))}
+        </div>
+
+        <div class="ip-progress-bar-wrap">
+          <div class="ip-progress-label">
+            <span id="ip-progress-text">0 of {checklist.length} complete</span>
+            <span id="ip-progress-pct">0%</span>
+          </div>
+          <div class="ip-progress-track">
+            <div class="ip-progress-fill" id="ip-progress-fill" style="width:0%"></div>
+          </div>
+        </div>
+
+        <div class="ip-checklist" id="ip-checklist">
+          {checklist.map((item) => {
+            const cat = categories.find(c => c.id === item.category);
+            return (
+              <label class="ip-check-item" for={item.id}>
+                <input type="checkbox" id={item.id} data-key={item.id} class="ip-checkbox" />
+                <span class="ip-check-box">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M2.5 7l3.5 3.5 5.5-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="ip-check-text">{item.text}</span>
+                {cat && <span class="ip-check-cat" style={`background:${cat.color}18; color:${cat.color}; border-color:${cat.color}30`}>{cat.label}</span>}
+              </label>
+            );
+          })}
+        </div>
+
+        <div class="ip-checklist-done hidden" id="ip-checklist-done">
+          <div class="ip-done-icon">🏆</div>
+          <h3 class="ip-done-title">You're fully prepared.</h3>
+          <p class="ip-done-sub">Walk in with confidence — you've done the work. Now go get it.</p>
+          <button class="ip-btn-reset" id="ip-reset-btn">Reset checklist</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ip-page-nav">
+    <div class="ip-container">
+      <a href="/interview-prep/questions" class="ip-pnav-back">← Common Questions</a>
+      <a href="/interview-prep/videos" class="ip-pnav-next">Next: Video Hub →</a>
+    </div>
+  </div>
+
+  <Footer />
+</Layout>
+
+<script is:inline>
+  function initChecklist() {
+    var items = document.querySelectorAll('.ip-checkbox');
+    var fillEl = document.getElementById('ip-progress-fill');
+    var textEl = document.getElementById('ip-progress-text');
+    var pctEl  = document.getElementById('ip-progress-pct');
+    var doneEl = document.getElementById('ip-checklist-done');
+    if (!items.length) return;
+
+    function updateProgress() {
+      var total = items.length, done = 0;
+      items.forEach(function(cb) { if (cb.checked) done++; });
+      var pct = Math.round((done / total) * 100);
+      if (fillEl) fillEl.style.width = pct + '%';
+      if (textEl) textEl.textContent = done + ' of ' + total + ' complete';
+      if (pctEl)  pctEl.textContent  = pct + '%';
+      if (doneEl) { if (done === total) doneEl.classList.remove('hidden'); else doneEl.classList.add('hidden'); }
+    }
+
+    items.forEach(function(cb) {
+      var key = 'ip_check_' + cb.getAttribute('data-key');
+      cb.checked = localStorage.getItem(key) === '1';
+      var label = cb.closest('.ip-check-item');
+      if (cb.checked && label) label.classList.add('checked');
+      cb.addEventListener('change', function() {
+        localStorage.setItem(key, cb.checked ? '1' : '0');
+        var lbl = cb.closest('.ip-check-item');
+        if (lbl) lbl.classList.toggle('checked', cb.checked);
+        updateProgress();
+      });
+    });
+    updateProgress();
+
+    var resetBtn = document.getElementById('ip-reset-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function() {
+        items.forEach(function(cb) {
+          cb.checked = false;
+          localStorage.removeItem('ip_check_' + cb.getAttribute('data-key'));
+          var lbl = cb.closest('.ip-check-item');
+          if (lbl) lbl.classList.remove('checked');
+        });
+        updateProgress();
+        if (doneEl) doneEl.classList.add('hidden');
+      });
+    }
+  }
+  initChecklist();
+  document.addEventListener('astro:after-swap', initChecklist);
+</script>
+
+<style>
+  :root {
+    --ip-dark: #0a0a0a; --ip-ink: #171717; --ip-muted: #6b7280;
+    --ip-purple: #7c3aed; --ip-green: #10b981; --ip-border: #e5e5e5;
+    --ip-gradient: linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #06b6d4 100%);
+  }
+  .ip-container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .ip-section { padding: 80px 0; }
+  .ip-section-dark { background: var(--ip-dark); }
+  .ip-section-alt { background: #f8f8f8; }
+  .ip-gradient-text { background: var(--ip-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .ip-sub-hero { background: var(--ip-dark); padding: 80px 24px 56px; text-align: center; }
+  .ip-breadcrumb { font-size: 0.8rem; color: #6b7280; display: inline-block; margin-bottom: 20px; transition: color 0.2s; }
+  .ip-breadcrumb:hover { color: #9ca3af; }
+  .ip-eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ip-purple); margin-bottom: 12px; }
+  .ip-sub-title { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; letter-spacing: -0.04em; color: #fff; line-height: 1.1; margin-bottom: 16px; }
+  .ip-sub-desc { font-size: 1rem; color: #9ca3af; max-width: 560px; margin: 0 auto; line-height: 1.7; }
+
+  .ip-module-nav-wrap { background: #fff; border-bottom: 1px solid var(--ip-border); position: sticky; top: 64px; z-index: 40; }
+  .ip-module-nav { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+  .ip-module-nav::-webkit-scrollbar { display: none; }
+  .ip-mn-link { font-size: 0.82rem; font-weight: 500; color: var(--ip-muted); padding: 14px 20px; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  .ip-mn-link:hover { color: var(--ip-ink); }
+  .ip-mn-link.active { color: var(--ip-purple); border-bottom-color: var(--ip-purple); font-weight: 600; }
+
+  .ip-section-eye-light { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #7c3aed; margin-bottom: 12px; display: block; }
+  .ip-section-title-light { font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; color: #ffffff; margin-bottom: 16px; }
+  .ip-section-sub-light { font-size: 1rem; color: #6b7280; max-width: 580px; line-height: 1.7; margin-bottom: 48px; }
+  .ip-section-eye { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ip-purple); margin-bottom: 12px; display: block; }
+  .ip-section-title { font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; color: var(--ip-ink); margin-bottom: 16px; }
+  .ip-section-sub { font-size: 1rem; color: var(--ip-muted); max-width: 580px; line-height: 1.7; margin-bottom: 40px; }
+
+  /* Timeline */
+  .ip-timeline { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; }
+  .ip-tl-item { display: flex; gap: 28px; align-items: flex-start; }
+  .ip-tl-line-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 20px; }
+  .ip-tl-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; position: relative; z-index: 1; transition: transform 0.2s; }
+  .ip-tl-item:hover .ip-tl-dot { transform: scale(1.3); }
+  .ip-tl-line { width: 2px; flex: 1; min-height: 48px; background: linear-gradient(to bottom, rgba(255,255,255,0.15), rgba(255,255,255,0.04)); margin: 4px 0; }
+  .ip-tl-content { padding-bottom: 40px; flex: 1; }
+  .ip-tl-day { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+  .ip-tl-title { font-size: 1.1rem; font-weight: 600; color: #ffffff; margin-bottom: 6px; }
+  .ip-tl-desc { font-size: 0.88rem; color: #6b7280; line-height: 1.6; }
+
+  /* Checklist */
+  .ip-checklist-wrap { max-width: 720px; margin: 0 auto; }
+  .ip-cat-legend { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  .ip-cat-pill { font-size: 0.75rem; font-weight: 600; padding: 4px 12px; border-radius: 100px; background: rgba(0,0,0,0.06); color: var(--ccolor); border: 1px solid rgba(0,0,0,0.08); }
+
+  .ip-progress-bar-wrap { margin-bottom: 28px; }
+  .ip-progress-label { display: flex; justify-content: space-between; font-size: 0.85rem; color: #6b7280; margin-bottom: 10px; }
+  #ip-progress-pct { color: var(--ip-purple); font-weight: 600; }
+  .ip-progress-track { height: 6px; background: #e5e7eb; border-radius: 100px; overflow: hidden; }
+  .ip-progress-fill { height: 100%; background: var(--ip-gradient); border-radius: 100px; transition: width 0.4s cubic-bezier(0.4,0,0.2,1); }
+
+  .ip-checklist { display: flex; flex-direction: column; gap: 8px; }
+  .ip-check-item { display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: #fff; border: 1px solid var(--ip-border); border-radius: 12px; cursor: pointer; transition: background 0.2s, border-color 0.2s; }
+  .ip-check-item:hover { background: #f9f9f9; }
+  .ip-check-item.checked { background: #f0fdf4; border-color: #bbf7d0; }
+  .ip-checkbox { display: none; }
+  .ip-check-box { width: 22px; height: 22px; border-radius: 6px; border: 2px solid #d1d5db; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: background 0.2s, border-color 0.2s; }
+  .ip-check-item.checked .ip-check-box { background: var(--ip-green); border-color: var(--ip-green); }
+  .ip-check-box svg { opacity: 0; transition: opacity 0.15s; }
+  .ip-check-item.checked .ip-check-box svg { opacity: 1; }
+  .ip-check-text { font-size: 0.9rem; color: var(--ip-ink); line-height: 1.4; flex: 1; transition: color 0.2s; }
+  .ip-check-item.checked .ip-check-text { color: #9ca3af; text-decoration: line-through; text-decoration-color: #d1d5db; }
+  .ip-check-cat { font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 100px; border: 1px solid; white-space: nowrap; flex-shrink: 0; }
+
+  .ip-checklist-done { text-align: center; padding: 48px 24px; background: #f0fdf4; border-radius: 16px; border: 1px solid #bbf7d0; margin-top: 24px; }
+  .ip-checklist-done.hidden { display: none; }
+  .ip-done-icon { font-size: 3rem; margin-bottom: 16px; }
+  .ip-done-title { font-size: 1.4rem; font-weight: 600; color: var(--ip-ink); margin-bottom: 8px; }
+  .ip-done-sub { font-size: 0.95rem; color: #6b7280; margin-bottom: 20px; }
+  .ip-btn-reset { background: transparent; border: 1px solid #d1d5db; color: #6b7280; font-size: 0.82rem; padding: 8px 20px; border-radius: 100px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+  .ip-btn-reset:hover { border-color: #9ca3af; color: var(--ip-ink); }
+
+  /* Page nav */
+  .ip-page-nav { background: #f8f8f8; border-top: 1px solid var(--ip-border); padding: 24px; }
+  .ip-page-nav .ip-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .ip-pnav-back { font-size: 0.875rem; color: var(--ip-muted); font-weight: 500; transition: color 0.2s; }
+  .ip-pnav-back:hover { color: var(--ip-ink); }
+  .ip-pnav-next { font-size: 0.875rem; font-weight: 600; color: var(--ip-purple); transition: color 0.2s; }
+  .ip-pnav-next:hover { color: #6d28d9; }
+</style>
