@@ -16,18 +16,25 @@ The preview server is configured in `.claude/launch.json` (name: `tuition-dev`, 
 
 ## Project
 
-**Online Tuition Classes** — a frontend-only marketing site for an online tutoring service matching students (Class 1–12) with verified teachers. No backend or database. The "Find a Teacher" form submits to **Formspree** (`https://formspree.io/f/mpqgpdjn`) and emails `abhinamika@gmail.com`; the contact page form is still client-side with a success-state toggle.
+**Online Tuition Classes** — a frontend-only marketing site for an online tutoring service matching students (Class 1–12) with verified teachers. No backend or database. All user-facing forms submit to **Formspree** (`https://formspree.io/f/mpqgpdjn`) and email `abhinamika@gmail.com`. Each form includes a hidden `Type` field so submissions are distinguishable in the inbox:
 
-This is a **multi-page application (MPA)**. Pages and their URLs:
+| Form | `Type` value |
+|---|---|
+| Find a Teacher (homepage) | *(none)* |
+| Batch Registration (homepage) | `Batch Registration` |
+| Contact page | `Contact Message` |
+| Profile signup | `New User Signup` |
+
+This is a **hybrid MPA/SPA**: Astro generates a separate HTML file per route (MPA), but `<ClientRouter />` is enabled globally so navigation is client-side with DOM swapping (SPA-style). Pages and their URLs:
 
 | File | URL | Purpose |
 |---|---|---|
-| `src/pages/index.astro` | `/` | Home — hero, How It Works, Pricing calculator, Find a Teacher form |
-| `src/pages/about.astro` | `/about` | Mission, verification process, stats |
-| `src/pages/contact.astro` | `/contact` | Contact info + message form |
+| `src/pages/index.astro` | `/` | Home — hero, How It Works, Pricing calculator, Find a Teacher form, Batch Registration |
+| `src/pages/about.astro` | `/about` | Mission and informational sections (no stats) |
+| `src/pages/contact.astro` | `/contact` | Contact message form (no address/phone displayed) |
 | `src/pages/profile.astro` | `/profile` | User profile — sign up / log in / edit details |
 | `src/pages/privacy-policy.astro` | `/privacy-policy` | Privacy policy (7 sections, sticky TOC) |
-| `src/pages/terms.astro` | `/terms` | Terms & conditions (9 sections, sticky TOC) |
+| `src/pages/terms.astro` | `/terms` | Terms & conditions (8 sections, sticky TOC); section 5 includes non-refundable fee and compulsory attendance policy |
 
 ## Architecture
 
@@ -44,7 +51,7 @@ Pages import `Layout`, `Nav`, and `Footer`, then compose their content between t
 
 **Page transitions** use Astro's `<ClientRouter />` (from `astro:transitions`, available in Astro 5+; called `ViewTransitions` in older versions). It's imported and placed in the `<head>` inside `Layout.astro`. This enables SPA-style navigation with a fade+scale animation defined via `::view-transition-old/new(root)` in the global CSS. It also auto-prefetches linked pages. After each navigation `astro:after-swap` fires — use this event to re-initialise any page-level JS (Lenis, hamburger, nav auth state all subscribe to it).
 
-**Smooth scrolling** is handled by [Lenis](https://github.com/darkroomengineering/lenis) (`lenis` npm package, `autoRaf: true`), initialised in `Layout.astro` and re-initialised on `astro:after-swap`. Do not add `scroll-behavior: smooth` to CSS — Lenis handles it.
+**Smooth scrolling** is handled by [Lenis](https://github.com/darkroomengineering/lenis) (`lenis` npm package, `autoRaf: true`), initialised in `Layout.astro` and re-initialised on `astro:after-swap`. Do not add `scroll-behavior: smooth` to CSS — Lenis handles it. Lenis also intercepts all `a[href^="#"]` anchor clicks and calls `lenis.scrollTo(target, { offset: -72 })` — the `-72` offset accounts for the sticky nav height so headings aren't hidden behind it. Do not remove this offset.
 
 **Styles** are colocated `<style>` blocks inside each `.astro` file using CSS custom properties (`--ink`, `--canvas`, etc.). There is no global stylesheet beyond the reset in `Layout.astro`. Token definitions are repeated per-page because Astro scopes component styles.
 
@@ -66,15 +73,17 @@ Frontend-only auth using **`localStorage`** (key `otc_user`, JSON `{name, email,
 
 The three helper functions (`getUser`, `saveUser`, `removeUser`) are **duplicated** in `index.astro` and `profile.astro` because Astro `<script is:inline>` blocks don't share scope across pages. Do not try to deduplicate into a shared module without switching to `<script>` (bundled) mode.
 
-## Pricing Calculator (homepage)
+## Pricing Calculator & homepage forms (index.astro)
 
-The interactive pricing section in `src/pages/index.astro` is driven entirely by `<script is:inline>` — no framework. Key logic:
+The pricing section and both submission forms in `src/pages/index.astro` are driven entirely by `<script is:inline>` — no framework. Key logic:
 
 - **Class slider** (1–12): drag handle updates a fill bar and badge in real time. No CSS transition on the fill — updates synchronously via `requestAnimationFrame` to avoid lag.
 - **Subjects**: Maths, Physics, Chemistry, Biology. Max 2 selectable. **Maths and Biology are hidden for class 11–12** (only available up to class 10). Subject cards are rendered by JS into `#subject-grid`; their styles use `:global()` for this reason.
-- No price is displayed — the calculator captures class + subject selection for the "Find a Teacher" form flow.
-- **Shared state**: `currentClass` (number) and `calcSelected` (array of subject name strings) are declared as `var` in the outer `<script is:inline>` scope so the form submit handler can read them. The IIFE that drives the calculator writes to these outer vars. Do not move them inside the IIFE.
-- **Form validation**: the "Find a Teacher" form submit handler checks `calcSelected.length > 0` before proceeding. If empty it shows `#calc-error` (amber banner with shake animation) and blocks submission. The error auto-hides when the user selects a subject. On successful Formspree submission the form is replaced by `#form-success` — an animated card with SVG checkmark that draws itself in via `stroke-dashoffset` animation.
+- No price is displayed — the calculator captures class + subject selection for both the "Find a Teacher" and "Batch Registration" form flows.
+- **Shared state**: `currentClass` (number) and `calcSelected` (array of subject name strings) are declared as `var` in the outer `<script is:inline>` scope so all form submit handlers can read them. The IIFE that drives the calculator writes to these outer vars. Do not move them inside the IIFE.
+- **Find a Teacher form** (`#find-form`): validates phone (10 digits), then `calcSelected.length > 0`, then checks `otc_user` in localStorage — opens the auth modal if not signed in, otherwise submits directly. Success replaces the form with `#form-success`.
+- **Batch Registration form** (`#batch-form`): validates all `[type="tel"]` inputs (including JS-generated member fields) for 10 digits, then `calcSelected` length. Batch size (2–5) is chosen via pill buttons; member fields for members 3–5 are rendered dynamically by JS into `#batch-extra-members`. Because these elements are JS-created they need `:global()` CSS — all `.batch-member-block`, `.batch-member-row`, and `.batch-form-inner label/input` rules are `:global()`. Success shows `#batch-success`.
+- **Phone validation rule** (all forms): strip non-digits and assert length === 10. Required phone fields reject empty or wrong-length numbers. Optional phone fields (modal signup, profile signup, profile edit) only validate if a value is entered — empty is allowed. Error messages appear in existing `auth-error` elements or dedicated `*-phone-error` divs adjacent to the submit button.
 
 ## Design System
 

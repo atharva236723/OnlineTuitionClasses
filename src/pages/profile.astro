@@ -99,6 +99,7 @@ import Footer from '../components/Footer.astro';
               Phone / WhatsApp <span class="opt">(optional)</span>
               <input type="tel" id="edit-phone" />
             </label>
+            <p class="auth-error hidden" id="edit-phone-error"></p>
             <div class="edit-actions">
               <button type="submit" class="btn-primary btn-full-dark btn-save">Save changes</button>
               <button type="button" class="btn-ghost" id="logout-btn">Log out</button>
@@ -209,7 +210,7 @@ import Footer from '../components/Footer.astro';
   });
 
   /* Signup */
-  document.getElementById('signup-form').addEventListener('submit', function(e) {
+  document.getElementById('signup-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     var name  = document.getElementById('signup-name').value.trim();
     var email = document.getElementById('signup-email').value.trim();
@@ -218,11 +219,23 @@ import Footer from '../components/Footer.astro';
 
     if (!name) { err.textContent = 'Please enter your name.'; err.classList.remove('hidden'); return; }
     if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email.'; err.classList.remove('hidden'); return; }
+    if (phone && phone.replace(/\D/g, '').length !== 10) { err.textContent = 'Please enter a valid 10-digit phone number.'; err.classList.remove('hidden'); return; }
 
     err.classList.add('hidden');
     var u = { name: name, email: email, phone: phone };
     saveUser(u);
     renderLoggedIn(u);
+
+    /* Notify via Formspree */
+    var fd = new FormData();
+    fd.append('Type',  'New User Signup');
+    fd.append('name',  name);
+    fd.append('email', email);
+    if (phone) fd.append('phone', phone);
+    fd.append('_replyto', 'abhinamika@gmail.com');
+    fetch('https://formspree.io/f/mpqgpdjn', {
+      method: 'POST', body: fd, headers: { Accept: 'application/json' }
+    }).catch(function() {});
   });
 
   /* Edit */
@@ -231,6 +244,13 @@ import Footer from '../components/Footer.astro';
     var name  = document.getElementById('edit-name').value.trim();
     var email = document.getElementById('edit-email').value.trim();
     var phone = document.getElementById('edit-phone').value.trim();
+    var phoneErr = document.getElementById('edit-phone-error');
+    if (phone && phone.replace(/\D/g, '').length !== 10) {
+      phoneErr.textContent = 'Please enter a valid 10-digit phone number.';
+      phoneErr.classList.remove('hidden');
+      return;
+    }
+    phoneErr.classList.add('hidden');
     var u = { name: name, email: email, phone: phone };
     saveUser(u);
     renderLoggedIn(u);

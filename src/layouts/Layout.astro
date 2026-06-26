@@ -34,7 +34,7 @@ const { title = "Online Tuition for Class 1-12 | Verified Teachers" } = Astro.pr
             const target = document.querySelector((anchor as HTMLAnchorElement).getAttribute('href')!);
             if (target) {
               e.preventDefault();
-              lenis.scrollTo(target as HTMLElement);
+              lenis.scrollTo(target as HTMLElement, { offset: -72 });
             }
           });
         });

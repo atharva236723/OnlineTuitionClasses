@@ -18,27 +18,10 @@ import Footer from '../components/Footer.astro';
   <section class="section">
     <div class="container contact-layout">
 
-      <div class="contact-info reveal">
-        <div class="info-block">
-          <span class="info-label">Email</span>
-          <a href="mailto:hello@onlinetuitionclasses.in" class="info-value">hello@onlinetuitionclasses.in</a>
-        </div>
-        <div class="info-block">
-          <span class="info-label">WhatsApp</span>
-          <span class="info-value">+91 98765 43210</span>
-        </div>
-        <div class="info-block">
-          <span class="info-label">Hours</span>
-          <span class="info-value">Mon – Sat, 9 am – 8 pm IST</span>
-        </div>
-        <div class="info-block">
-          <span class="info-label">Response time</span>
-          <span class="info-value">Within 24 hours</span>
-        </div>
-      </div>
-
-      <div class="form-wrap reveal" style="transition-delay:0.1s">
-        <form class="contact-form" onsubmit="handleSubmit(event)">
+      <div class="form-wrap reveal">
+        <form class="contact-form" id="contact-form" novalidate>
+          <input type="hidden" name="_replyto" value="abhinamika@gmail.com" />
+          <input type="hidden" name="Type"     value="Contact Message" />
           <div class="form-row">
             <label>
               Your name
@@ -72,11 +55,24 @@ import Footer from '../components/Footer.astro';
 </Layout>
 
 <script is:inline>
-  function handleSubmit(e) {
+  document.getElementById('contact-form').addEventListener('submit', async function (e) {
     e.preventDefault();
-    document.querySelector('.contact-form').classList.add('hidden');
-    document.getElementById('form-success').classList.remove('hidden');
-  }
+    var form = document.getElementById('contact-form');
+    var data = new FormData(form);
+    try {
+      var res = await fetch('https://formspree.io/f/mpqgpdjn', {
+        method: 'POST', body: data, headers: { Accept: 'application/json' }
+      });
+      if (res.ok) {
+        form.classList.add('hidden');
+        document.getElementById('form-success').classList.remove('hidden');
+      } else {
+        alert('Something went wrong. Please try again.');
+      }
+    } catch (_) {
+      alert('Network error. Please check your connection and try again.');
+    }
+  });
 </script>
 
 <style>
@@ -133,44 +129,9 @@ import Footer from '../components/Footer.astro';
   }
 
   .contact-layout {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 64px;
-    align-items: start;
+    max-width: 640px;
+    margin-inline: auto;
   }
-
-  @media (max-width: 700px) {
-    .contact-layout { grid-template-columns: 1fr; gap: 48px; }
-  }
-
-  .contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-  }
-
-  .info-block {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .info-label {
-    font-size: 0.75rem;
-    font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #737373;
-  }
-
-  .info-value {
-    font-size: 0.95rem;
-    color: var(--ink);
-    font-weight: 500;
-  }
-
-  a.info-value { color: #2563eb; }
-  a.info-value:hover { text-decoration: underline; }
 
   .contact-form {
     display: flex;

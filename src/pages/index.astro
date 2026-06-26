@@ -67,8 +67,8 @@ const pricing = [
           <div class="slider-wrap">
             <div class="slider-track">
               <div class="slider-fill" id="slider-fill"></div>
+              <input type="range" min="1" max="12" value="6" id="class-slider" class="class-slider" />
             </div>
-            <input type="range" min="1" max="12" value="6" id="class-slider" class="class-slider" />
             <div class="slider-ticks">
               {Array.from({length: 12}, (_, i) => i + 1).map(n => (
                 <span>{n}</span>
@@ -111,6 +111,9 @@ const pricing = [
           </label>
         </div>
 
+        <div id="find-phone-error" class="calc-error hidden" role="alert">
+          Please enter a valid 10-digit phone number.
+        </div>
         <div id="calc-error" class="calc-error hidden" role="alert">
           Please select your class and at least one subject above before requesting a match.
         </div>
@@ -127,6 +130,128 @@ const pricing = [
         <h3 class="fs-title">Request sent!</h3>
         <p class="fs-body">We'll match you with a verified teacher and reach out within <strong>24 hours</strong>.</p>
         <p class="fs-sub">Check your WhatsApp and email for updates.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BATCH REGISTRATION ────────────────────────────── -->
+  <section class="section section-alt" id="batch">
+    <div class="container">
+      <h2 class="section-title reveal">Study in a batch</h2>
+      <p class="section-sub reveal">Have friends who want to learn the same subject? Register as a group — same verified teacher, one shared schedule, lower cost per student.</p>
+
+      <div class="batch-layout">
+
+        <!-- Benefits -->
+        <div class="batch-benefits reveal-stagger reveal">
+          <div class="batch-benefit">
+            <div class="bb-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a8 8 0 1 0 0 16A8 8 0 0 0 10 2zm0 14.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13zm-.75-9.5v3.19l2.72 1.63-.56.93-3.16-1.9V7h1z" fill="currentColor"/></svg>
+            </div>
+            <div>
+              <p class="bb-title">One teacher, one schedule</p>
+              <p class="bb-desc">All batch members attend the same live sessions — no coordination chaos.</p>
+            </div>
+          </div>
+          <div class="batch-benefit">
+            <div class="bb-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM5 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm14 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm7 0h4a4.98 4.98 0 0 0-.98-2.63C10.43 10.5 9.24 10 8 10s-2.43.5-3.02 1.37A4.98 4.98 0 0 0 4 14h4zm5.35-1.22C14.07 13.26 15 13.8 15 14h4s1 0 1-1-1-4-6-4c-1.08 0-2.04.24-2.84.62.52.6.89 1.33 1.19 2.16z" fill="currentColor"/></svg>
+            </div>
+            <div>
+              <p class="bb-title">2 to 5 students</p>
+              <p class="bb-desc">Small group, big impact. Minimum 2, maximum 5 students per batch.</p>
+            </div>
+          </div>
+          <div class="batch-benefit">
+            <div class="bb-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M9 2a7 7 0 1 0 0 14A7 7 0 0 0 9 2zm1 10.5H8V9h2v3.5zm0-5H8V5.5h2V7.5z" fill="currentColor"/></svg>
+            </div>
+            <div>
+              <p class="bb-title">Uses your class &amp; subject</p>
+              <p class="bb-desc">Batch registration uses the class and subjects you selected in the pricing section above.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form card -->
+        <div class="batch-card reveal" style="transition-delay:0.1s">
+
+          <!-- Batch size picker -->
+          <div class="batch-size-row">
+            <p class="batch-field-label">Batch size</p>
+            <div class="batch-size-pills" id="batch-size-pills">
+              {[2, 3, 4, 5].map(n => (
+                <button type="button" class:list={['batch-size-pill', n === 2 && 'active']} data-size={n}>
+                  <span class="bsp-num">{n}</span>
+                  <span class="bsp-label">student{n > 1 ? 's' : ''}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <form id="batch-form" class="batch-form-inner" novalidate>
+            <input type="hidden" name="_replyto" value="abhinamika@gmail.com" />
+            <input type="hidden" name="Type"     value="Batch Registration" />
+            <input type="hidden" name="BatchSize" id="batch-hidden-size"     value="2" />
+            <input type="hidden" name="Class"    id="batch-hidden-class"    value="" />
+            <input type="hidden" name="Subjects" id="batch-hidden-subjects" value="" />
+
+            <!-- Organizer (always shown) -->
+            <div class="batch-member-block">
+              <p class="batch-member-label">You (organiser)</p>
+              <div class="batch-member-row">
+                <label>
+                  Name
+                  <input type="text"  name="member1_name"  placeholder="Your name"  required />
+                </label>
+                <label>
+                  Phone / WhatsApp
+                  <input type="tel"   name="member1_phone" placeholder="+91 98765 43210" required />
+                </label>
+              </div>
+            </div>
+
+            <!-- Member 2 (always shown, min batch = 2) -->
+            <div class="batch-member-block">
+              <p class="batch-member-label">Member 2</p>
+              <div class="batch-member-row">
+                <label>
+                  Name
+                  <input type="text"  name="member2_name"  placeholder="Friend's name"  required />
+                </label>
+                <label>
+                  Phone / WhatsApp
+                  <input type="tel"   name="member2_phone" placeholder="+91 98765 43210" required />
+                </label>
+              </div>
+            </div>
+
+            <!-- Members 3-5 revealed dynamically by JS -->
+            <div id="batch-extra-members"></div>
+
+            <div id="batch-phone-error" class="calc-error hidden" role="alert">
+              Please enter valid 10-digit phone numbers for all members.
+            </div>
+            <div id="batch-error" class="calc-error hidden" role="alert">
+              Please select a class and at least one subject in the Pricing section above before registering.
+            </div>
+
+            <button type="submit" class="btn-primary btn-full">Register for batch</button>
+          </form>
+
+          <div id="batch-success" class="form-success hidden" aria-live="polite">
+            <div class="fs-icon">
+              <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle class="fs-circle" cx="26" cy="26" r="24" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                <path class="fs-check" d="M14 26.5l8.5 8.5 15-16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="fs-title">Batch registered!</h3>
+            <p class="fs-body">We'll match your group with a verified teacher and reach out within <strong>24 hours</strong>.</p>
+            <p class="fs-sub">Check your WhatsApp and email for updates.</p>
+          </div>
+
+        </div>
       </div>
     </div>
   </section>
@@ -294,6 +419,7 @@ const pricing = [
 
     if (!name)  { err.textContent = 'Please enter your name.';  err.classList.remove('hidden'); return; }
     if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email.'; err.classList.remove('hidden'); return; }
+    if (phone && phone.replace(/\D/g, '').length !== 10) { err.textContent = 'Please enter a valid 10-digit phone number.'; err.classList.remove('hidden'); return; }
 
     err.classList.add('hidden');
     saveUser({ name: name, email: email, phone: phone });
@@ -304,6 +430,16 @@ const pricing = [
   /* ── Find-form submit ── */
   document.getElementById('find-form').addEventListener('submit', async function (e) {
     e.preventDefault();
+    var phoneErrEl = document.getElementById('find-phone-error');
+    var phoneVal = (document.querySelector('#find-form [name="phone"]') || {}).value || '';
+    var phoneDigits = phoneVal.replace(/\D/g, '');
+    if (phoneDigits.length !== 10) {
+      phoneErrEl.classList.remove('hidden');
+      document.getElementById('calc-error').classList.add('hidden');
+      phoneErrEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    phoneErrEl.classList.add('hidden');
     var errEl = document.getElementById('calc-error');
     if (calcSelected.length === 0) {
       errEl.classList.remove('hidden');
@@ -348,7 +484,7 @@ const pricing = [
     /* Maths only up to class 10 */
     const SUBJECT_META = {
       Maths:     { color: '#2563eb', icon: '∑', note: 'Class 1–10' },
-      Physics:   { color: '#7c3aed', icon: '⚛', note: 'All classes' },
+      Physics:   { color: '#7c3aed', icon: '⚛', note: 'Coming soon for 11–12' },
       Chemistry: { color: '#059669', icon: '⚗', note: 'All classes' },
       Biology:   { color: '#dc2626', icon: '🧬', note: 'Class 1–10' },
     };
@@ -376,14 +512,19 @@ const pricing = [
 
     function renderSubjects() {
       const avail = availableSubjects();
-      /* drop any selected subject that's no longer available */
-      calcSelected = calcSelected.filter(s => avail.includes(s));
+      /* drop any selected subject that's no longer available or locked */
+      calcSelected = calcSelected.filter(s => {
+        if (!avail.includes(s)) return false;
+        if (s === 'Physics' && currentClass >= 11) return false;
+        return true;
+      });
       subjectGrid.innerHTML = '';
 
       avail.forEach(sub => {
-        const meta       = SUBJECT_META[sub];
-        const isSelected = calcSelected.includes(sub);
-        const isDisabled = calcSelected.length >= 2 && !isSelected;
+        const meta            = SUBJECT_META[sub];
+        const isSelected      = calcSelected.includes(sub);
+        const isPhysicsLocked = sub === 'Physics' && currentClass >= 11;
+        const isDisabled      = isPhysicsLocked || (calcSelected.length >= 2 && !isSelected);
 
         const btn = document.createElement('button');
         btn.type = 'button';
@@ -439,6 +580,87 @@ const pricing = [
     updateFill(currentClass);
     updateTicks(currentClass);
     renderSubjects();
+  })();
+
+  /* ── Batch registration ── */
+  (function () {
+    var batchSize = 2;
+
+    var pillsWrap = document.getElementById('batch-size-pills');
+    var extraWrap = document.getElementById('batch-extra-members');
+    var batchHiddenSize = document.getElementById('batch-hidden-size');
+
+    function renderExtraMembers() {
+      extraWrap.innerHTML = '';
+      for (var i = 3; i <= batchSize; i++) {
+        var num = i;
+        var block = document.createElement('div');
+        block.className = 'batch-member-block';
+        block.innerHTML =
+          '<p class="batch-member-label">Member ' + num + '</p>' +
+          '<div class="batch-member-row">' +
+            '<label>Name<input type="text" name="member' + num + '_name" placeholder="Friend\'s name" required /></label>' +
+            '<label>Phone / WhatsApp<input type="tel" name="member' + num + '_phone" placeholder="+91 98765 43210" required /></label>' +
+          '</div>';
+        extraWrap.appendChild(block);
+      }
+    }
+
+    pillsWrap.addEventListener('click', function (e) {
+      var pill = e.target.closest('.batch-size-pill');
+      if (!pill) return;
+      batchSize = Number(pill.dataset.size);
+      batchHiddenSize.value = batchSize;
+      pillsWrap.querySelectorAll('.batch-size-pill').forEach(function (p) {
+        p.classList.toggle('active', Number(p.dataset.size) === batchSize);
+      });
+      renderExtraMembers();
+    });
+
+    document.getElementById('batch-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var phoneErrEl = document.getElementById('batch-phone-error');
+      var telInputs = document.querySelectorAll('#batch-form [type="tel"]');
+      var phoneOk = Array.from(telInputs).every(function(inp) {
+        return inp.value.replace(/\D/g, '').length === 10;
+      });
+      if (!phoneOk) {
+        phoneErrEl.classList.remove('hidden');
+        document.getElementById('batch-error').classList.add('hidden');
+        phoneErrEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      phoneErrEl.classList.add('hidden');
+      var errEl = document.getElementById('batch-error');
+      if (calcSelected.length === 0) {
+        errEl.classList.remove('hidden');
+        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      errEl.classList.add('hidden');
+
+      document.getElementById('batch-hidden-class').value    = 'Class ' + currentClass;
+      document.getElementById('batch-hidden-subjects').value = calcSelected.join(', ');
+
+      var form = document.getElementById('batch-form');
+      var data = new FormData(form);
+
+      try {
+        var res = await fetch('https://formspree.io/f/mpqgpdjn', {
+          method: 'POST', body: data, headers: { Accept: 'application/json' }
+        });
+        if (res.ok) {
+          form.classList.add('hidden');
+          document.getElementById('batch-success').classList.remove('hidden');
+        } else {
+          alert('Something went wrong. Please try again.');
+        }
+      } catch (_) {
+        alert('Network error. Please check your connection and try again.');
+      }
+    });
+
+    renderExtraMembers();
   })();
 </script>
 
@@ -1077,6 +1299,195 @@ const pricing = [
     margin: 0;
     opacity: 0.7;
   }
+
+  /* ── Batch section ─────────────────────────────────── */
+  .batch-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 48px;
+    align-items: start;
+    margin-top: 48px;
+  }
+
+  @media (max-width: 720px) {
+    .batch-layout { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  .batch-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .batch-benefit {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .bb-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--ink);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .bb-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 4px;
+  }
+
+  .bb-desc {
+    font-size: 0.85rem;
+    color: var(--ink-2);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  .batch-card {
+    background: var(--canvas);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+  }
+
+  @media (max-width: 600px) { .batch-card { padding: 20px 16px; } }
+
+  .batch-size-row {
+    margin-bottom: 28px;
+  }
+
+  .batch-field-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink-2);
+    margin: 0 0 12px;
+  }
+
+  .batch-size-pills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .batch-size-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 10px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: var(--canvas);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s, background 0.15s, transform 0.15s cubic-bezier(.34,1.56,.64,1), box-shadow 0.15s;
+    user-select: none;
+  }
+
+  .batch-size-pill:hover {
+    border-color: #aaa;
+    transform: translateY(-1px);
+  }
+
+  .batch-size-pill.active {
+    border-color: var(--ink);
+    background: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  }
+
+  .bsp-num {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1;
+    transition: color 0.15s;
+  }
+
+  .batch-size-pill.active .bsp-num { color: #fff; }
+
+  .bsp-label {
+    font-size: 0.68rem;
+    color: var(--ink-2);
+    transition: color 0.15s;
+  }
+
+  .batch-size-pill.active .bsp-label { color: rgba(255,255,255,.65); }
+
+  .batch-form-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  :global(.batch-member-block) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    background: #fafafa;
+    animation: memberIn 0.25s cubic-bezier(.34,1.56,.64,1) both;
+  }
+
+  @keyframes memberIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  :global(.batch-member-label) {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #4d4d4d;
+    margin: 0;
+  }
+
+  :global(.batch-member-row) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  @media (max-width: 520px) {
+    :global(.batch-member-row) { grid-template-columns: 1fr; }
+  }
+
+  :global(.batch-form-inner label) {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #4d4d4d;
+  }
+
+  :global(.batch-form-inner input) {
+    padding: 9px 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    background: #ffffff;
+    color: #171717;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  :global(.batch-form-inner input:focus) { border-color: #171717; }
 
   .hidden { display: none !important; }
 
