@@ -86,6 +86,21 @@ The pricing section and both submission forms in `src/pages/index.astro` are dri
 - **Batch Registration form** (`#batch-form`): validates all `[type="tel"]` inputs (including JS-generated member fields) for 10 digits, then `calcSelected` length. Batch size (2–5) is chosen via pill buttons; member fields for members 3–5 are rendered dynamically by JS into `#batch-extra-members`. Because these elements are JS-created they need `:global()` CSS — all `.batch-member-block`, `.batch-member-row`, and `.batch-form-inner label/input` rules are `:global()`. Success shows `#batch-success`.
 - **Phone validation rule** (all forms): strip non-digits and assert length === 10. Required phone fields reject empty or wrong-length numbers. Optional phone fields (modal signup, profile signup, profile edit) only validate if a value is entered — empty is allowed. Error messages appear in existing `auth-error` elements or dedicated `*-phone-error` divs adjacent to the submit button.
 
+## Favicon
+
+All favicon assets live in `public/` and are referenced in `Layout.astro` in this exact order (matches RealFaviconGenerator output — do not reorder):
+
+```html
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="OTC" />
+<link rel="manifest" href="/site.webmanifest" />
+```
+
+`site.webmanifest` references `web-app-manifest-192x192.png` and `web-app-manifest-512x512.png` (both maskable) for PWA/Android home-screen icons.
+
 ## Design System
 
 UI work must follow `DESIGN.md` (Vercel-inspired design language). Key rules:
