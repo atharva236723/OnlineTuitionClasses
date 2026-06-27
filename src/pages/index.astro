@@ -2438,6 +2438,15 @@ const pricing = [
 
   .faq-item[open] .faq-q { background: var(--canvas-soft); }
 
+  @keyframes faqSlideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .faq-item[open] .faq-a {
+    animation: faqSlideDown 0.22s ease;
+  }
+
   .faq-a {
     padding: 0 20px 18px;
     font-size: 0.9rem;
@@ -2713,6 +2722,10 @@ const pricing = [
 
   .seo-faq-item[open] .seo-faq-q::after {
     transform: translateY(-50%) rotate(45deg);
+  }
+
+  .seo-faq-item[open] .seo-faq-a {
+    animation: faqSlideDown 0.22s ease;
   }
 
   .seo-faq-a {
