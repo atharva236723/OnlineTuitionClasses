@@ -16,6 +16,18 @@ The preview server is configured in `.claude/launch.json` (name: `tuition-dev`, 
 
 When running the dev server as an agent (not interactively), use background mode: `npx astro dev &` — then stop it with `kill %1` when done. On Windows PowerShell use `Start-Process` or run via Bash tool instead, since `kill %1` is a bash job-control syntax.
 
+## Deployment
+
+The site deploys to **Cloudflare Pages** (project: `online-tuition-classes`). Production URL: **https://online-tuition-classes.pages.dev**
+
+To deploy:
+```sh
+npm run build
+npx wrangler pages deploy dist --project-name online-tuition-classes --branch main
+```
+
+`wrangler.toml` exists but only configures a Workers asset binding (`name = "onlinetuitionclasses"`) — Pages deploy ignores it and uses the CLI flags above. The warning about missing `pages_build_output_dir` is harmless; ignore it.
+
 ## MCP servers & skills
 
 - **`astro-docs`** — Astro documentation MCP, HTTP transport at `https://mcp.docs.astro.build/mcp`. Use for Astro API questions, component syntax, and integration docs.
@@ -143,6 +155,8 @@ Frontend-only auth using **`localStorage`** (key `otc_user`, JSON `{name, email,
 The three helper functions (`getUser`, `saveUser`, `removeUser`) are **duplicated** in `index.astro` and `profile.astro` because Astro `<script is:inline>` blocks don't share scope across pages. Do not try to deduplicate into a shared module without switching to `<script>` (bundled) mode.
 
 ## Homepage-only sections (index.astro)
+
+**How It Works** (`#how`) — two-column layout: **For Students** (`studentSteps` array, 4 steps) and **For Parents** (`parentSteps` array, 4 steps). Both render into `.hiw-columns > .hiw-col > .hiw-steps` using the shared `.step-card` component. Columns stack vertically on mobile (≤768px). The old single `steps` array no longer exists.
 
 **Smart Match Quiz** (`#quiz`) — dark `#171717` band section between "How It Works" and Pricing. A **2-step** interactive quiz (Goal → Learning Style) driven by a separate `<script is:inline>` block at the bottom of the file (after `</Layout>`). Answers are stored in a local `answers` object. After step 2, a **loading/searching animation** plays (`#qstep-loading`) for ~5 seconds — three checklist rows tick off sequentially, the label changes to "Match found!", then the result panel (`#qstep-result`) is shown with a "Find this teacher →" CTA that smooth-scrolls to `#find`. Progress dots are hidden during the loading and result steps. The quiz (including loading state) resets fully when "Retake quiz" is clicked via `resetLoadingState()`. The quiz re-initialises on `astro:after-swap` via `document.addEventListener('astro:after-swap', initQuiz)`.
 
