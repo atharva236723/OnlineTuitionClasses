@@ -227,6 +227,7 @@ const sections = [
 
   /* Stats */
   .ip-stats { display: flex; gap: 0; position: relative; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 32px 48px; backdrop-filter: blur(12px); max-width: 780px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+  @media (max-width: 560px) { .ip-stats { padding: 24px 20px; } }
   .ip-stat { flex: 1; min-width: 160px; text-align: center; padding: 0 24px; }
   .ip-stat-num { font-size: 3rem; font-weight: 600; letter-spacing: -0.04em; color: #ffffff; line-height: 1; }
   .ip-stat-unit { font-size: 1.5rem; font-weight: 500; color: var(--ip-purple); }
