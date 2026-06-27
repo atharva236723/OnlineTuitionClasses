@@ -35,6 +35,13 @@ const mistakes = [
   ogUrl="https://onlinetuitionclasses.com/personality-dev/compare"
   canonical="https://onlinetuitionclasses.com/personality-dev/compare"
 >
+  <script is:inline>
+    (function () {
+      if (!localStorage.getItem('otc_user')) {
+        location.replace('/profile?redirect=' + encodeURIComponent(location.pathname));
+      }
+    })();
+  </script>
   <Nav activePage="personality-dev" />
 
   <!-- ── SUB-PAGE HERO ── -->

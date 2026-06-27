@@ -146,6 +146,12 @@ import Footer from '../components/Footer.astro';
   }
 
   function renderLoggedIn(u) {
+    var params = new URLSearchParams(window.location.search);
+    var redirect = params.get('redirect');
+    if (redirect && redirect.startsWith('/')) {
+      location.replace(redirect);
+      return;
+    }
     document.getElementById('auth-panel').classList.add('hidden');
     var panel = document.getElementById('profile-panel');
     panel.classList.remove('hidden');

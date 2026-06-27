@@ -58,6 +58,13 @@ const sections = [
   canonical="https://onlinetuitionclasses.com/personality-dev"
 >
 
+  <script is:inline>
+    (function () {
+      if (!localStorage.getItem('otc_user')) {
+        location.replace('/profile?redirect=' + encodeURIComponent(location.pathname));
+      }
+    })();
+  </script>
   <Nav activePage="personality-dev" />
 
   <!-- ── HERO ──────────────────────────────────────────────── -->
