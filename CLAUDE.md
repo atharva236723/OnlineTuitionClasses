@@ -46,7 +46,7 @@ This is a **hybrid MPA/SPA**: Astro generates a separate HTML file per route (MP
 
 | File | URL | Purpose |
 |---|---|---|
-| `src/pages/index.astro` | `/` | Home — hero, How It Works, Smart Match Quiz, Pricing calculator, Find a Teacher form, Batch Registration, FAQ |
+| `src/pages/index.astro` | `/` | Home — hero, How It Works, Smart Match Quiz, Pricing calculator, Find a Teacher form, Batch Registration, FAQ, SEO FAQ (`#seo-faq`), SEO content (`#about-otc`) |
 | `src/pages/about.astro` | `/about` | Mission and informational sections (no stats) |
 | `src/pages/contact.astro` | `/contact` | Contact message form (no address/phone displayed) |
 | `src/pages/profile.astro` | `/profile` | User profile — sign up / log in / edit details |
@@ -109,6 +109,29 @@ Key rules:
 
 **Specificity trap with utility classes**: a scoped utility like `.hidden { display: none }` has the same specificity as `.auth-form { display: flex }` after Astro adds the `[data-astro-cid-*]` attribute to both. If `.auth-form` appears later in the stylesheet it will win, leaving `.hidden` ineffective. Always declare `.hidden { display: none !important }` to guarantee it takes priority.
 
+## SEO system
+
+`Layout.astro` accepts the following optional SEO props — pass them from each page to override the defaults:
+
+| Prop | Default | Purpose |
+|---|---|---|
+| `title` | `"Online Tuition Classes for Class 1–12 \| Verified Teachers"` | `<title>` tag |
+| `description` | Site-wide default | `<meta name="description">` |
+| `keywords` | Site-wide keyword list | `<meta name="keywords">` |
+| `ogTitle` | Falls back to `title` | `og:title` |
+| `ogDescription` | Falls back to `description` | `og:description` |
+| `ogImage` | `/og-image.png` | `og:image` and `twitter:image` |
+| `ogUrl` | `https://onlinetuitionclasses.com` | `og:url` |
+| `canonical` | *(none)* | `<link rel="canonical">` — set on every indexable page |
+
+Twitter Card is always `summary_large_image`. Every page should pass `canonical` and `ogUrl` pointing to its own absolute URL.
+
+**JSON-LD FAQ schema** — `index.astro` includes a `<script type="application/ld+json">` block with `@type: FAQPage` and 16 Q&As covering online-classes and interview-prep keywords. This is placed directly in the page template (not in Layout) so it only appears on the homepage. When adding FAQ structured data to other pages, follow the same inline pattern — do not put JSON-LD in `Layout.astro`.
+
+**Homepage SEO sections** (below the existing FAQ accordion):
+- `#seo-faq` — visible 16-item accordion FAQ targeting long-tail keyword queries; styled with `.seo-faq-*` classes defined in the page `<style>` block.
+- `#about-otc` — ~600-word SEO prose section with H3 subheadings; styled with `.seo-*` classes. Uses `var(--canvas-soft)` background.
+
 ## Auth system
 
 Frontend-only auth using **`localStorage`** (key `otc_user`, JSON `{name, email, phone, picture}`). No backend — email is the identifier. Supports two sign-in methods: email-only (no password) and Google OAuth.
@@ -126,6 +149,10 @@ The three helper functions (`getUser`, `saveUser`, `removeUser`) are **duplicate
 **Smart Match Quiz** (`#quiz`) — dark `#171717` band section between "How It Works" and Pricing. A **2-step** interactive quiz (Goal → Learning Style) driven by a separate `<script is:inline>` block at the bottom of the file (after `</Layout>`). Answers are stored in a local `answers` object. After step 2, a **loading/searching animation** plays (`#qstep-loading`) for ~5 seconds — three checklist rows tick off sequentially, the label changes to "Match found!", then the result panel (`#qstep-result`) is shown with a "Find this teacher →" CTA that smooth-scrolls to `#find`. Progress dots are hidden during the loading and result steps. The quiz (including loading state) resets fully when "Retake quiz" is clicked via `resetLoadingState()`. The quiz re-initialises on `astro:after-swap` via `document.addEventListener('astro:after-swap', initQuiz)`.
 
 **FAQ** (`#faq`) — uses native HTML `<details>`/`<summary>` accordion. The `+` → `×` rotation is pure CSS via `.faq-item[open] .faq-q::after { transform: rotate(45deg) }`. No JS needed.
+
+**SEO FAQ** (`#seo-faq`) — a second, larger `<details>`/`<summary>` accordion below the existing FAQ, targeting 16 long-tail keyword queries across online classes and interview prep. Styled with `.seo-faq-*` classes (card border layout, `var(--canvas)` / `var(--canvas-soft)` backgrounds). Accompanied by a `<script type="application/ld+json">` block immediately after the section with `@type: FAQPage` schema (16 entries). Do not move the JSON-LD into `Layout.astro` — it should only appear on this page.
+
+**SEO content** (`#about-otc`) — ~600-word keyword-rich prose section below the SEO FAQ. Uses `.seo-heading` / `.seo-body` classes, `var(--canvas-soft)` background, H3 subheadings. Purely static HTML — no JS.
 
 **WhatsApp floating button** — rendered in `Layout.astro` (appears on all pages), fixed bottom-right, class `.wa-float`. Phone number is currently a placeholder (`+919876543210`) — update before going live. Styles are in the `<style is:global>` block of `Layout.astro`.
 
