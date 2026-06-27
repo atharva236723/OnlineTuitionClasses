@@ -52,12 +52,11 @@ This is a **hybrid MPA/SPA**: Astro generates a separate HTML file per route (MP
 | `src/pages/profile.astro` | `/profile` | User profile — sign up / log in / edit details |
 | `src/pages/privacy-policy.astro` | `/privacy-policy` | Privacy policy (7 sections, sticky TOC) |
 | `src/pages/terms.astro` | `/terms` | Terms & conditions (8 sections, sticky TOC); section 5 includes non-refundable fee and compulsory attendance policy |
-| `src/pages/interview-prep/index.astro` | `/interview-prep` | Interview Prep hub — hero with animated stat counters, 5 module navigation cards, CTA |
-| `src/pages/interview-prep/compare.astro` | `/interview-prep/compare` | Module 1 — 3D flip-card Mediocre vs Pro (8 comparisons) + Common Mistakes grid (8 cards) |
-| `src/pages/interview-prep/frameworks.astro` | `/interview-prep/frameworks` | Module 2 — STAR / CAR / SOAR answer frameworks with step-by-step cards + quick-reference table |
-| `src/pages/interview-prep/questions.astro` | `/interview-prep/questions` | Module 3 — 15 Q&As (3 tabbed categories) with mediocre/pro answers + 30+ question practice bank |
-| `src/pages/interview-prep/plan.astro` | `/interview-prep/plan` | Module 4 — 7-step 14-day countdown timeline + localStorage-persisted prep checklist (12 items, category-tagged) |
-| `src/pages/interview-prep/videos.astro` | `/interview-prep/videos` | Module 5 — tabbed YouTube video hub with modal player (4 categories, 8 curated videos) |
+| `src/pages/personality-dev/index.astro` | `/personality-dev` | Personality Development hub — hero with animated stat counters, 4 module navigation cards, CTA |
+| `src/pages/personality-dev/compare.astro` | `/personality-dev/compare` | Module 1 — 3D flip-card Mediocre vs Pro (8 personality dimensions) + Common Habits grid (8 cards) |
+| `src/pages/personality-dev/frameworks.astro` | `/personality-dev/frameworks` | Module 2 — STAR / CAR / SOAR communication frameworks with step-by-step cards + quick-reference table |
+| `src/pages/personality-dev/questions.astro` | `/personality-dev/questions` | Module 3 — 15 self-reflection Q&As (3 tabbed categories) with surface/deep answers + 30+ question practice bank |
+| `src/pages/personality-dev/plan.astro` | `/personality-dev/plan` | Module 4 — 7-step 14-day growth timeline + localStorage-persisted checklist (12 items, category-tagged) |
 | `src/pages/404.astro` | `/*` (unmatched) | 404 error page — dark full-viewport layout, auto-served by the host on missing routes |
 
 ## Architecture
@@ -103,7 +102,7 @@ Key rules:
 - Dark band sections (hero, `.section-dark`, page-hero) use `background: var(--surface-dark)` — **not** `var(--ink)`.
 - Buttons/badges with `background: var(--ink)` must use `color: var(--canvas)` (not `#fff`) so they get dark text in dark mode.
 - The footer (`Footer.astro`) is hardcoded `#171717` — it is intentionally always dark and does not participate in the theme system.
-- Interview Prep pages use their own `--ip-*` token set (dark `#0a0a0a` base) and do not need light/dark theming.
+- Personality Development pages (`src/pages/personality-dev/`) use their own `--ip-*` token set (dark `#0a0a0a` base) and do not need light/dark theming.
 
 **Astro CSS scoping gotcha**: styles in `<style>` blocks are scoped by adding a `data-astro-cid-*` attribute to elements in the template. Elements created dynamically via JavaScript (`innerHTML`, `createElement`) do NOT receive this attribute, so scoped selectors won't match them. Use `:global(.classname)` for any styles targeting JS-rendered elements.
 
@@ -126,7 +125,7 @@ Key rules:
 
 Twitter Card is always `summary_large_image`. Every page should pass `canonical` and `ogUrl` pointing to its own absolute URL.
 
-**JSON-LD FAQ schema** — `index.astro` includes a `<script type="application/ld+json">` block with `@type: FAQPage` and 16 Q&As covering online-classes and interview-prep keywords. This is placed directly in the page template (not in Layout) so it only appears on the homepage. When adding FAQ structured data to other pages, follow the same inline pattern — do not put JSON-LD in `Layout.astro`.
+**JSON-LD FAQ schema** — `index.astro` includes a `<script type="application/ld+json">` block with `@type: FAQPage` and 16 Q&As covering online-classes and personality-development keywords. This is placed directly in the page template (not in Layout) so it only appears on the homepage. When adding FAQ structured data to other pages, follow the same inline pattern — do not put JSON-LD in `Layout.astro`.
 
 **Homepage SEO sections** (below the existing FAQ accordion):
 - `#seo-faq` — visible 16-item accordion FAQ targeting long-tail keyword queries; styled with `.seo-faq-*` classes defined in the page `<style>` block.
@@ -150,7 +149,7 @@ The three helper functions (`getUser`, `saveUser`, `removeUser`) are **duplicate
 
 **FAQ** (`#faq`) — uses native HTML `<details>`/`<summary>` accordion. The `+` → `×` rotation is pure CSS via `.faq-item[open] .faq-q::after { transform: rotate(45deg) }`. No JS needed.
 
-**SEO FAQ** (`#seo-faq`) — a second, larger `<details>`/`<summary>` accordion below the existing FAQ, targeting 16 long-tail keyword queries across online classes and interview prep. Styled with `.seo-faq-*` classes (card border layout, `var(--canvas)` / `var(--canvas-soft)` backgrounds). Accompanied by a `<script type="application/ld+json">` block immediately after the section with `@type: FAQPage` schema (16 entries). Do not move the JSON-LD into `Layout.astro` — it should only appear on this page.
+**SEO FAQ** (`#seo-faq`) — a second, larger `<details>`/`<summary>` accordion below the existing FAQ, targeting 16 long-tail keyword queries across online classes and personality development. Styled with `.seo-faq-*` classes (card border layout, `var(--canvas)` / `var(--canvas-soft)` backgrounds). Accompanied by a `<script type="application/ld+json">` block immediately after the section with `@type: FAQPage` schema (16 entries). Do not move the JSON-LD into `Layout.astro` — it should only appear on this page.
 
 **SEO content** (`#about-otc`) — ~600-word keyword-rich prose section below the SEO FAQ. Uses `.seo-heading` / `.seo-body` classes, `var(--canvas-soft)` background, H3 subheadings. Purely static HTML — no JS.
 
@@ -195,22 +194,21 @@ UI work must follow `DESIGN.md` (Vercel-inspired design language). Key rules:
 - **Spacing**: 4px base unit. Section padding 64–96px vertical; hero bands 192px.
 - **Inner page hero**: dark `#171717` band with mono-caps eyebrow, sentence-case headline, muted subtext — see `about.astro` as reference.
 - **Legal page pattern**: two-column layout with sticky sidebar TOC + prose body; sidebar hidden on mobile — see `privacy-policy.astro` as reference.
-- **Interview Prep exception**: all `src/pages/interview-prep/*.astro` files use their own token set (`--ip-*` prefix) — dark `#0a0a0a` background, purple `#7c3aed` / blue `#3b82f6` / cyan `#06b6d4` gradient accent — intentionally diverging from the Vercel palette. Do not apply standard `--ink`/`--canvas` tokens there. Each sub-page duplicates the token block in its own `<style>` since there is no shared stylesheet.
+- **Personality Development exception**: all `src/pages/personality-dev/*.astro` files use their own token set (`--ip-*` prefix) — dark `#0a0a0a` background, purple `#7c3aed` / blue `#3b82f6` / cyan `#06b6d4` gradient accent — intentionally diverging from the Vercel palette. Do not apply standard `--ink`/`--canvas` tokens there. Each sub-page duplicates the token block in its own `<style>` since there is no shared stylesheet.
 
 ## Nav
 
-`Nav.astro` accepts `activePage?: string`. Pass the matching string from each page to highlight the correct link. Current valid values: `"about"`, `"interview-prep"`, `"contact"`, `"privacy-policy"`, `"terms"`. The "Interview Prep" nav link has an additional `.nav-link-interview` class that renders it in purple (`#7c3aed`) to distinguish it visually.
+`Nav.astro` accepts `activePage?: string`. Pass the matching string from each page to highlight the correct link. Current valid values: `"about"`, `"personality-dev"`, `"contact"`, `"privacy-policy"`, `"terms"`. The "Personality Dev" nav link has an additional `.nav-link-interview` class that renders it in purple (`#7c3aed`) to distinguish it visually.
 
 The nav contains a **theme toggle button** (`#theme-toggle`, moon/sun SVG icons) placed **outside** `.nav-links` so it remains visible on mobile alongside the hamburger. Icon visibility is controlled by CSS: `.icon-moon` hides in dark mode, `.icon-sun` hides in light mode, using `:global([data-theme="dark"]) .icon-moon { display: none }` etc. The toggle JS (`initThemeToggle`) re-initialises on `astro:after-swap`.
 
-## interview-prep/* interactive patterns
+## personality-dev/* interactive patterns
 
-All sub-pages share a **sticky module nav bar** (`.ip-module-nav-wrap`, `top: 64px`, `z-index: 40`) with links to all 5 modules and an `.active` class on the current page's link. Each sub-page also has prev/next links at the bottom (`.ip-pnav-back` / `.ip-pnav-next`).
+All sub-pages share a **sticky module nav bar** (`.ip-module-nav-wrap`, `top: 64px`, `z-index: 40`) with links to all 4 modules and an `.active` class on the current page's link. Each sub-page also has prev/next links at the bottom (`.ip-pnav-back` / `.ip-pnav-next`).
 
 Patterns by sub-page:
 
 - **`compare.astro`** — **Flip cards**: pure CSS `rotateY(180deg)` on `.ip-flip-inner` triggered by `:hover`. Both faces use `backface-visibility: hidden`. No JS.
 - **`index.astro`** — **Stat counters**: JS `IntersectionObserver` on `.ip-stats` triggers `animateCounters()` once. Each `.ip-stat-num[data-target]` counts up via `requestAnimationFrame` with cubic ease-out.
-- **`questions.astro`** — **Q&A tabs**: buttons use `data-qacat` attribute; panels use `data-qapanel`. `initQATabs()` wires click handlers and toggles `.active`. Re-initialised on `astro:after-swap`. Separate from the video tab pattern below.
-- **`videos.astro`** — **Video tabs**: `.ip-vtab[data-cat]` buttons toggle `.active` and show the matching `.ip-video-panel[data-panel]`. **Video modal**: clicking `.ip-video-thumb[data-videoid]` sets `#ip-video-iframe` src to `https://www.youtube-nocookie.com/embed/{id}?autoplay=1&rel=0`. Closed by button, backdrop click, or Escape. Iframe src is cleared on close to stop playback. Both re-initialised on `astro:after-swap`.
+- **`questions.astro`** — **Q&A tabs**: buttons use `data-qacat` attribute; panels use `data-qapanel`. `initQATabs()` wires click handlers and toggles `.active`. Re-initialised on `astro:after-swap`.
 - **`plan.astro`** — **Checklist**: 12 items, each tagged with a category (`research`, `content`, `practice`, `logistics`). Checkboxes persist per-item to `localStorage` under key `ip_check_{id}`. Progress bar width set inline. Completion state shows `#ip-checklist-done`. Reset button clears all localStorage keys and re-runs `updateProgress()`. Re-initialised on `astro:after-swap`.

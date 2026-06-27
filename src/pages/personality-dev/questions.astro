@@ -8,11 +8,11 @@ const faqCategories = [
     category: "general",
     label: "General",
     faqs: [
-      { q: "How do I answer 'Tell me about yourself'?", mediocre: "Listing every fact about yourself from birth — name, city, school, hobbies, pets...", pro: "A structured 30-second pitch: who you are → what you're good at → why you're here. Practice it until it sounds natural, not rehearsed." },
-      { q: "What if I don't know the answer to a question?", mediocre: "Going blank, saying 'I don't know' and waiting in silence.", pro: "Say 'Let me think through that.' Reason aloud. Show your process. Partial credit and intellectual honesty beat nervous silence every time." },
-      { q: "How do I deal with nerves before an interview?", mediocre: "Trying to 'not be nervous' — which is impossible and makes it worse.", pro: "Reframe: nerves = excitement + readiness. Take slow breaths before entering. Focus on the question in front of you, not the outcome." },
-      { q: "How should I dress for an interview?", mediocre: "Last-minute outfit choice. Showing up in casual clothes because 'it shouldn't matter'.", pro: "Dress one level smarter than required. Laid out the night before. When you look prepared, you feel prepared." },
-      { q: "How do I end the interview on a strong note?", mediocre: "Saying 'No, I don't have any questions' and quickly walking out.", pro: "Ask one thoughtful question. Then say: 'Thank you — I genuinely enjoyed this conversation and I'm very excited about this opportunity.' Leave them with your energy, not just your answers." },
+      { q: "How do I introduce myself confidently?", mediocre: "Listing every fact about yourself from birth — name, city, school, hobbies, pets...", pro: "A structured 30-second pitch: who you are → what you're good at → where you're headed. Practice it until it sounds natural, not rehearsed." },
+      { q: "What if I don't know the answer to a question?", mediocre: "Going blank, saying 'I don't know' and waiting in silence.", pro: "Say 'Let me think through that.' Reason aloud. Show your process. Intellectual honesty beats nervous silence every time." },
+      { q: "How do I deal with nerves before a presentation?", mediocre: "Trying to 'not be nervous' — which is impossible and makes it worse.", pro: "Reframe: nerves = excitement + readiness. Take slow breaths beforehand. Focus on the moment in front of you, not the outcome." },
+      { q: "How should I present myself?", mediocre: "Last-minute outfit and no thought given to first impressions.", pro: "Dress intentionally and appropriately. When you look prepared, you feel prepared — and others notice." },
+      { q: "How do I leave a strong lasting impression?", mediocre: "Finishing abruptly and walking away without acknowledgment.", pro: "Ask one thoughtful question. Close warmly: 'Thank you — I genuinely enjoyed this conversation.' Leave them with your energy, not just your words." },
     ],
   },
   {
@@ -110,33 +110,32 @@ const questionBank = [
 ---
 
 <Layout
-  title="Common Interview Questions & Answers — Interview Prep | Online Tuition Classes"
-  description="Practice 15 common job interview questions with mediocre vs pro example answers. Plus 30+ question bank across behavioural, technical, and situational categories."
-  keywords="common interview questions, job interview questions, interview questions, the interview, interview tips, how to prepare for an interview"
-  ogTitle="Common Interview Questions — 15 Q&As With Pro Answers"
-  ogDescription="15 common interview questions with side-by-side mediocre vs pro answers and a 30+ question practice bank. Free interview prep resource."
-  ogUrl="https://onlinetuitionclasses.com/interview-prep/questions"
-  canonical="https://onlinetuitionclasses.com/interview-prep/questions"
+  title="Self-Reflection Questions & Answers — Personality Development | Online Tuition Classes"
+  description="Practice 15 important self-development questions with surface vs deep example answers. Plus 30+ question bank across behavioural, academic, and situational categories."
+  keywords="personality development questions, self-reflection, communication skills, personal growth, self-awareness, confidence building for students"
+  ogTitle="Self-Reflection Questions — 15 Q&As With Deep Answers"
+  ogDescription="15 self-development questions with side-by-side surface vs deep answers and a 30+ question practice bank. Free personality development resource."
+  ogUrl="https://onlinetuitionclasses.com/personality-dev/questions"
+  canonical="https://onlinetuitionclasses.com/personality-dev/questions"
 >
-  <Nav activePage="interview-prep" />
+  <Nav activePage="personality-dev" />
 
   <section class="ip-sub-hero">
     <div class="ip-container">
-      <a href="/interview-prep" class="ip-breadcrumb">← Interview Prep Hub</a>
-      <p class="ip-eyebrow">Module 3 of 5</p>
-      <h1 class="ip-sub-title">Common <span class="ip-gradient-text">Questions</span></h1>
-      <p class="ip-sub-desc">15 of the most asked interview questions — each showing the mediocre answer and the pro answer side by side. Plus a 30+ question practice bank.</p>
+      <a href="/personality-dev" class="ip-breadcrumb">← Personality Development Hub</a>
+      <p class="ip-eyebrow">Module 3 of 4</p>
+      <h1 class="ip-sub-title">Self-Reflection <span class="ip-gradient-text">Questions</span></h1>
+      <p class="ip-sub-desc">15 of the most important self-development questions — each showing the surface answer and the deep answer side by side. Plus a 30+ question practice bank.</p>
     </div>
   </section>
 
   <div class="ip-module-nav-wrap">
     <div class="ip-container">
       <nav class="ip-module-nav">
-        <a href="/interview-prep/compare" class="ip-mn-link">⚡ Mindset</a>
-        <a href="/interview-prep/frameworks" class="ip-mn-link">🧱 Frameworks</a>
-        <a href="/interview-prep/questions" class="ip-mn-link active">💬 Questions</a>
-        <a href="/interview-prep/plan" class="ip-mn-link">📅 Plan</a>
-        <a href="/interview-prep/videos" class="ip-mn-link">▶ Videos</a>
+        <a href="/personality-dev/compare" class="ip-mn-link">⚡ Mindset</a>
+        <a href="/personality-dev/frameworks" class="ip-mn-link">🧱 Frameworks</a>
+        <a href="/personality-dev/questions" class="ip-mn-link active">💬 Questions</a>
+        <a href="/personality-dev/plan" class="ip-mn-link">📅 Plan</a>
       </nav>
     </div>
   </div>
@@ -144,9 +143,9 @@ const questionBank = [
   <!-- ── Q&A SECTION ── -->
   <section class="ip-section" id="qa">
     <div class="ip-container">
-      <p class="ip-section-eye reveal">Mediocre vs pro answers</p>
+      <p class="ip-section-eye reveal">Surface vs deep answers</p>
       <h2 class="ip-section-title reveal">See both sides of every question</h2>
-      <p class="ip-section-sub reveal">Click a question to reveal both approaches. Read them together — the difference is always in the specifics.</p>
+      <p class="ip-section-sub reveal">Click a question to reveal both approaches. Read them together — the difference is always in depth and self-awareness.</p>
 
       <div class="ip-video-tabs ip-qa-tabs reveal" id="qa-tabs">
         {faqCategories.map((cat, i) => (
@@ -187,7 +186,7 @@ const questionBank = [
   <section class="ip-section ip-section-alt" id="question-bank">
     <div class="ip-container">
       <p class="ip-section-eye reveal">Practice bank</p>
-      <h2 class="ip-section-title reveal">30+ questions to practise<br />before you walk in</h2>
+      <h2 class="ip-section-title reveal">30+ questions to practise<br />your self-expression</h2>
       <p class="ip-section-sub reveal">Go through each category. For every question, draft your answer using STAR, CAR, or SOAR — then say it aloud twice.</p>
       <div class="ip-qbank-grid">
         {questionBank.map((cat, i) => (
@@ -209,8 +208,8 @@ const questionBank = [
 
   <div class="ip-page-nav">
     <div class="ip-container">
-      <a href="/interview-prep/frameworks" class="ip-pnav-back">← Answer Frameworks</a>
-      <a href="/interview-prep/plan" class="ip-pnav-next">Next: 14-Day Plan →</a>
+      <a href="/personality-dev/frameworks" class="ip-pnav-back">← Communication Frameworks</a>
+      <a href="/personality-dev/plan" class="ip-pnav-next">Next: 14-Day Growth Plan →</a>
     </div>
   </div>
 

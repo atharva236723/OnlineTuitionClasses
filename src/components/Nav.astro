@@ -10,7 +10,7 @@ const { activePage } = Astro.props;
 
   <div class="nav-links" id="nav-links">
     <a href="/about" class:list={["nav-link", { active: activePage === "about" }]}>About</a>
-    <a href="/interview-prep" class:list={["nav-link", "nav-link-interview", { active: activePage === "interview-prep" }]}>Interview Prep</a>
+    <a href="/personality-dev" class:list={["nav-link", "nav-link-interview", { active: activePage === "personality-dev" }]}>Personality Dev</a>
     <a href="/contact" class:list={["nav-link", { active: activePage === "contact" }]}>Contact</a>
     <a href="/privacy-policy" class:list={["nav-link", "nav-link-secondary", { active: activePage === "privacy-policy" }]}>Privacy</a>
     <a href="/terms" class:list={["nav-link", "nav-link-secondary", { active: activePage === "terms" }]}>Terms</a>
@@ -41,7 +41,7 @@ const { activePage } = Astro.props;
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
   <a href="/" class="mobile-link">Home</a>
   <a href="/about" class:list={["mobile-link", { "mobile-link-active": activePage === "about" }]}>About</a>
-  <a href="/interview-prep" class:list={["mobile-link", { "mobile-link-active": activePage === "interview-prep" }]}>Interview Prep</a>
+  <a href="/personality-dev" class:list={["mobile-link", { "mobile-link-active": activePage === "personality-dev" }]}>Personality Dev</a>
   <a href="/contact" class:list={["mobile-link", { "mobile-link-active": activePage === "contact" }]}>Contact</a>
   <a href="/privacy-policy" class:list={["mobile-link", { "mobile-link-active": activePage === "privacy-policy" }]}>Privacy</a>
   <a href="/terms" class:list={["mobile-link", { "mobile-link-active": activePage === "terms" }]}>Terms</a>

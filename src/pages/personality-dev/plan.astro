@@ -4,27 +4,27 @@ import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 
 const timeline = [
-  { day: "14 days out", title: "Research & Map", desc: "Research the institution thoroughly. Map which topics and subject areas are likely to be tested. Create a master topic checklist so nothing falls through.", color: "#7c3aed" },
-  { day: "11 days out", title: "Write Your Stories", desc: "Write down 5–6 personal stories covering failure, teamwork, leadership, and achievement. These are your raw material for any behavioral question.", color: "#8b5cf6" },
-  { day: "7 days out", title: "Practice Answers", desc: "Draft answers to the top 15 common questions using STAR, CAR, and SOAR. Record yourself on video. Watch it back — painfully but usefully.", color: "#3b82f6" },
-  { day: "5 days out", title: "Body Language & Voice", desc: "Practice your posture, eye contact, and pacing. Read answers aloud — not in your head. The goal is fluency, not perfection.", color: "#0ea5e9" },
-  { day: "3 days out", title: "Mock Interviews", desc: "Do 2 full mock interviews with a teacher or trusted friend. Ask for brutal, honest feedback on both content and delivery.", color: "#06b6d4" },
-  { day: "1 day before", title: "Rest & Visualise", desc: "Light revision only — no cramming. Sleep 8 hours. Visualise walking in confident and walking out proud. Lay out your outfit and documents tonight.", color: "#10b981" },
-  { day: "Day of", title: "Execute", desc: "Arrive 15 minutes early. Breathe slowly and deeply. Smile genuinely when you walk in. You've done the work — trust it.", color: "#f59e0b" },
+  { day: "14 days out", title: "Know Yourself", desc: "Write down your top strengths, key experiences, and what you genuinely care about. Self-awareness is the foundation of every strong personality.", color: "#7c3aed" },
+  { day: "11 days out", title: "Write Your Stories", desc: "Write down 5–6 personal stories covering failure, teamwork, leadership, and achievement. These are your raw material for any self-expression situation.", color: "#8b5cf6" },
+  { day: "7 days out", title: "Practise Responses", desc: "Draft responses to the top 15 self-reflection questions using STAR, CAR, and SOAR. Record yourself on video. Watch it back — painfully but usefully.", color: "#3b82f6" },
+  { day: "5 days out", title: "Body Language & Voice", desc: "Practise your posture, eye contact, and pacing. Speak answers aloud — not in your head. The goal is fluency and authenticity, not perfection.", color: "#0ea5e9" },
+  { day: "3 days out", title: "Mock Sessions", desc: "Do 2 full practice sessions with a teacher or trusted friend. Ask for honest feedback on both content and how you come across.", color: "#06b6d4" },
+  { day: "1 day before", title: "Rest & Visualise", desc: "Light review only — no cramming. Sleep 8 hours. Visualise showing up calm, confident, and fully yourself. Lay out your outfit tonight.", color: "#10b981" },
+  { day: "Day of", title: "Show Up", desc: "Arrive early. Breathe slowly and deeply. Smile genuinely. You've done the work — now trust yourself and let your personality lead.", color: "#f59e0b" },
 ];
 
 const checklist = [
-  { id: "c1", text: "Research the institution / exam pattern thoroughly", category: "research" },
-  { id: "c2", text: "Map all likely topics and create a subject checklist", category: "research" },
+  { id: "c1", text: "Write down your top 3 strengths with a real example for each", category: "research" },
+  { id: "c2", text: "Identify your key experiences, goals, and personal values", category: "research" },
   { id: "c3", text: "Write and rehearse a 30-second self-introduction", category: "content" },
-  { id: "c4", text: "Write 5–6 personal stories (failure, teamwork, achievement)", category: "content" },
-  { id: "c5", text: "Prepare answers to the top 15 common questions", category: "content" },
-  { id: "c6", text: "Record one full mock interview session on video", category: "practice" },
+  { id: "c4", text: "Write 5–6 personal stories (failure, teamwork, leadership, achievement)", category: "content" },
+  { id: "c5", text: "Prepare responses to the top 15 self-reflection questions", category: "content" },
+  { id: "c6", text: "Record one full practice session on video", category: "practice" },
   { id: "c7", text: "Watch the recording back — note body language and pacing", category: "practice" },
-  { id: "c8", text: "Do a second mock interview and get feedback from a teacher", category: "practice" },
-  { id: "c9", text: "Revise core concepts and real-world examples", category: "content" },
-  { id: "c10", text: "Prepare 2–3 thoughtful questions to ask the interviewer", category: "content" },
-  { id: "c11", text: "Plan outfit, documents, and arrival time the day before", category: "logistics" },
+  { id: "c8", text: "Do a second practice session and get feedback from a teacher", category: "practice" },
+  { id: "c9", text: "Practise with the STAR, CAR, and SOAR frameworks for key stories", category: "content" },
+  { id: "c10", text: "Practise asking thoughtful questions in conversations", category: "content" },
+  { id: "c11", text: "Plan outfit and mindset the day before", category: "logistics" },
   { id: "c12", text: "Get 8 hours sleep the night before", category: "logistics" },
 ];
 
@@ -37,33 +37,32 @@ const categories = [
 ---
 
 <Layout
-  title="14-Day Interview Prep Plan — How to Prepare for an Interview | Online Tuition Classes"
-  description="Follow a structured 14-day countdown to your interview. 7-step timeline, 12-item prep checklist, and daily tasks covering research, what to wear to an interview, and follow-up."
-  keywords="how to prepare for an interview, interview tips, what to wear to an interview, thank you email after interview, the interview, interview"
-  ogTitle="14-Day Interview Prep Plan — Step-by-Step Countdown"
-  ogDescription="A 7-step, 14-day interview preparation timeline with a trackable 12-item checklist. Know exactly what to do before, during, and after the interview."
-  ogUrl="https://onlinetuitionclasses.com/interview-prep/plan"
-  canonical="https://onlinetuitionclasses.com/interview-prep/plan"
+  title="14-Day Personality Growth Plan | Online Tuition Classes"
+  description="Follow a structured 14-day countdown to build confidence, communication, and self-awareness. 7-step timeline, 12-item checklist covering self-knowledge, storytelling, practice, and mindset."
+  keywords="personality development plan, confidence building, communication skills, 14-day growth plan, self-awareness, personal growth for students"
+  ogTitle="14-Day Personality Growth Plan — Step-by-Step Countdown"
+  ogDescription="A 7-step, 14-day personality development timeline with a trackable 12-item checklist. Build real confidence, communication skills, and self-awareness."
+  ogUrl="https://onlinetuitionclasses.com/personality-dev/plan"
+  canonical="https://onlinetuitionclasses.com/personality-dev/plan"
 >
-  <Nav activePage="interview-prep" />
+  <Nav activePage="personality-dev" />
 
   <section class="ip-sub-hero">
     <div class="ip-container">
-      <a href="/interview-prep" class="ip-breadcrumb">← Interview Prep Hub</a>
-      <p class="ip-eyebrow">Module 4 of 5</p>
-      <h1 class="ip-sub-title">14-Day <span class="ip-gradient-text">Prep Plan</span></h1>
-      <p class="ip-sub-desc">A day-by-day countdown from two weeks out to interview day — plus an interactive checklist to track every task.</p>
+      <a href="/personality-dev" class="ip-breadcrumb">← Personality Development Hub</a>
+      <p class="ip-eyebrow">Module 4 of 4</p>
+      <h1 class="ip-sub-title">14-Day <span class="ip-gradient-text">Growth Plan</span></h1>
+      <p class="ip-sub-desc">A day-by-day countdown from two weeks out to your big moment — plus an interactive checklist to track every step of your growth.</p>
     </div>
   </section>
 
   <div class="ip-module-nav-wrap">
     <div class="ip-container">
       <nav class="ip-module-nav">
-        <a href="/interview-prep/compare" class="ip-mn-link">⚡ Mindset</a>
-        <a href="/interview-prep/frameworks" class="ip-mn-link">🧱 Frameworks</a>
-        <a href="/interview-prep/questions" class="ip-mn-link">💬 Questions</a>
-        <a href="/interview-prep/plan" class="ip-mn-link active">📅 Plan</a>
-        <a href="/interview-prep/videos" class="ip-mn-link">▶ Videos</a>
+        <a href="/personality-dev/compare" class="ip-mn-link">⚡ Mindset</a>
+        <a href="/personality-dev/frameworks" class="ip-mn-link">🧱 Frameworks</a>
+        <a href="/personality-dev/questions" class="ip-mn-link">💬 Questions</a>
+        <a href="/personality-dev/plan" class="ip-mn-link active">📅 Plan</a>
       </nav>
     </div>
   </div>
@@ -71,9 +70,9 @@ const categories = [
   <!-- ── TIMELINE ── -->
   <section class="ip-section ip-section-dark" id="timeline">
     <div class="ip-container">
-      <p class="ip-section-eye-light reveal">The prep roadmap</p>
+      <p class="ip-section-eye-light reveal">The growth roadmap</p>
       <h2 class="ip-section-title-light reveal">Your countdown plan,<br />day by day</h2>
-      <p class="ip-section-sub-light reveal">Follow this schedule and walk into the room knowing you've done more than 95% of candidates.</p>
+      <p class="ip-section-sub-light reveal">Follow this schedule and show up knowing you've done more than 95% of students around you.</p>
       <div class="ip-timeline">
         {timeline.map((t, i) => (
           <div class="ip-tl-item reveal" style={`transition-delay:${i * 0.08}s`}>
@@ -96,7 +95,7 @@ const categories = [
   <section class="ip-section ip-section-alt" id="checklist">
     <div class="ip-container">
       <p class="ip-section-eye reveal">Your personal tracker</p>
-      <h2 class="ip-section-title reveal">The ultimate interview<br />prep checklist</h2>
+      <h2 class="ip-section-title reveal">The ultimate personality<br />development checklist</h2>
       <p class="ip-section-sub reveal">Check off each item as you complete it. Your progress is saved automatically in your browser.</p>
 
       <div class="ip-checklist-wrap reveal">
@@ -138,7 +137,7 @@ const categories = [
         <div class="ip-checklist-done hidden" id="ip-checklist-done">
           <div class="ip-done-icon">🏆</div>
           <h3 class="ip-done-title">You're fully prepared.</h3>
-          <p class="ip-done-sub">Walk in with confidence — you've done the work. Now go get it.</p>
+          <p class="ip-done-sub">Show up with confidence — you've done the work. Now let your personality lead.</p>
           <button class="ip-btn-reset" id="ip-reset-btn">Reset checklist</button>
         </div>
       </div>
@@ -147,8 +146,8 @@ const categories = [
 
   <div class="ip-page-nav">
     <div class="ip-container">
-      <a href="/interview-prep/questions" class="ip-pnav-back">← Common Questions</a>
-      <a href="/interview-prep/videos" class="ip-pnav-next">Next: Video Hub →</a>
+      <a href="/personality-dev/questions" class="ip-pnav-back">← Self-Reflection Questions</a>
+      <a href="/personality-dev" class="ip-pnav-next">Back to Hub →</a>
     </div>
   </div>
 

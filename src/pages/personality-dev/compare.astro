@@ -4,46 +4,46 @@ import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 
 const comparisons = [
-  { icon: "🎯", topic: "Preparation", mediocre: "Reads notes the night before and hopes for the best", pro: "Builds a structured prep schedule 2 weeks out — topic by topic, day by day" },
-  { icon: "🗣️", topic: "Self Introduction", mediocre: "\"Umm, hi, I'm Rahul, I study in class 11...\"", pro: "Crisp 30-second intro: name → school → strength → why they're excited to be here" },
+  { icon: "🎯", topic: "Preparation", mediocre: "Reads notes the night before and hopes for the best", pro: "Builds a structured growth schedule 2 weeks out — skill by skill, day by day" },
+  { icon: "🗣️", topic: "Self Introduction", mediocre: "\"Umm, hi, I'm Rahul, I study in class 11...\"", pro: "Crisp 30-second intro: name → strength → what excites them about their path ahead" },
   { icon: "🧠", topic: "Handling Tough Questions", mediocre: "Freezes, says \"I don't know\" and goes silent", pro: "Says \"That's a great question — let me think\" and reasons out loud, step by step" },
   { icon: "👁️", topic: "Body Language", mediocre: "Slouches, avoids eye contact, fidgets nervously with hands", pro: "Sits upright, holds natural eye contact, uses open hand gestures to emphasise" },
-  { icon: "💬", topic: "Answering Style", mediocre: "Gives yes/no answers or rambles without structure", pro: "Uses the STAR method: Situation → Task → Action → Result. Concise and clear." },
+  { icon: "💬", topic: "Communication Style", mediocre: "Gives vague answers or rambles without structure", pro: "Uses clear structure: context → action → outcome. Concise, specific, and confident." },
   { icon: "📚", topic: "Subject Knowledge", mediocre: "Mugs up definitions and recites them word-for-word", pro: "Understands concepts deeply, connects theory to real-world examples" },
-  { icon: "❓", topic: "Asking Questions", mediocre: "\"No, I don't have any questions\" (missed opportunity!)", pro: "Asks 1–2 thoughtful questions that show genuine curiosity and preparation" },
-  { icon: "😤", topic: "Handling Nerves", mediocre: "Tries to suppress anxiety — which makes it 10× worse", pro: "Reframes nervousness as excitement. Takes a breath, slows down, focuses on one answer at a time" },
+  { icon: "❓", topic: "Curiosity & Questions", mediocre: "\"No, I don't have any questions\" — and misses the moment", pro: "Asks 1–2 thoughtful questions that show genuine curiosity and depth of thinking" },
+  { icon: "😤", topic: "Handling Nerves", mediocre: "Tries to suppress anxiety — which makes it 10× worse", pro: "Reframes nervousness as excitement. Takes a breath, slows down, and focuses on one thing at a time" },
 ];
 
 const mistakes = [
   { icon: "🤐", title: "Going silent when stuck", fix: "Think aloud. 'Let me reason through this...' is a complete answer." },
-  { icon: "📜", title: "Reciting memorised scripts", fix: "Practice concepts, not word-for-word answers. Stiffness kills credibility." },
-  { icon: "👀", title: "Avoiding eye contact", fix: "Look at the interviewer when speaking. Look slightly away when thinking." },
-  { icon: "⌚", title: "Rambling for too long", fix: "Aim for 60–90 seconds per answer. Stop. Let them ask for more." },
+  { icon: "📜", title: "Reciting memorised scripts", fix: "Practice ideas, not word-for-word answers. Stiffness kills authenticity." },
+  { icon: "👀", title: "Avoiding eye contact", fix: "Look at the person you're speaking to. Look slightly away when thinking." },
+  { icon: "⌚", title: "Rambling for too long", fix: "Aim for 60–90 seconds per response. Stop. Let them ask for more." },
   { icon: "😞", title: "Badmouthing teachers or schools", fix: "Never. Reframe every negative as a learning experience." },
-  { icon: "🤷", title: "Saying 'I don't have questions'", fix: "Prepare 2 questions in advance. Not having them signals zero curiosity." },
-  { icon: "📱", title: "Being unprepared for the basics", fix: "Know your own CV, marks, and projects cold. Don't blank on your own story." },
+  { icon: "🤷", title: "Showing zero curiosity", fix: "Ask thoughtful questions. Curiosity signals maturity and genuine interest." },
+  { icon: "📱", title: "Being unprepared for the basics", fix: "Know your strengths, goals, and experiences cold. Don't blank on your own story." },
   { icon: "🙅", title: "Claiming impossible perfection", fix: "'I have no weaknesses' destroys trust instantly. Honest + growth = respect." },
 ];
 ---
 
 <Layout
-  title="Mediocre vs Pro Answers — Interview Prep | Online Tuition Classes"
-  description="See side-by-side comparisons of mediocre vs pro interview answers. Learn what separates average candidates from standout ones in job interviews with these interview tips."
-  keywords="interview tips, common interview questions, job interview questions, the interview, how to prepare for an interview"
-  ogTitle="Mediocre vs Pro Interview Answers — Spot the Difference"
-  ogDescription="8 real comparisons showing mediocre vs professional interview answers. Know exactly what hiring managers want to hear."
-  ogUrl="https://onlinetuitionclasses.com/interview-prep/compare"
-  canonical="https://onlinetuitionclasses.com/interview-prep/compare"
+  title="Mediocre vs Pro — Personality Development | Online Tuition Classes"
+  description="See side-by-side comparisons of mediocre vs pro communication and personality. Learn what separates average students from standout ones across 8 key personal development dimensions."
+  keywords="personality development, communication skills, confidence building, body language, self-awareness, personal growth for students"
+  ogTitle="Mediocre vs Pro — Spot the Personality Difference"
+  ogDescription="8 real comparisons showing mediocre vs professional communication and mindset. Know exactly what sets standout students apart."
+  ogUrl="https://onlinetuitionclasses.com/personality-dev/compare"
+  canonical="https://onlinetuitionclasses.com/personality-dev/compare"
 >
-  <Nav activePage="interview-prep" />
+  <Nav activePage="personality-dev" />
 
   <!-- ── SUB-PAGE HERO ── -->
   <section class="ip-sub-hero">
     <div class="ip-container">
-      <a href="/interview-prep" class="ip-breadcrumb">← Interview Prep Hub</a>
-      <p class="ip-eyebrow">Module 1 of 5</p>
+      <a href="/personality-dev" class="ip-breadcrumb">← Personality Development Hub</a>
+      <p class="ip-eyebrow">Module 1 of 4</p>
       <h1 class="ip-sub-title">Mediocre vs <span class="ip-gradient-text">Pro</span></h1>
-      <p class="ip-sub-desc">Hover each card to flip between two mindsets across 8 key interview dimensions. The gap isn't knowledge — it's approach.</p>
+      <p class="ip-sub-desc">Hover each card to flip between two mindsets across 8 key personality dimensions. The gap isn't knowledge — it's approach.</p>
     </div>
   </section>
 
@@ -51,11 +51,10 @@ const mistakes = [
   <div class="ip-module-nav-wrap">
     <div class="ip-container">
       <nav class="ip-module-nav">
-        <a href="/interview-prep/compare" class="ip-mn-link active">⚡ Mindset</a>
-        <a href="/interview-prep/frameworks" class="ip-mn-link">🧱 Frameworks</a>
-        <a href="/interview-prep/questions" class="ip-mn-link">💬 Questions</a>
-        <a href="/interview-prep/plan" class="ip-mn-link">📅 Plan</a>
-        <a href="/interview-prep/videos" class="ip-mn-link">▶ Videos</a>
+        <a href="/personality-dev/compare" class="ip-mn-link active">⚡ Mindset</a>
+        <a href="/personality-dev/frameworks" class="ip-mn-link">🧱 Frameworks</a>
+        <a href="/personality-dev/questions" class="ip-mn-link">💬 Questions</a>
+        <a href="/personality-dev/plan" class="ip-mn-link">📅 Plan</a>
       </nav>
     </div>
   </div>
@@ -96,7 +95,7 @@ const mistakes = [
   <section class="ip-section ip-section-alt" id="mistakes">
     <div class="ip-container">
       <p class="ip-section-eye reveal">What to avoid</p>
-      <h2 class="ip-section-title reveal">8 mistakes that cost students<br />the interview — and how to fix them</h2>
+      <h2 class="ip-section-title reveal">8 habits that hold students back<br />— and how to break them</h2>
       <p class="ip-section-sub reveal">Most candidates make at least three of these. Knowing them is half the fix.</p>
       <div class="ip-mistakes-grid">
         {mistakes.map((m, i) => (
@@ -113,8 +112,8 @@ const mistakes = [
   <!-- ── PAGE NAV ── -->
   <div class="ip-page-nav">
     <div class="ip-container">
-      <a href="/interview-prep" class="ip-pnav-back">← Back to hub</a>
-      <a href="/interview-prep/frameworks" class="ip-pnav-next">Next: Answer Frameworks →</a>
+      <a href="/personality-dev" class="ip-pnav-back">← Back to hub</a>
+      <a href="/personality-dev/frameworks" class="ip-pnav-next">Next: Communication Frameworks →</a>
     </div>
   </div>
 
