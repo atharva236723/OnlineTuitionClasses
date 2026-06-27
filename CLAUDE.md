@@ -78,31 +78,29 @@ Pages import `Layout`, `Nav`, and `Footer`, then compose their content between t
 
 **Important**: `window.lenis` is the Lenis **npm package object**, not the instance — calling `window.lenis.scrollTo(...)` will fail. The actual Lenis instance is exposed as `window.lenisInstance` (set in `Layout.astro` after `new Lenis(...)`). Any `<script is:inline>` that needs to programmatically scroll should use `window.lenisInstance.scrollTo(element, { offset: -72 })` with a fallback to `element.scrollIntoView()`.
 
-**Styles** are colocated `<style>` blocks inside each `.astro` file using CSS custom properties. The canonical token definitions live in the `<style is:global>` block of `Layout.astro` under `:root` — do **not** re-declare them in per-page `<style>` blocks (they were previously duplicated per-page; that pattern is removed). Dark-mode overrides live under `[data-theme="dark"]` in the same global block.
+**Styles** are colocated `<style>` blocks inside each `.astro` file using CSS custom properties. The canonical token definitions live in the `<style is:global>` block of `Layout.astro` under `:root` — do **not** re-declare them in per-page `<style>` blocks (they were previously duplicated per-page; that pattern is removed). There is **no dark mode** — the site is light-only.
 
-**Scroll-reveal animations**: `Layout.astro` includes a global `IntersectionObserver` script (also re-initialised on `astro:after-swap`). Add `class="reveal"` to any element to fade+slide it in when it enters the viewport. Add `class="reveal-stagger reveal"` to a container to stagger-animate its direct children with cascading delays (supports up to 6 children). Global CSS for both classes lives in the `<style is:global>` block in `Layout.astro`.
+**Scroll-reveal animations**: `Layout.astro` includes a global `IntersectionObserver` script (also re-initialised on `astro:after-swap`). Add `class="reveal"` to any element to fade+slide it in when it enters the viewport. Add `class="reveal-stagger reveal"` to a container to stagger-animate its direct children with cascading delays (supports up to 6 children). Global CSS for both classes lives in the `<style is:global>` block in `Layout.astro`. The observer uses `{ threshold: 0, rootMargin: '0px 0px -40px 0px' }` so elements always animate in on mobile even when taller than the viewport.
 
-**Dark / light mode**: Toggled by `data-theme="dark"|"light"` on `<html>`. A FOUC-preventing inline `<script>` in `<head>` (inside `Layout.astro`) reads `localStorage.getItem('otc-theme')` or `prefers-color-scheme` and sets the attribute before first paint. The theme toggle button in `Nav.astro` (id `theme-toggle`, always visible including on mobile) writes back to `localStorage` under key `otc-theme` and updates the attribute. The `[data-theme="dark"]` block in `Layout.astro` overrides every token — it wins over per-page `:root` rules because attribute selectors (0,1,0) beat pseudo-class selectors (0,0,1).
+Global design tokens (light only — defined in `:root` in `Layout.astro`):
 
-Global design tokens:
-
-| Token | Light | Dark | Usage |
-|---|---|---|---|
-| `--ink` | `#171717` | `#ededed` | Primary text; also backgrounds of buttons/badges/avatars (pair with `--canvas` for text on those) |
-| `--ink-2` | `#4d4d4d` | `#a3a3a3` | Secondary / muted text |
-| `--canvas` | `#ffffff` | `#141414` | Card / modal backgrounds |
-| `--canvas-soft` | `#fafafa` | `#1c1c1c` | Alternate section backgrounds |
-| `--border` | `#e5e5e5` | `#2f2f2f` | All borders |
-| `--bg` | `#fafafa` | `#0f0f0f` | Page `<html>` background |
-| `--surface-dark` | `#171717` | `#0a0a0a` | Dark band sections (hero, quiz) — stays near-black in both modes |
-| `--nav-bg` | `rgba(255,255,255,0.92)` | `rgba(15,15,15,0.92)` | Sticky nav background |
-| `--mobile-menu-bg` | `rgba(255,255,255,0.97)` | `rgba(15,15,15,0.97)` | Mobile drawer background |
+| Token | Value | Usage |
+|---|---|---|
+| `--ink` | `#171717` | Primary text; also backgrounds of buttons/badges/avatars (pair with `--canvas` for text on those) |
+| `--ink-2` | `#4d4d4d` | Secondary / muted text |
+| `--canvas` | `#ffffff` | Card / modal backgrounds |
+| `--canvas-soft` | `#fafafa` | Alternate section backgrounds |
+| `--border` | `#e5e5e5` | All borders |
+| `--bg` | `#fafafa` | Page `<html>` background |
+| `--surface-dark` | `#171717` | Dark band sections (hero, quiz) |
+| `--nav-bg` | `rgba(255,255,255,0.92)` | Sticky nav background |
+| `--mobile-menu-bg` | `rgba(255,255,255,0.97)` | Mobile drawer background |
 
 Key rules:
 - Dark band sections (hero, `.section-dark`, page-hero) use `background: var(--surface-dark)` — **not** `var(--ink)`.
-- Buttons/badges with `background: var(--ink)` must use `color: var(--canvas)` (not `#fff`) so they get dark text in dark mode.
-- The footer (`Footer.astro`) is hardcoded `#171717` — it is intentionally always dark and does not participate in the theme system.
-- Personality Development pages (`src/pages/personality-dev/`) use their own `--ip-*` token set (dark `#0a0a0a` base) and do not need light/dark theming.
+- Buttons/badges with `background: var(--ink)` must use `color: var(--canvas)` (not `#fff`).
+- The footer (`Footer.astro`) is hardcoded `#171717` — always dark, intentional.
+- Personality Development pages (`src/pages/personality-dev/`) use their own `--ip-*` token set (dark `#0a0a0a` base) and do not use the standard tokens above.
 
 **Astro CSS scoping gotcha**: styles in `<style>` blocks are scoped by adding a `data-astro-cid-*` attribute to elements in the template. Elements created dynamically via JavaScript (`innerHTML`, `createElement`) do NOT receive this attribute, so scoped selectors won't match them. Use `:global(.classname)` for any styles targeting JS-rendered elements.
 
@@ -137,7 +135,8 @@ Frontend-only auth using **`localStorage`** (key `otc_user`, JSON `{name, email,
 
 - **`Nav.astro`** — reads `otc_user` on load and listens for both `otc-auth-change` and `astro:after-swap` (to re-run after page transitions). When logged in: shows the Google profile photo (`picture` field) if present, otherwise falls back to the user's first initial. The profile button is always a 36px circle. The hamburger open/close logic also re-initialises on `astro:after-swap`.
 - **`index.astro`** — the "Find a Teacher" form submit handler checks for `otc_user`; if absent it opens the auth modal (`#auth-modal`) instead of submitting. The modal has both email forms and a Google Sign-In button. After any successful login/signup, `submitFindForm()` is called automatically. `saveUser()` dispatches `otc-auth-change` so the nav updates immediately.
-- **`profile.astro`** — standalone login/signup/edit/logout page. Same `otc_user` key and `otc-auth-change` event. Accepts `?tab=signup` in the URL to open the signup tab directly. The profile avatar shows the Google photo when `picture` is set.
+- **`profile.astro`** — standalone login/signup/edit/logout page. Same `otc_user` key and `otc-auth-change` event. Accepts `?tab=signup` to open the signup tab directly. Accepts `?redirect=/path` — after any successful login/signup `renderLoggedIn()` checks this param and calls `location.replace(redirect)` before showing the profile UI. The profile avatar shows the Google photo when `picture` is set.
+- **`personality-dev/*`** — all 5 pages have an inline auth guard at the top of `<body>` that redirects unauthenticated users to `/profile?redirect=<current-path>`. Any new pages added under `/personality-dev/` must include the same guard.
 
 **Google Sign-In** uses [Google Identity Services](https://developers.google.com/identity/gsi/web) (`https://accounts.google.com/gsi/client`). The Client ID (`945888240197-9in6fs6u0gmtuib5b3de70ek7ceam4j4.apps.googleusercontent.com`) is hardcoded as `GOOGLE_CLIENT_ID` in both `index.astro` and `profile.astro`. The GSI callback decodes the returned JWT with `atob()` to extract `name`, `email`, and `picture` — no server-side verification needed for this use case. When buying the production domain (`onlinetuitionclasses.com`), add it to the authorized JavaScript origins in Google Cloud Console.
 
@@ -200,7 +199,7 @@ UI work must follow `DESIGN.md` (Vercel-inspired design language). Key rules:
 
 `Nav.astro` accepts `activePage?: string`. Pass the matching string from each page to highlight the correct link. Current valid values: `"about"`, `"personality-dev"`, `"contact"`, `"privacy-policy"`, `"terms"`. The "Personality Dev" nav link has an additional `.nav-link-interview` class that renders it in purple (`#7c3aed`) to distinguish it visually.
 
-The nav contains a **theme toggle button** (`#theme-toggle`, moon/sun SVG icons) placed **outside** `.nav-links` so it remains visible on mobile alongside the hamburger. Icon visibility is controlled by CSS: `.icon-moon` hides in dark mode, `.icon-sun` hides in light mode, using `:global([data-theme="dark"]) .icon-moon { display: none }` etc. The toggle JS (`initThemeToggle`) re-initialises on `astro:after-swap`.
+The nav has no theme toggle — dark mode has been removed from the site.
 
 ## personality-dev/* interactive patterns
 
