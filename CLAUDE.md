@@ -14,7 +14,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The preview server is configured in `.claude/launch.json` (name: `tuition-dev`, port: 4321). Use `mcp__Claude_Preview__preview_start` with that name to launch it in-session.
 
-When running the dev server as an agent (not interactively), use background mode: `npx astro dev &` — then stop it with `kill %1` when done.
+When running the dev server as an agent (not interactively), use background mode: `npx astro dev &` — then stop it with `kill %1` when done. On Windows PowerShell use `Start-Process` or run via Bash tool instead, since `kill %1` is a bash job-control syntax.
+
+## MCP servers & skills
+
+- **`astro-docs`** — Astro documentation MCP, HTTP transport at `https://mcp.docs.astro.build/mcp`. Use for Astro API questions, component syntax, and integration docs.
+- **`web-design-guidelines`** skill — installed at `.agents/skills/web-design-guidelines`. Invoke via `/web-design-guidelines` to audit UI code against the Vercel-inspired design language in `DESIGN.md`.
 
 ## Git branches
 
