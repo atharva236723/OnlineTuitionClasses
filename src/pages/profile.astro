@@ -280,6 +280,7 @@ import Footer from '../components/Footer.astro';
   /* Google Sign-In */
   function parseGoogleJwt(credential) {
     var payload = credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    payload += '=='.slice(0, (4 - payload.length % 4) % 4);
     return JSON.parse(atob(payload));
   }
 
@@ -301,16 +302,6 @@ import Footer from '../components/Footer.astro';
 </script>
 
 <style>
-  :root {
-    --ink: #171717;
-    --ink-2: #4d4d4d;
-    --canvas: #ffffff;
-    --canvas-soft: #fafafa;
-    --border: #e5e5e5;
-    --radius-sm: 6px;
-    --radius-pill: 100px;
-  }
-
   .container {
     max-width: 720px;
     margin-inline: auto;
@@ -319,9 +310,9 @@ import Footer from '../components/Footer.astro';
 
   /* Hero band */
   .hero-band {
-    background: var(--ink);
+    background: var(--surface-dark, #171717);
     color: #fff;
-    padding: 64px 0 56px;
+    padding: clamp(48px, 8vw, 64px) 0 clamp(40px, 6vw, 56px);
   }
 
   .eyebrow {
@@ -481,7 +472,7 @@ import Footer from '../components/Footer.astro';
     height: 72px;
     border-radius: 50%;
     background: var(--ink);
-    color: #fff;
+    color: var(--canvas);
     font-size: 1.8rem;
     font-weight: 600;
     display: flex;
@@ -568,7 +559,7 @@ import Footer from '../components/Footer.astro';
 
   .save-success {
     font-size: 0.85rem;
-    color: #166534;
+    color: #16a34a;
     text-align: center;
   }
 
@@ -576,7 +567,7 @@ import Footer from '../components/Footer.astro';
   .btn-primary {
     display: inline-block;
     background: var(--ink);
-    color: #fff;
+    color: var(--canvas);
     font-weight: 600;
     font-size: 0.95rem;
     padding: 12px 28px;

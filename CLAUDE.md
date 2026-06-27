@@ -72,9 +72,33 @@ Pages import `Layout`, `Nav`, and `Footer`, then compose their content between t
 
 **Smooth scrolling** is handled by [Lenis](https://github.com/darkroomengineering/lenis) (`lenis` npm package, `autoRaf: true`), initialised in `Layout.astro` and re-initialised on `astro:after-swap`. Do not add `scroll-behavior: smooth` to CSS — Lenis handles it. Lenis also intercepts all `a[href^="#"]` anchor clicks and calls `lenis.scrollTo(target, { offset: -72 })` — the `-72` offset accounts for the sticky nav height so headings aren't hidden behind it. Do not remove this offset.
 
-**Styles** are colocated `<style>` blocks inside each `.astro` file using CSS custom properties (`--ink`, `--canvas`, etc.). There is no global stylesheet beyond the reset in `Layout.astro`. Token definitions are repeated per-page because Astro scopes component styles.
+**Important**: `window.lenis` is the Lenis **npm package object**, not the instance — calling `window.lenis.scrollTo(...)` will fail. The actual Lenis instance is exposed as `window.lenisInstance` (set in `Layout.astro` after `new Lenis(...)`). Any `<script is:inline>` that needs to programmatically scroll should use `window.lenisInstance.scrollTo(element, { offset: -72 })` with a fallback to `element.scrollIntoView()`.
+
+**Styles** are colocated `<style>` blocks inside each `.astro` file using CSS custom properties. The canonical token definitions live in the `<style is:global>` block of `Layout.astro` under `:root` — do **not** re-declare them in per-page `<style>` blocks (they were previously duplicated per-page; that pattern is removed). Dark-mode overrides live under `[data-theme="dark"]` in the same global block.
 
 **Scroll-reveal animations**: `Layout.astro` includes a global `IntersectionObserver` script (also re-initialised on `astro:after-swap`). Add `class="reveal"` to any element to fade+slide it in when it enters the viewport. Add `class="reveal-stagger reveal"` to a container to stagger-animate its direct children with cascading delays (supports up to 6 children). Global CSS for both classes lives in the `<style is:global>` block in `Layout.astro`.
+
+**Dark / light mode**: Toggled by `data-theme="dark"|"light"` on `<html>`. A FOUC-preventing inline `<script>` in `<head>` (inside `Layout.astro`) reads `localStorage.getItem('otc-theme')` or `prefers-color-scheme` and sets the attribute before first paint. The theme toggle button in `Nav.astro` (id `theme-toggle`, always visible including on mobile) writes back to `localStorage` under key `otc-theme` and updates the attribute. The `[data-theme="dark"]` block in `Layout.astro` overrides every token — it wins over per-page `:root` rules because attribute selectors (0,1,0) beat pseudo-class selectors (0,0,1).
+
+Global design tokens:
+
+| Token | Light | Dark | Usage |
+|---|---|---|---|
+| `--ink` | `#171717` | `#ededed` | Primary text; also backgrounds of buttons/badges/avatars (pair with `--canvas` for text on those) |
+| `--ink-2` | `#4d4d4d` | `#a3a3a3` | Secondary / muted text |
+| `--canvas` | `#ffffff` | `#141414` | Card / modal backgrounds |
+| `--canvas-soft` | `#fafafa` | `#1c1c1c` | Alternate section backgrounds |
+| `--border` | `#e5e5e5` | `#2f2f2f` | All borders |
+| `--bg` | `#fafafa` | `#0f0f0f` | Page `<html>` background |
+| `--surface-dark` | `#171717` | `#0a0a0a` | Dark band sections (hero, quiz) — stays near-black in both modes |
+| `--nav-bg` | `rgba(255,255,255,0.92)` | `rgba(15,15,15,0.92)` | Sticky nav background |
+| `--mobile-menu-bg` | `rgba(255,255,255,0.97)` | `rgba(15,15,15,0.97)` | Mobile drawer background |
+
+Key rules:
+- Dark band sections (hero, `.section-dark`, page-hero) use `background: var(--surface-dark)` — **not** `var(--ink)`.
+- Buttons/badges with `background: var(--ink)` must use `color: var(--canvas)` (not `#fff`) so they get dark text in dark mode.
+- The footer (`Footer.astro`) is hardcoded `#171717` — it is intentionally always dark and does not participate in the theme system.
+- Interview Prep pages use their own `--ip-*` token set (dark `#0a0a0a` base) and do not need light/dark theming.
 
 **Astro CSS scoping gotcha**: styles in `<style>` blocks are scoped by adding a `data-astro-cid-*` attribute to elements in the template. Elements created dynamically via JavaScript (`innerHTML`, `createElement`) do NOT receive this attribute, so scoped selectors won't match them. Use `:global(.classname)` for any styles targeting JS-rendered elements.
 
@@ -94,7 +118,7 @@ The three helper functions (`getUser`, `saveUser`, `removeUser`) are **duplicate
 
 ## Homepage-only sections (index.astro)
 
-**Smart Match Quiz** (`#quiz`) — dark `#171717` band section between "How It Works" and Pricing. A 3-step interactive quiz (Goal → Learning Style → Schedule) driven by a separate `<script is:inline>` block at the bottom of the file (after `</Layout>`). Answers are stored in a local `answers` object; after step 3 a result panel is shown with a "Find this teacher →" CTA that smooth-scrolls to `#find`. Progress dots update per step. The quiz re-initialises on `astro:after-swap` via `document.addEventListener('astro:after-swap', initQuiz)`.
+**Smart Match Quiz** (`#quiz`) — dark `#171717` band section between "How It Works" and Pricing. A **2-step** interactive quiz (Goal → Learning Style) driven by a separate `<script is:inline>` block at the bottom of the file (after `</Layout>`). Answers are stored in a local `answers` object. After step 2, a **loading/searching animation** plays (`#qstep-loading`) for ~5 seconds — three checklist rows tick off sequentially, the label changes to "Match found!", then the result panel (`#qstep-result`) is shown with a "Find this teacher →" CTA that smooth-scrolls to `#find`. Progress dots are hidden during the loading and result steps. The quiz (including loading state) resets fully when "Retake quiz" is clicked via `resetLoadingState()`. The quiz re-initialises on `astro:after-swap` via `document.addEventListener('astro:after-swap', initQuiz)`.
 
 **FAQ** (`#faq`) — uses native HTML `<details>`/`<summary>` accordion. The `+` → `×` rotation is pure CSS via `.faq-item[open] .faq-q::after { transform: rotate(45deg) }`. No JS needed.
 
@@ -131,7 +155,7 @@ All favicon assets live in `public/` and are referenced in `Layout.astro` in thi
 
 UI work must follow `DESIGN.md` (Vercel-inspired design language). Key rules:
 
-- **Colors**: Near-white `#fafafa` canvas, ink-near-black `#171717` for primary CTAs and dark bands, `#4d4d4d` for secondary text.
+- **Colors**: Always use CSS tokens (see table in Architecture above) — never hardcode `#171717`, `#fafafa`, `#e5e5e5`, etc. in new code. Near-white `#fafafa` canvas, ink-near-black `#171717` for primary CTAs and dark bands, `#4d4d4d` for secondary text.
 - **Typography**: Geist (geometric sans) at weights 400/500/600 — never 700+. **Current implementation uses Inter** (Google Fonts) as a substitute; swap to Geist when self-hosted. Headlines are sentence-case with aggressive negative letter-spacing.
 - **Buttons**: 100px pill radius for marketing CTAs, 6px radius for nav-scale buttons. Black-fill primary, white-fill secondary.
 - **Cards**: Stacked multi-offset shadows + 1px inset hairline border — never a single heavy drop-shadow.
@@ -144,6 +168,8 @@ UI work must follow `DESIGN.md` (Vercel-inspired design language). Key rules:
 ## Nav
 
 `Nav.astro` accepts `activePage?: string`. Pass the matching string from each page to highlight the correct link. Current valid values: `"about"`, `"interview-prep"`, `"contact"`, `"privacy-policy"`, `"terms"`. The "Interview Prep" nav link has an additional `.nav-link-interview` class that renders it in purple (`#7c3aed`) to distinguish it visually.
+
+The nav contains a **theme toggle button** (`#theme-toggle`, moon/sun SVG icons) placed **outside** `.nav-links` so it remains visible on mobile alongside the hamburger. Icon visibility is controlled by CSS: `.icon-moon` hides in dark mode, `.icon-sun` hides in light mode, using `:global([data-theme="dark"]) .icon-moon { display: none }` etc. The toggle JS (`initThemeToggle`) re-initialises on `astro:after-swap`.
 
 ## interview-prep/* interactive patterns
 

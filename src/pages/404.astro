@@ -23,21 +23,11 @@ import Footer from '../components/Footer.astro';
 </Layout>
 
 <style>
-  :root {
-    --ink:        #171717;
-    --ink-muted:  #4d4d4d;
-    --canvas:     #ffffff;
-    --canvas-soft:#fafafa;
-    --border:     #e5e5e5;
-    --radius-pill:100px;
-    --radius-sm:  6px;
-  }
-
   .error-hero {
     min-height: calc(100vh - 60px);
     display: flex;
     align-items: center;
-    background: var(--ink);
+    background: var(--surface-dark, #171717);
     text-align: center;
   }
 
@@ -86,7 +76,7 @@ import Footer from '../components/Footer.astro';
     align-items: center;
     padding: 12px 28px;
     background: #ffffff;
-    color: var(--ink);
+    color: #171717;
     border-radius: var(--radius-pill);
     font-size: 15px;
     font-weight: 500;

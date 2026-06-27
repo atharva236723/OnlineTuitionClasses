@@ -72,7 +72,7 @@ const pricing = [
             </button>
             <button class="quiz-opt" data-step="1" data-val="Exam preparation">
               <span class="qo-icon">🎯</span>
-              <span class="qo-label">Exam prep (Board / JEE)</span>
+              <span class="qo-label">Exam prep (Board exams)</span>
             </button>
             <button class="quiz-opt" data-step="1" data-val="Build strong foundation">
               <span class="qo-icon">🏗️</span>
@@ -108,26 +108,33 @@ const pricing = [
           </div>
         </div>
 
-        <!-- Step 3 -->
-        <div class="quiz-step" id="qstep-3">
-          <p class="quiz-q">When should sessions happen?</p>
-          <div class="quiz-options">
-            <button class="quiz-opt" data-step="3" data-val="Weekday mornings">
-              <span class="qo-icon">🌅</span>
-              <span class="qo-label">Weekday mornings</span>
-            </button>
-            <button class="quiz-opt" data-step="3" data-val="Weekday evenings">
-              <span class="qo-icon">🌆</span>
-              <span class="qo-label">Weekday evenings</span>
-            </button>
-            <button class="quiz-opt" data-step="3" data-val="Weekends">
-              <span class="qo-icon">📅</span>
-              <span class="qo-label">Weekends only</span>
-            </button>
-            <button class="quiz-opt" data-step="3" data-val="Flexible / any time">
-              <span class="qo-icon">🔀</span>
-              <span class="qo-label">Flexible — any time</span>
-            </button>
+
+        <!-- Loading -->
+        <div class="quiz-step" id="qstep-loading">
+          <div class="quiz-searching">
+            <div class="qs-spinner">
+              <div class="qs-ring"></div>
+              <div class="qs-ring qs-ring-2"></div>
+              <div class="qs-ring qs-ring-3"></div>
+            </div>
+            <p class="qs-label" id="qs-label">Searching for your perfect teacher…</p>
+            <div class="qs-steps">
+              <div class="qs-step" id="qss-1">
+                <span class="qs-step-icon">🔍</span>
+                <span class="qs-step-text">Analysing your learning profile</span>
+                <span class="qs-step-tick" id="qss-tick-1"></span>
+              </div>
+              <div class="qs-step" id="qss-2">
+                <span class="qs-step-icon">📚</span>
+                <span class="qs-step-text">Matching with verified teachers</span>
+                <span class="qs-step-tick" id="qss-tick-2"></span>
+              </div>
+              <div class="qs-step" id="qss-3">
+                <span class="qs-step-icon">✅</span>
+                <span class="qs-step-text">Finding your best match</span>
+                <span class="qs-step-tick" id="qss-tick-3"></span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -146,7 +153,6 @@ const pricing = [
         <div class="quiz-dots" id="quiz-dots">
           <span class="qdot active" data-dot="1"></span>
           <span class="qdot" data-dot="2"></span>
-          <span class="qdot" data-dot="3"></span>
         </div>
 
       </div>
@@ -481,8 +487,7 @@ const pricing = [
   function buildProfile(a) {
     var goal  = a[1] || '';
     var style = a[2] || '';
-    var time  = a[3] || '';
-    var body = 'Look for a teacher who focuses on “' + goal + '”, uses “' + style + '” techniques, and is available during “' + time + '”. We’ll find you the best match—just fill in the form below.';
+    var body = 'Based on your goal (“' + goal + '”) and preferred learning style (“' + style + '”), we\'ve found the ideal teacher profile for you. Fill in the form below and we\'ll connect you within 24 hours.';
     return { title: 'Your perfect teacher match is ready', body: body };
   }
 
@@ -496,8 +501,8 @@ const pricing = [
     });
 
     var dots = document.getElementById('quiz-dots');
-    if (step === 'result') { if (dots) dots.style.display = 'none'; }
-    else                   { if (dots) dots.style.display = ''; }
+    if (step === 'result' || step === 'loading') { if (dots) dots.style.display = 'none'; }
+    else                                         { if (dots) dots.style.display = ''; }
 
     currentStep = step;
   }
@@ -506,15 +511,57 @@ const pricing = [
     var p = buildProfile(answers);
     document.getElementById('qr-title').textContent = p.title;
     document.getElementById('qr-body').textContent  = p.body;
-    goToStep('result');
+
+    goToStep('loading');
+    var ticks = [null,
+      document.getElementById('qss-tick-1'),
+      document.getElementById('qss-tick-2'),
+      document.getElementById('qss-tick-3')
+    ];
+    var steps = [null,
+      document.getElementById('qss-1'),
+      document.getElementById('qss-2'),
+      document.getElementById('qss-3')
+    ];
+    steps[1] && steps[1].classList.add('qs-step-active');
+    setTimeout(function() {
+      ticks[1] && (ticks[1].textContent = '✓');
+      steps[1] && steps[1].classList.add('qs-step-done');
+      steps[2] && steps[2].classList.add('qs-step-active');
+    }, 1500);
+    setTimeout(function() {
+      ticks[2] && (ticks[2].textContent = '✓');
+      steps[2] && steps[2].classList.add('qs-step-done');
+      steps[3] && steps[3].classList.add('qs-step-active');
+    }, 3000);
+    setTimeout(function() {
+      ticks[3] && (ticks[3].textContent = '✓');
+      steps[3] && steps[3].classList.add('qs-step-done');
+      document.getElementById('qs-label').textContent = 'Match found!';
+    }, 4500);
+    setTimeout(function() {
+      goToStep('result');
+    }, 5200);
+  }
+
+  function resetLoadingState() {
+    [1, 2, 3].forEach(function(i) {
+      var s = document.getElementById('qss-' + i);
+      var t = document.getElementById('qss-tick-' + i);
+      if (s) { s.classList.remove('qs-step-active', 'qs-step-done'); }
+      if (t) { t.textContent = ''; }
+    });
+    var label = document.getElementById('qs-label');
+    if (label) label.textContent = 'Searching for your perfect teacher…';
   }
 
   function initQuiz() {
     answers = {};
+    resetLoadingState();
     goToStep(1);
 
     document.querySelectorAll('.quiz-opt').forEach(function(btn) {
-      btn.addEventListener('click', function () {
+      btn.onclick = function() {
         var step = parseInt(this.dataset.step);
         var val  = this.dataset.val;
         answers[step] = val;
@@ -523,26 +570,26 @@ const pricing = [
         this.classList.add('selected');
 
         setTimeout(function() {
-          if (step < 3) goToStep(step + 1);
+          if (step < 2) goToStep(step + 1);
           else showResult();
         }, 250);
-      });
+      };
     });
 
     var cta = document.getElementById('quiz-cta');
-    if (cta) cta.addEventListener('click', function() {
+    if (cta) cta.onclick = function() {
       var findSection = document.getElementById('find');
-      if (findSection) {
-        if (window.lenis) window.lenis.scrollTo(findSection, { offset: -72 });
-        else findSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
+      if (!findSection) return;
+      if (window.lenisInstance) window.lenisInstance.scrollTo(findSection, { offset: -72 });
+      else findSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
 
     var restart = document.getElementById('quiz-restart');
-    if (restart) restart.addEventListener('click', function() {
+    if (restart) restart.onclick = function() {
       answers = {};
+      resetLoadingState();
       goToStep(1);
-    });
+    };
   }
 
   initQuiz();
@@ -691,6 +738,7 @@ const pricing = [
   /* Google Sign-In */
   function parseGoogleJwt(credential) {
     var payload = credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    payload += '=='.slice(0, (4 - payload.length % 4) % 4);
     return JSON.parse(atob(payload));
   }
 
@@ -900,14 +948,7 @@ const pricing = [
 <style>
   /* ── Tokens ────────────────────────────────────────── */
   :root {
-    --ink: #171717;
-    --ink-2: #4d4d4d;
-    --canvas: #ffffff;
-    --canvas-soft: #fafafa;
-    --border: #e5e5e5;
     --accent: #2563eb;
-    --radius-pill: 100px;
-    --radius-sm: 6px;
   }
 
   /* ── Layout ────────────────────────────────────────── */
@@ -919,7 +960,7 @@ const pricing = [
 
   /* ── Hero ──────────────────────────────────────────── */
   .hero {
-    background: var(--ink);
+    background: var(--surface-dark, #171717);
     color: #fff;
     padding: clamp(48px, 8vw, 96px) 0 clamp(40px, 6vw, 72px);
     overflow: hidden;
@@ -972,7 +1013,7 @@ const pricing = [
   .btn-primary {
     display: inline-block;
     background: #fff;
-    color: var(--ink);
+    color: #171717;
     font-weight: 600;
     font-size: 0.95rem;
     padding: 14px 32px;
@@ -989,7 +1030,7 @@ const pricing = [
     display: block;
     width: 100%;
     background: var(--ink);
-    color: #fff;
+    color: var(--canvas);
     margin-top: 8px;
     text-align: center;
   }
@@ -1043,7 +1084,7 @@ const pricing = [
     width: 36px;
     height: 36px;
     background: var(--ink);
-    color: #fff;
+    color: var(--canvas);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1095,7 +1136,7 @@ const pricing = [
 
   .class-badge {
     background: var(--ink);
-    color: #fff;
+    color: var(--canvas);
     font-size: 0.8rem;
     font-weight: 600;
     width: 26px;
@@ -1260,9 +1301,9 @@ const pricing = [
     align-items: center;
     gap: 14px;
     padding: 16px 18px;
-    border: 1.5px solid #e5e5e5;
+    border: 1.5px solid var(--border);
     border-radius: 14px;
-    background: #fff;
+    background: var(--canvas);
     cursor: pointer;
     font-family: inherit;
     text-align: left;
@@ -1318,7 +1359,7 @@ const pricing = [
   :global(.sc-name) {
     font-size: 0.95rem;
     font-weight: 600;
-    color: #171717;
+    color: var(--ink);
     transition: color 0.18s;
   }
 
@@ -1326,7 +1367,7 @@ const pricing = [
 
   :global(.sc-note) {
     font-size: 0.72rem;
-    color: #4d4d4d;
+    color: var(--ink-2);
     transition: color 0.18s;
   }
 
@@ -1336,7 +1377,7 @@ const pricing = [
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    border: 1.5px solid #e5e5e5;
+    border: 1.5px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1455,10 +1496,10 @@ const pricing = [
 
   /* ── Calc validation error ── */
   .calc-error {
-    background: #fff8f0;
-    border: 1px solid #fbbf24;
+    background: rgba(251,191,36,.1);
+    border: 1px solid rgba(251,191,36,.4);
     border-radius: 8px;
-    color: #92400e;
+    color: var(--ink);
     font-size: 0.875rem;
     font-weight: 500;
     padding: 12px 16px;
@@ -1477,8 +1518,8 @@ const pricing = [
     text-align: center;
     padding: 48px 32px;
     border-radius: 16px;
-    background: #ffffff;
-    border: 1px solid #e5e5e5;
+    background: var(--canvas);
+    border: 1px solid var(--border);
     box-shadow: 0 2px 8px rgba(0,0,0,.04), 0 8px 32px rgba(0,0,0,.06);
     margin-top: 40px;
     animation: fsIn 0.5s cubic-bezier(.34,1.56,.64,1) both;
@@ -1563,7 +1604,7 @@ const pricing = [
     height: 40px;
     border-radius: 10px;
     background: var(--ink);
-    color: #fff;
+    color: var(--canvas);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1669,9 +1710,9 @@ const pricing = [
     flex-direction: column;
     gap: 8px;
     padding: 16px;
-    border: 1px solid #e5e5e5;
+    border: 1px solid var(--border);
     border-radius: 12px;
-    background: #fafafa;
+    background: var(--canvas-soft);
     animation: memberIn 0.25s cubic-bezier(.34,1.56,.64,1) both;
   }
 
@@ -1685,7 +1726,7 @@ const pricing = [
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    color: #4d4d4d;
+    color: var(--ink-2);
     margin: 0;
   }
 
@@ -1705,26 +1746,26 @@ const pricing = [
     gap: 5px;
     font-size: 0.82rem;
     font-weight: 500;
-    color: #4d4d4d;
+    color: var(--ink-2);
   }
 
   :global(.batch-form-inner input) {
     padding: 9px 12px;
-    border: 1px solid #e5e5e5;
+    border: 1px solid var(--border);
     border-radius: 6px;
     font-size: 0.9rem;
     font-family: inherit;
-    background: #ffffff;
-    color: #171717;
+    background: var(--canvas);
+    color: var(--ink);
     outline: none;
     transition: border-color 0.15s;
   }
 
-  :global(.batch-form-inner input:focus) { border-color: #171717; }
+  :global(.batch-form-inner input:focus) { border-color: var(--ink); }
 
   /* ── Stats bar ────────────────────────────────────────── */
   .stats-bar {
-    background: var(--ink);
+    background: var(--surface-dark);
     padding: 28px 0;
   }
 
@@ -1772,7 +1813,7 @@ const pricing = [
 
   /* ── Smart Match Quiz ──────────────────────────────────── */
   .section-dark {
-    background: var(--ink);
+    background: var(--surface-dark, #171717);
     color: #fff;
   }
 
@@ -1891,12 +1932,100 @@ const pricing = [
     gap: 16px;
   }
 
+  /* ── Quiz searching animation ── */
+  .quiz-searching {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    padding: 12px 0 8px;
+  }
+
+  .qs-spinner {
+    position: relative;
+    width: 72px;
+    height: 72px;
+  }
+
+  .qs-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #fff;
+    animation: qs-spin 1.2s linear infinite;
+  }
+  .qs-ring-2 {
+    inset: 10px;
+    border-top-color: rgba(255,255,255,0.55);
+    animation-duration: 1.8s;
+    animation-direction: reverse;
+  }
+  .qs-ring-3 {
+    inset: 20px;
+    border-top-color: rgba(255,255,255,0.25);
+    animation-duration: 2.4s;
+  }
+
+  @keyframes qs-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .qs-label {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.02em;
+    transition: opacity 0.3s;
+  }
+
+  .qs-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .qs-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.3;
+    transition: opacity 0.4s;
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.85);
+  }
+  .qs-step-active { opacity: 1; }
+  .qs-step-done   { opacity: 0.6; }
+
+  .qs-step-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+  .qs-step-text { flex: 1; }
+  .qs-step-tick {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: #fff;
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .qs-step-done .qs-step-tick {
+    background: rgba(255,255,255,0.5);
+  }
+
+  /* ── End quiz searching animation ── */
+
   .qr-badge {
     width: 60px;
     height: 60px;
     border-radius: 50%;
     background: #fff;
-    color: var(--ink);
+    color: #171717;
     font-size: 1.6rem;
     display: flex;
     align-items: center;
@@ -1919,7 +2048,7 @@ const pricing = [
 
   .btn-quiz-cta {
     background: #fff;
-    color: var(--ink);
+    color: #171717;
     font-weight: 600;
     font-size: 0.95rem;
     padding: 13px 32px;
@@ -1994,7 +2123,7 @@ const pricing = [
 
   .faq-item[open] .faq-q::after { transform: rotate(45deg); }
 
-  .faq-item[open] .faq-q { background: #fafafa; }
+  .faq-item[open] .faq-q { background: var(--canvas-soft); }
 
   .faq-a {
     padding: 0 20px 18px;
@@ -2162,7 +2291,7 @@ const pricing = [
     display: block;
     width: 100%;
     background: var(--ink);
-    color: #fff;
+    color: var(--canvas);
     padding: 10px 20px;
     border-radius: var(--radius-pill);
     border: none;

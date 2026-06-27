@@ -37,14 +37,6 @@ import Footer from '../components/Footer.astro';
 </Layout>
 
 <style>
-  :root {
-    --ink: #171717;
-    --ink-2: #4d4d4d;
-    --canvas: #ffffff;
-    --canvas-soft: #fafafa;
-    --border: #e5e5e5;
-  }
-
   .container {
     max-width: 960px;
     margin-inline: auto;
@@ -52,9 +44,9 @@ import Footer from '../components/Footer.astro';
   }
 
   .page-hero {
-    background: var(--ink);
+    background: var(--surface-dark, #171717);
     color: #fff;
-    padding: 96px 0 80px;
+    padding: clamp(64px, 10vw, 96px) 0 clamp(48px, 8vw, 80px);
   }
 
   .eyebrow {

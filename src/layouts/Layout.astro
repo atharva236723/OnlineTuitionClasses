@@ -22,6 +22,14 @@ const { title = "Online Tuition for Class 1-12 | Verified Teachers" } = Astro.pr
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <ClientRouter />
+    <script is:inline>
+      /* Prevent FOUC — apply saved/system theme before first paint */
+      (function(){
+        var t = localStorage.getItem('otc-theme');
+        if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
   </head>
   <body>
     <slot />
@@ -33,6 +41,7 @@ const { title = "Online Tuition for Class 1-12 | Verified Teachers" } = Astro.pr
       function initLenis() {
         if (lenis) lenis.destroy();
         lenis = new Lenis({ autoRaf: true });
+        (window as any).lenisInstance = lenis;
         document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
           anchor.addEventListener('click', (e) => {
             const target = document.querySelector((anchor as HTMLAnchorElement).getAttribute('href')!);
@@ -80,11 +89,40 @@ const { title = "Online Tuition for Class 1-12 | Verified Teachers" } = Astro.pr
 <style is:global>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  /* ── Global design tokens ── */
+  :root {
+    --ink: #171717;
+    --ink-2: #4d4d4d;
+    --canvas: #ffffff;
+    --canvas-soft: #fafafa;
+    --border: #e5e5e5;
+    --bg: #fafafa;
+    --surface-dark: #171717;
+    --nav-bg: rgba(255,255,255,0.92);
+    --nav-border: #e5e5e5;
+    --mobile-menu-bg: rgba(255,255,255,0.97);
+    --radius-sm: 6px;
+    --radius-pill: 100px;
+  }
+
+  [data-theme="dark"] {
+    --ink: #ededed;
+    --ink-2: #a3a3a3;
+    --canvas: #141414;
+    --canvas-soft: #1c1c1c;
+    --border: #2f2f2f;
+    --bg: #0f0f0f;
+    --surface-dark: #0a0a0a;
+    --nav-bg: rgba(15,15,15,0.92);
+    --nav-border: #2f2f2f;
+    --mobile-menu-bg: rgba(15,15,15,0.97);
+  }
+
   html {
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 16px;
-    color: #171717;
-    background: #fafafa;
+    color: var(--ink);
+    background: var(--bg);
   }
 
   body {
